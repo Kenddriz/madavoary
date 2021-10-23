@@ -2,28 +2,18 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type Park {
+type User {
   id: Int!
-  name: String!
-  createdAt: DateTime!
-  updatedAt: DateTime!
+  password: String!
+  verifiedAt: DateTime!
+  role: String!
+  person: Person!
 }
 
 """
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
 scalar DateTime
-
-type Species {
-  id: Int!
-  images: [String!]!
-  when: DateTime!
-}
-
-type Discover {
-  id: Int!
-  date: String!
-}
 
 type Person {
   id: Int!
@@ -37,12 +27,34 @@ type Person {
   images: [String!]!
   createdAt: DateTime!
   updatedAt: DateTime!
+  user: User
+  discover: [Discover!]!
 }
 
-type User {
+type Discover {
   id: Int!
-  verifiedAt: DateTime!
-  role: String!
+  date: String!
+  description: [String!]!
+  person: Person!
+  species: Species!
+}
+
+type Species {
+  id: Int!
+  images: [String!]!
+  when: DateTime!
+  names: [String!]!
+  description: [String!]!
+  parks: [Park!]!
+  discover: Discover
+}
+
+type Park {
+  id: Int!
+  name: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  species: [Species!]!
 }
 
 type Collection {
@@ -54,6 +66,7 @@ type Collection {
   images: [String!]!
   createdAt: DateTime!
   updatedAt: DateTime!
+  user: User!
 }
 
 type Visit {
@@ -67,20 +80,24 @@ type Subscription {
   createdAt: DateTime!
 }
 
+type Localization {
+  parksId: Float!
+  speciesId: Float!
+  place: String!
+}
+
 type Query {
   park(id: Int!): Park!
   species(id: Int!): Species!
   discover(id: Int!): Discover!
-  person(id: Int!): Person!
-  user(id: Int!): User!
   collection(id: Int!): Collection!
   visit(id: Int!): Visit!
   subscription(id: Int!): Subscription!
+  localization(id: Int!): Localization!
 }
 
 type Mutation {
-  createPark(createParkInput: CreateParkInput!): Park!
-  updatePark(updateParkInput: UpdateParkInput!): Park!
+  createPark(input: CreateParkInput!): Park!
   removePark(id: Int!): Park!
   createSpecies(createSpeciesInput: CreateSpeciesInput!): Species!
   updateSpecies(updateSpeciesInput: UpdateSpeciesInput!): Species!
@@ -88,12 +105,6 @@ type Mutation {
   createDiscover(createDiscoverInput: CreateDiscoverInput!): Discover!
   updateDiscover(updateDiscoverInput: UpdateDiscoverInput!): Discover!
   removeDiscover(id: Int!): Discover!
-  createPerson(createPersonInput: CreatePersonInput!): Person!
-  updatePerson(updatePersonInput: UpdatePersonInput!): Person!
-  removePerson(id: Int!): Person!
-  createUser(createUserInput: CreateUserInput!): User!
-  updateUser(updateUserInput: UpdateUserInput!): User!
-  removeUser(id: Int!): User!
   createCollection(createCollectionInput: CreateCollectionInput!): Collection!
   updateCollection(updateCollectionInput: UpdateCollectionInput!): Collection!
   removeCollection(id: Int!): Collection!
@@ -103,17 +114,13 @@ type Mutation {
   createSubscription(createSubscriptionInput: CreateSubscriptionInput!): Subscription!
   updateSubscription(updateSubscriptionInput: UpdateSubscriptionInput!): Subscription!
   removeSubscription(id: Int!): Subscription!
+  createLocalization(createLocalizationInput: CreateLocalizationInput!): Localization!
+  updateLocalization(updateLocalizationInput: UpdateLocalizationInput!): Localization!
+  removeLocalization(id: Int!): Localization!
 }
 
 input CreateParkInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
-}
-
-input UpdateParkInput {
-  """Example field (placeholder)"""
-  exampleField: Int
-  id: Int!
+  name: String!
 }
 
 input CreateSpeciesInput {
@@ -133,28 +140,6 @@ input CreateDiscoverInput {
 }
 
 input UpdateDiscoverInput {
-  """Example field (placeholder)"""
-  exampleField: Int
-  id: Int!
-}
-
-input CreatePersonInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
-}
-
-input UpdatePersonInput {
-  """Example field (placeholder)"""
-  exampleField: Int
-  id: Int!
-}
-
-input CreateUserInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
-}
-
-input UpdateUserInput {
   """Example field (placeholder)"""
   exampleField: Int
   id: Int!
@@ -188,6 +173,17 @@ input CreateSubscriptionInput {
 }
 
 input UpdateSubscriptionInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
+}
+
+input CreateLocalizationInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+input UpdateLocalizationInput {
   """Example field (placeholder)"""
   exampleField: Int
   id: Int!

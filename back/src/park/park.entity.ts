@@ -3,9 +3,11 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  ManyToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Species } from '../species/species.entity';
 
 @ObjectType()
 @Entity({ name: 'parks' })
@@ -19,10 +21,16 @@ export class Park {
   name: string;
 
   @Field()
-  @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
+  @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;
 
   @Field()
-  @UpdateDateColumn({ name: 'updated_at', type: 'timestamp' })
+  @UpdateDateColumn({ type: 'timestamp' })
   updatedAt: Date;
+
+  @Field(() => [Species])
+  @ManyToMany(() => Species, (species) => species.parks, {
+    onDelete: 'CASCADE',
+  })
+  species: Species[];
 }

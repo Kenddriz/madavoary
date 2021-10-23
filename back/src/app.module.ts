@@ -13,6 +13,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { connexionOptions } from './configuration/connexionLoader';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { join } from 'path';
+import { LocalizationModule } from './localization/localization.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { join } from 'path';
     CollectionModule,
     VisitModule,
     SubscriptionModule,
+    LocalizationModule,
   ],
   controllers: [AppController],
   providers: [AppService],

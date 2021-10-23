@@ -3,9 +3,13 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { User } from '../user/user.entity';
+import { Discover } from '../discover/discover.entity';
 
 @ObjectType()
 @Entity({ name: 'persons' })
@@ -53,4 +57,18 @@ export class Person {
   @Field()
   @UpdateDateColumn({ name: 'updated_at', type: 'timestamp' })
   updatedAt: Date;
+
+  @Field(() => User, { nullable: true })
+  @OneToOne(() => User, (user) => user.person, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
+  user?: User;
+
+  @Field(() => [Discover])
+  @OneToMany(() => Discover, (discover) => discover.person, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
+  discover: Discover;
 }

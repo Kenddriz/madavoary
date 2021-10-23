@@ -1,26 +1,21 @@
 import { Injectable } from '@nestjs/common';
-import { CreatePersonInput } from './dto/create-person.input';
-import { UpdatePersonInput } from './dto/update-person.input';
+import { Person } from './person.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class PersonService {
-  create(createPersonInput: CreatePersonInput) {
-    return 'This action adds a new person';
+  constructor(
+    @InjectRepository(Person)
+    private repository: Repository<Person>,
+  ) {}
+  async save(person: Person): Promise<Person> {
+    return this.repository.save(person);
   }
-
-  findAll() {
-    return `This action returns all person`;
+  async findOneByPhone(phone: string): Promise<Person> {
+    return this.repository.findOne({ phone });
   }
-
-  findOne(id: number) {
-    return `This action returns a #${id} person`;
-  }
-
-  update(id: number, updatePersonInput: UpdatePersonInput) {
-    return `This action updates a #${id} person`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} person`;
+  async findOneByEmail(email: string): Promise<Person> {
+    return this.repository.findOne({ email });
   }
 }

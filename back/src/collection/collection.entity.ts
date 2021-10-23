@@ -3,9 +3,12 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  ManyToOne,
   PrimaryGeneratedColumn,
+  RelationId,
   UpdateDateColumn,
 } from 'typeorm';
+import { User } from '../user/user.entity';
 
 @ObjectType()
 @Entity({ name: 'collections' })
@@ -41,4 +44,10 @@ export class Collection {
   @Field()
   @UpdateDateColumn({ name: 'updated_at', type: 'timestamp' })
   updatedAt: Date;
+
+  @Field(() => User)
+  @ManyToOne(() => User, { onDelete: 'CASCADE' })
+  user: User;
+  @RelationId((collection: Collection) => collection.user)
+  userId: number;
 }

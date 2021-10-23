@@ -1,11 +1,16 @@
 import { Injectable } from '@nestjs/common';
-import { CreateParkInput } from './dto/create-park.input';
-import { UpdateParkInput } from './dto/update-park.input';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Park } from './park.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class ParkService {
-  create(createParkInput: CreateParkInput) {
-    return 'This action adds a new park';
+  constructor(
+    @InjectRepository(Park)
+    private repository: Repository<Park>,
+  ) {}
+  async save(park: Park): Promise<Park> {
+    return this.repository.save(park);
   }
 
   findAll() {
@@ -14,10 +19,6 @@ export class ParkService {
 
   findOne(id: number) {
     return `This action returns a #${id} park`;
-  }
-
-  update(id: number, updateParkInput: UpdateParkInput) {
-    return `This action updates a #${id} park`;
   }
 
   remove(id: number) {

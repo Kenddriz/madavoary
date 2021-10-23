@@ -1,8 +1,12 @@
-import { Module } from '@nestjs/common';
+import { Global, Module } from '@nestjs/common';
 import { PersonService } from './person.service';
 import { PersonResolver } from './person.resolver';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { Person } from './person.entity';
 
+@Global()
 @Module({
-  providers: [PersonResolver, PersonService]
+  imports: [TypeOrmModule.forFeature([Person])],
+  providers: [PersonResolver, PersonService],
 })
 export class PersonModule {}
