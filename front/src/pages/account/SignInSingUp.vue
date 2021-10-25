@@ -1,5 +1,5 @@
 <template>
-  <div :class="`container bg-primary ${sign_up_mode ? 'sign-up-mode' : ''}`">
+  <div :class="`container bg-dark ${sign_up_mode ? 'sign-up-mode' : ''}`">
       <div class="forms-container">
         <div class="signin-signup">
           <SignUp class="sign-up-form" />
@@ -37,7 +37,7 @@
           <img src="sign-in.svg" class="image" alt="" />
         </div>
       </div>
-    </div>
+  </div>
 </template>
 
 <script lang="ts">

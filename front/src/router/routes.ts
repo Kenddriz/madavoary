@@ -30,7 +30,7 @@ const routes: RouteRecordRaw[] = [
     ],
   },
   {
-    path: '/auth/sign-in-sign-up',
+    path: '/sign-in-sign-up',
     component: () => import('src/pages/account/SignInSingUp.vue')
   },
   // Always leave this as last one,

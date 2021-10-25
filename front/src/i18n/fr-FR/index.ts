@@ -23,6 +23,8 @@ export default {
   'no-data': 'Aucune donnée disponible',
   controls: 'Contrôles',
   names: ['Local', 'Scientifique', 'Vernaculaire en anglais', 'Vernaculaire en français'],
+  male: 'Masculin',
+  female: 'Féminin',
   'collection-subjects': [
     {
       id: '0',

@@ -24,7 +24,8 @@
     "quasar": "^2.0.0",
     "react": "^17.0.2",
     "vue-i18n": "^9.0.0",
-    "vue3-apexcharts": "^1.4.1"
+    "vue3-apexcharts": "^1.4.1",
+    "vue3-tel-input": "^1.0.4"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.13.14",

@@ -13,6 +13,20 @@ export type Scalars = {
   DateTime: any;
 };
 
+export type Area = {
+  __typename?: 'Area';
+  banner: Scalars['String'];
+  cities: Array<Scalars['String']>;
+  contacts: Array<Contact>;
+  createdAt: Scalars['DateTime'];
+  id: Scalars['Int'];
+  name: Scalars['String'];
+  office: Scalars['String'];
+  surface: Scalars['Float'];
+  updatedAt: Scalars['DateTime'];
+  user: User;
+};
+
 export type Collection = {
   __typename?: 'Collection';
   createdAt: Scalars['DateTime'];
@@ -24,6 +38,22 @@ export type Collection = {
   place: Scalars['String'];
   updatedAt: Scalars['DateTime'];
   user: User;
+};
+
+export type Contact = {
+  __typename?: 'Contact';
+  list: Array<Scalars['String']>;
+  type: Scalars['Float'];
+};
+
+export type Cost = {
+  __typename?: 'Cost';
+  ageSlice: Scalars['Int'];
+  value: Scalars['Float'];
+};
+
+export type CreateAreaInput = {
+  name: Scalars['String'];
 };
 
 export type CreateCollectionInput = {
@@ -41,8 +71,9 @@ export type CreateLocalizationInput = {
   exampleField: Scalars['Int'];
 };
 
-export type CreateParkInput = {
-  name: Scalars['String'];
+export type CreatePriceInput = {
+  /** Example field (placeholder) */
+  exampleField: Scalars['Int'];
 };
 
 export type CreateSpeciesInput = {
@@ -53,6 +84,15 @@ export type CreateSpeciesInput = {
 export type CreateSubscriptionInput = {
   /** Example field (placeholder) */
   exampleField: Scalars['Int'];
+};
+
+export type CreateUserInput = {
+  email: Scalars['String'];
+  firstName: Scalars['String'];
+  gender: Scalars['Float'];
+  lastName: Scalars['String'];
+  password: Scalars['String'];
+  phone: Scalars['String'];
 };
 
 export type CreateVisitInput = {
@@ -71,33 +111,42 @@ export type Discover = {
 
 export type Localization = {
   __typename?: 'Localization';
-  parksId: Scalars['Float'];
-  place: Scalars['String'];
-  speciesId: Scalars['Float'];
+  area: Area;
+  places: Array<Scalars['String']>;
+  species: Species;
 };
 
 export type Mutation = {
   __typename?: 'Mutation';
+  createArea: Area;
   createCollection: Collection;
   createDiscover: Discover;
   createLocalization: Localization;
-  createPark: Park;
+  createPrice: Price;
   createSpecies: Species;
   createSubscription: Subscription;
+  createUser: User;
   createVisit: Visit;
+  removeArea: Area;
   removeCollection: Collection;
   removeDiscover: Discover;
   removeLocalization: Localization;
-  removePark: Park;
+  removePrice: Price;
   removeSpecies: Species;
   removeSubscription: Subscription;
   removeVisit: Visit;
   updateCollection: Collection;
   updateDiscover: Discover;
   updateLocalization: Localization;
+  updatePrice: Price;
   updateSpecies: Species;
   updateSubscription: Subscription;
   updateVisit: Visit;
+};
+
+
+export type MutationCreateAreaArgs = {
+  input: CreateAreaInput;
 };
 
 
@@ -116,8 +165,8 @@ export type MutationCreateLocalizationArgs = {
 };
 
 
-export type MutationCreateParkArgs = {
-  input: CreateParkInput;
+export type MutationCreatePriceArgs = {
+  createPriceInput: CreatePriceInput;
 };
 
 
@@ -131,8 +180,18 @@ export type MutationCreateSubscriptionArgs = {
 };
 
 
+export type MutationCreateUserArgs = {
+  input: CreateUserInput;
+};
+
+
 export type MutationCreateVisitArgs = {
   createVisitInput: CreateVisitInput;
+};
+
+
+export type MutationRemoveAreaArgs = {
+  id: Scalars['Int'];
 };
 
 
@@ -151,7 +210,7 @@ export type MutationRemoveLocalizationArgs = {
 };
 
 
-export type MutationRemoveParkArgs = {
+export type MutationRemovePriceArgs = {
   id: Scalars['Int'];
 };
 
@@ -186,6 +245,11 @@ export type MutationUpdateLocalizationArgs = {
 };
 
 
+export type MutationUpdatePriceArgs = {
+  updatePriceInput: PriceOutput;
+};
+
+
 export type MutationUpdateSpeciesArgs = {
   updateSpeciesInput: UpdateSpeciesInput;
 };
@@ -200,41 +264,48 @@ export type MutationUpdateVisitArgs = {
   updateVisitInput: UpdateVisitInput;
 };
 
-export type Park = {
-  __typename?: 'Park';
-  createdAt: Scalars['DateTime'];
-  id: Scalars['Int'];
-  name: Scalars['String'];
-  species: Array<Species>;
-  updatedAt: Scalars['DateTime'];
-};
-
 export type Person = {
   __typename?: 'Person';
-  address: Scalars['String'];
-  avatar: Scalars['String'];
-  city: Scalars['String'];
   createdAt: Scalars['DateTime'];
   discover: Array<Discover>;
   email: Scalars['String'];
   firstName: Scalars['String'];
+  gender: Scalars['Float'];
   id: Scalars['Int'];
-  images: Array<Scalars['String']>;
   lastName: Scalars['String'];
   phone: Scalars['String'];
   updatedAt: Scalars['DateTime'];
   user?: Maybe<User>;
 };
 
+export type Price = {
+  __typename?: 'Price';
+  foreigner: Array<Cost>;
+  id: Scalars['Int'];
+  malagasy: Array<Cost>;
+};
+
+export type PriceOutput = {
+  /** Example field (placeholder) */
+  exampleField?: Maybe<Scalars['Int']>;
+  id: Scalars['Int'];
+};
+
 export type Query = {
   __typename?: 'Query';
+  area: Area;
   collection: Collection;
   discover: Discover;
   localization: Localization;
-  park: Park;
+  price: Price;
   species: Species;
   subscription: Subscription;
   visit: Visit;
+};
+
+
+export type QueryAreaArgs = {
+  id: Scalars['Int'];
 };
 
 
@@ -253,7 +324,7 @@ export type QueryLocalizationArgs = {
 };
 
 
-export type QueryParkArgs = {
+export type QueryPriceArgs = {
   id: Scalars['Int'];
 };
 
@@ -278,9 +349,10 @@ export type Species = {
   discover?: Maybe<Discover>;
   id: Scalars['Int'];
   images: Array<Scalars['String']>;
+  localizations: Array<Localization>;
   names: Array<Scalars['String']>;
-  parks: Array<Park>;
-  when: Scalars['DateTime'];
+  user: User;
+  when: Array<Scalars['String']>;
 };
 
 export type Subscription = {
@@ -328,6 +400,7 @@ export type UpdateVisitInput = {
 
 export type User = {
   __typename?: 'User';
+  disabled: Scalars['Boolean'];
   id: Scalars['Int'];
   password: Scalars['String'];
   person: Person;

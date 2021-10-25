@@ -37,7 +37,6 @@
       label="se connecter"
       type="submit"
       icon-right="login"
-      :loading="loading"
     />
 
     <q-btn
