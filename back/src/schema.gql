@@ -2,11 +2,17 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Contact {
+  type: Float!
+  list: [String!]!
+}
+
 type User {
   id: Int!
   password: String!
   verifiedAt: DateTime!
   role: String!
+  disabled: Boolean!
   person: Person!
 }
 
@@ -42,19 +48,31 @@ type Discover {
 type Species {
   id: Int!
   images: [String!]!
-  when: DateTime!
+  when: [String!]!
   names: [String!]!
   description: [String!]!
-  parks: [Park!]!
+  localizations: [Localization!]!
   discover: Discover
+  user: User!
 }
 
-type Park {
+type Localization {
+  area: Area!
+  species: Species!
+  places: [String!]!
+}
+
+type Area {
   id: Int!
   name: String!
+  banner: String!
+  cities: [String!]!
+  surface: Float!
+  contacts: [Contact!]!
+  office: String!
   createdAt: DateTime!
   updatedAt: DateTime!
-  species: [Species!]!
+  user: User!
 }
 
 type Collection {
@@ -80,25 +98,31 @@ type Subscription {
   createdAt: DateTime!
 }
 
-type Localization {
-  parksId: Float!
-  speciesId: Float!
-  place: String!
+type Cost {
+  ageSlice: Int!
+  value: Float!
+}
+
+type Price {
+  id: Int!
+  malagasy: [Cost!]!
+  foreigner: [Cost!]!
 }
 
 type Query {
-  park(id: Int!): Park!
+  area(id: Int!): Area!
   species(id: Int!): Species!
   discover(id: Int!): Discover!
   collection(id: Int!): Collection!
   visit(id: Int!): Visit!
   subscription(id: Int!): Subscription!
   localization(id: Int!): Localization!
+  price(id: Int!): Price!
 }
 
 type Mutation {
-  createPark(input: CreateParkInput!): Park!
-  removePark(id: Int!): Park!
+  createArea(input: CreateAreaInput!): Area!
+  removeArea(id: Int!): Area!
   createSpecies(createSpeciesInput: CreateSpeciesInput!): Species!
   updateSpecies(updateSpeciesInput: UpdateSpeciesInput!): Species!
   removeSpecies(id: Int!): Species!
@@ -117,9 +141,12 @@ type Mutation {
   createLocalization(createLocalizationInput: CreateLocalizationInput!): Localization!
   updateLocalization(updateLocalizationInput: UpdateLocalizationInput!): Localization!
   removeLocalization(id: Int!): Localization!
+  createPrice(createPriceInput: CreatePriceInput!): Price!
+  updatePrice(updatePriceInput: PriceOutput!): Price!
+  removePrice(id: Int!): Price!
 }
 
-input CreateParkInput {
+input CreateAreaInput {
   name: String!
 }
 
@@ -184,6 +211,17 @@ input CreateLocalizationInput {
 }
 
 input UpdateLocalizationInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
+}
+
+input CreatePriceInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+input PriceOutput {
   """Example field (placeholder)"""
   exampleField: Int
   id: Int!

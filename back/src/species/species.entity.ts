@@ -1,15 +1,15 @@
 import { ObjectType, Field, Int } from '@nestjs/graphql';
 import {
   Column,
-  Entity,
-  JoinTable,
-  ManyToMany,
+  Entity, ManyToOne,
+  OneToMany,
   OneToOne,
-  PrimaryGeneratedColumn,
+  PrimaryGeneratedColumn, RelationId,
 } from 'typeorm';
-import { Park } from '../park/park.entity';
 import { Discover } from '../discover/discover.entity';
-
+import { Localization } from '../localization/localization.entity';
+import {User} from "../user/user.entity";
+/*Array(0) is english translation, except for names**/
 @ObjectType()
 @Entity({ name: 'species' })
 export class Species {
@@ -21,9 +21,9 @@ export class Species {
   @Column({ default: [], type: 'varchar', array: true })
   images: string[];
 
-  @Field()
-  @Column({ type: 'timestamp' })
-  when: Date;
+  @Field(() => [String])
+  @Column({ default: [], type: 'varchar', array: true })
+  when: string[];
 
   @Field(() => [String])
   @Column({ default: [], type: 'varchar', array: true })
@@ -33,17 +33,22 @@ export class Species {
   @Column({ default: [], type: 'varchar', array: true })
   description: string[];
 
-  @Field(() => [Park])
-  @ManyToMany(() => Park, (park) => park.species, {
+  @Field(() => [Localization])
+  @OneToMany(() => Localization, (localization) => localization.species, {
     onDelete: 'CASCADE',
     cascade: true,
   })
-  @JoinTable({ name: 'localizations' })
-  parks: Park[];
+  localizations: Localization[];
 
   @Field(() => Discover, { nullable: true })
   @OneToOne(() => Discover, (discover) => discover.species, {
     onDelete: 'CASCADE',
   })
   discover?: Discover;
+
+  @Field(() => User)
+  @ManyToOne(() => User, (user) => user.species, { onDelete: 'CASCADE' })
+  user: User;
+  @RelationId((species: Species) => species.user)
+  userId: number;
 }

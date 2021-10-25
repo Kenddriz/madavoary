@@ -19,8 +19,10 @@
     "apexcharts": "^3.29.0",
     "apollo-upload-client": "^16.0.0",
     "core-js": "^3.6.5",
+    "graphql": "^15.6.1",
     "moment": "^2.29.1",
     "quasar": "^2.0.0",
+    "react": "^17.0.2",
     "vue-i18n": "^9.0.0",
     "vue3-apexcharts": "^1.4.1"
   },
@@ -30,6 +32,7 @@
     "@graphql-codegen/introspection": "^2.1.0",
     "@graphql-codegen/typescript": "^2.2.4",
     "@quasar/app": "^3.0.0",
+    "@types/apollo-upload-client": "^14.1.0",
     "@types/node": "^12.20.21",
     "@typescript-eslint/eslint-plugin": "^4.16.1",
     "@typescript-eslint/parser": "^4.16.1",

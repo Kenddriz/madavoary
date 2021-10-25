@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ParkModule } from './park/park.module';
+import { AreaModule } from './area/area.module';
 import { SpeciesModule } from './species/species.module';
 import { DiscoverModule } from './discover/discover.module';
 import { PersonModule } from './person/person.module';
@@ -14,6 +14,7 @@ import { connexionOptions } from './configuration/connexionLoader';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { join } from 'path';
 import { LocalizationModule } from './localization/localization.module';
+import { PriceModule } from './price/price.module';
 
 @Module({
   imports: [
@@ -27,7 +28,7 @@ import { LocalizationModule } from './localization/localization.module';
       playground: process.env.NODE_ENV === 'development',
       installSubscriptionHandlers: true,
     }),
-    ParkModule,
+    AreaModule,
     SpeciesModule,
     DiscoverModule,
     PersonModule,
@@ -36,6 +37,7 @@ import { LocalizationModule } from './localization/localization.module';
     VisitModule,
     SubscriptionModule,
     LocalizationModule,
+    PriceModule,
   ],
   controllers: [AppController],
   providers: [AppService],

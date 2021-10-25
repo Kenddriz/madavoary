@@ -1,0 +1,94 @@
+<template>
+  <q-layout view="lHh Lpr lFf">
+    <q-header class="bordered-bottom">
+      <q-toolbar>
+        <q-btn
+          flat
+          dense
+          round
+          icon="menu"
+          aria-label="Menu"
+          @click="leftDrawerOpen = !leftDrawerOpen"
+        />
+
+        <q-toolbar-title>
+          {{$tm('dashboard.menu')[pathIndex]}}
+        </q-toolbar-title>
+
+        <div>Madavoary</div>
+      </q-toolbar>
+    </q-header>
+
+    <q-drawer
+      v-model="leftDrawerOpen"
+      show-if-above
+      bordered
+      class="bg-primary"
+    >
+      <div class="flex flex-center bordered-bottom q-py-sm">
+        <q-avatar size="150px">
+          <q-img spinner-color="warning" src="travelers.svg" />
+        </q-avatar>
+        <q-item-section class="col-12">
+          <q-item-label>
+            RANDRIAMANAJA Charlin
+          </q-item-label>
+          <q-item-label class="text-white" caption>
+            [Admin]
+          </q-item-label>
+        </q-item-section>
+      </div>
+      <q-list>
+        <q-item
+          v-for="(item, index) in $tm('dashboard.menu')"
+          :key="index"
+          :to="`/admin/${urls[index].to}`"
+          exact
+          active-class="text-amber"
+        >
+          <q-item-section side>
+            <q-icon :name="urls[index].icon" />
+          </q-item-section>
+          <q-item-section>
+            {{item}}
+          </q-item-section>
+        </q-item>
+      </q-list>
+    </q-drawer>
+
+    <q-page-container>
+      <router-view />
+    </q-page-container>
+  </q-layout>
+</template>
+
+<script lang="ts">
+
+import {computed, defineComponent, ref} from 'vue'
+import { useRoute } from 'vue-router';
+const urls = [
+  { to: 'dashboard', icon: 'dashboard'},
+  { to: 'users', icon: 'group'},
+  { to: 'collections', icon: 'person'},
+  { to: 'park', icon: 'person'},
+  { to: 'my-account', icon: 'person'}
+];
+export default defineComponent({
+  name: 'BackOfficeLayout',
+  components: {},
+  setup () {
+    const route = useRoute();
+    const pathIndex = computed(() => {
+      const index = urls.findIndex(u => u.to === route.path.substr(route.path.lastIndexOf('/') + 1));
+      return index >= 0 ? index : 0;
+    });
+    return {
+      leftDrawerOpen: ref(false),
+      pathIndex,
+      urls
+    }
+  }
+})
+</script>
+<style lang="scss" scoped>
+</style>
