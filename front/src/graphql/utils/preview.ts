@@ -1,5 +1,10 @@
 import { ref } from 'vue';
 
+export type AvatarModel = {
+  avatar: any[],
+  url: string[]
+}
+
 export const useImageLoader = () => {
   const urlList = ref<Array<string>>([]);
   const emptyPreviewImageList = () => {

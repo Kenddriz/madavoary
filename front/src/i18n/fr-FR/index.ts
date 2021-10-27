@@ -1,6 +1,7 @@
 // This is just an example,
 // so you can safely delete all default props below
 import dashboard from './dashboard';
+import register from './register';
 export default {
   failed: 'Action failed',
   success: 'Action was successful',
@@ -25,6 +26,9 @@ export default {
   names: ['Local', 'Scientifique', 'Vernaculaire en anglais', 'Vernaculaire en français'],
   male: 'Masculin',
   female: 'Féminin',
+  networkError: 'Problème de réseau, assurez-vous que vous avez d\'internet',
+  mailExist: 'Adresse email existe déjà',
+  phoneExist: 'Numéro de téléphone existe déjà',
   'collection-subjects': [
     {
       id: '0',
@@ -64,4 +68,5 @@ export default {
     }
   ],
   dashboard,
+  register
 };

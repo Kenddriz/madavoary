@@ -7,12 +7,12 @@ import { Repository } from 'typeorm';
 export class UserService {
   constructor(
     @InjectRepository(User)
-    private userRepository: Repository<User>,
+    private repository: Repository<User>,
   ) {}
   async save(user: User): Promise<User> {
-    return this.userRepository.save(user);
+    return this.repository.save(user);
   }
   async findOneById(id: number): Promise<User> {
-    return this.userRepository.findOne({ id });
+    return this.repository.findOne({ id });
   }
 }

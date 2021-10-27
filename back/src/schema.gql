@@ -10,7 +10,7 @@ type Contact {
 type User {
   id: Int!
   password: String!
-  verifiedAt: DateTime!
+  verifiedAt: DateTime
   role: String!
   disabled: Boolean!
   person: Person!
@@ -27,10 +27,8 @@ type Person {
   firstName: String!
   email: String!
   phone: String!
-  city: String!
-  address: String!
   avatar: String!
-  images: [String!]!
+  gender: Float!
   createdAt: DateTime!
   updatedAt: DateTime!
   user: User
@@ -129,6 +127,7 @@ type Mutation {
   createDiscover(createDiscoverInput: CreateDiscoverInput!): Discover!
   updateDiscover(updateDiscoverInput: UpdateDiscoverInput!): Discover!
   removeDiscover(id: Int!): Discover!
+  createUser(input: CreateUserInput!, avatar: Upload!): User!
   createCollection(createCollectionInput: CreateCollectionInput!): Collection!
   updateCollection(updateCollectionInput: UpdateCollectionInput!): Collection!
   removeCollection(id: Int!): Collection!
@@ -171,6 +170,18 @@ input UpdateDiscoverInput {
   exampleField: Int
   id: Int!
 }
+
+input CreateUserInput {
+  lastName: String!
+  firstName: String!
+  email: String!
+  phone: String!
+  gender: Float!
+  password: String!
+}
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
 
 input CreateCollectionInput {
   """Example field (placeholder)"""

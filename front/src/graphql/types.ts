@@ -11,6 +11,8 @@ export type Scalars = {
   Float: number;
   /** A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format. */
   DateTime: any;
+  /** The `Upload` scalar type represents a file upload. */
+  Upload: any;
 };
 
 export type Area = {
@@ -125,7 +127,7 @@ export type Mutation = {
   createPrice: Price;
   createSpecies: Species;
   createSubscription: Subscription;
-  createUser: User;
+  createUser: Person;
   createVisit: Visit;
   removeArea: Area;
   removeCollection: Collection;
@@ -181,6 +183,7 @@ export type MutationCreateSubscriptionArgs = {
 
 
 export type MutationCreateUserArgs = {
+  avatar: Scalars['Upload'];
   input: CreateUserInput;
 };
 
@@ -266,6 +269,7 @@ export type MutationUpdateVisitArgs = {
 
 export type Person = {
   __typename?: 'Person';
+  avatar: Scalars['String'];
   createdAt: Scalars['DateTime'];
   discover: Array<Discover>;
   email: Scalars['String'];
@@ -405,7 +409,7 @@ export type User = {
   password: Scalars['String'];
   person: Person;
   role: Scalars['String'];
-  verifiedAt: Scalars['DateTime'];
+  verifiedAt?: Maybe<Scalars['DateTime']>;
 };
 
 export type Visit = {

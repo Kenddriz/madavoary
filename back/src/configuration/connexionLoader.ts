@@ -7,9 +7,7 @@ export const loadEnvVariables = async () => {
   config();
 };
 export const connexionOptions = async () => {
-  const conf = await getConnectionOptions();
-  console.log(conf);
-  return Object.assign(conf, {
+  return Object.assign(await getConnectionOptions(), {
     entities: [
       `${join(__dirname, '..')}${process.env.TYPEORM_ENTITIES.replace(
         /src/gi,

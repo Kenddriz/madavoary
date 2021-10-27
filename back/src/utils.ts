@@ -13,8 +13,9 @@ type FileParams = {
   filename: string;
   mimetype: string;
 };
-export const publicDir = () =>
-  process.env.NODE_ENV === 'development' ? '../public/' : './public/';
+import { join } from 'path';
+
+export const publicDir = () => join(__dirname, '..', 'public/');
 export const uniqId = async (repo: string): Promise<number> => {
   let id = 1,
     lastId = 0;
@@ -58,7 +59,7 @@ export const upload = async (
       .on('error', () => reject(false)),
   );
   if (!uploaded)
-    throw new UnauthorizedException(`upload du fichier ${filename} a echoué`);
+    throw new UnauthorizedException(`upload file ${filename} failed`);
 
   return { filename: m_filename, mimetype };
 };

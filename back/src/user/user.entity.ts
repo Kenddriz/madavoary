@@ -5,7 +5,7 @@ import {
   JoinColumn,
   OneToMany,
   OneToOne,
-  PrimaryGeneratedColumn,
+  PrimaryColumn,
   RelationId,
 } from 'typeorm';
 import { Person } from '../person/person.entity';
@@ -16,16 +16,16 @@ import { Species } from '../species/species.entity';
 @Entity({ name: 'users' })
 export class User {
   @Field(() => Int)
-  @PrimaryGeneratedColumn('increment')
+  @PrimaryColumn()
   id: number;
 
   @Field()
   @Column({ type: 'varchar', length: 60 })
   password: string;
 
-  @Field()
-  @Column({ type: 'timestamp' })
-  verifiedAt: Date;
+  @Field({ nullable: true })
+  @Column({ type: 'timestamp', nullable: true })
+  verifiedAt?: Date;
 
   @Field()
   @Column({ type: 'varchar', length: 7, default: 'invited' })
@@ -36,7 +36,11 @@ export class User {
   disabled: boolean;
 
   @Field(() => Person)
-  @OneToOne(() => Person, (person) => person.user, { onDelete: 'CASCADE' })
+  @OneToOne(() => Person, (person) => person.user, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn()
   person: Person;
   @RelationId((user: User) => user.person)
   personId: number;

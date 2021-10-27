@@ -12,7 +12,7 @@ import { WebSocketLink } from '@apollo/client/link/ws';
 import { getMainDefinition } from '@apollo/client/utilities';
 import { createUploadLink } from 'apollo-upload-client';
 import { onError } from '@apollo/client/link/error';
-import { Notify } from 'quasar';
+import {Loading, Notify} from 'quasar';
 
 const authLink = setContext((_, { headers, ...context }) => {
   let token = '';
@@ -28,17 +28,12 @@ const authLink = setContext((_, { headers, ...context }) => {
 });
 
 const defaultOptions: DefaultOptions = {
-  watchQuery: {
-    fetchPolicy: 'cache-and-network',
-    errorPolicy: 'ignore',
-    notifyOnNetworkStatusChange: true,
-  },
   query: {
     fetchPolicy: 'cache-first',
     errorPolicy: 'all',
   },
   mutate: {
-    errorPolicy: 'all',
+    errorPolicy: 'all'
   },
 };
 
@@ -58,11 +53,12 @@ const httpOptions = {
 const httpLink = new HttpLink(httpOptions);
 const errorLink = onError(({ graphQLErrors, networkError }) => {
   let error = '';
+  Loading.hide();
   if (graphQLErrors)
     graphQLErrors.map(({ message }) => {
-      return (error = message.toString());
+      return (error = message);
     });
-  if (networkError) error = 'Problème de réseau:' + networkError.message;
+  if (networkError) error = networkError.message;
   Notify.create({
     message: error,
     type: 'warning',

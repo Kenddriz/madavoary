@@ -27,28 +27,20 @@ export class Person {
   firstName: string;
 
   @Field()
-  @Column()
+  @Column({ type: 'varchar', length: 60, unique: true })
   email: string;
 
   @Field()
-  @Column()
+  @Column({ type: 'varchar', length: 20, unique: true })
   phone: string;
 
   @Field()
-  @Column()
-  city: string;
-
-  @Field()
-  @Column()
-  address: string;
-
-  @Field()
-  @Column({ default: '' })
+  @Column({ type: 'varchar', length: 20 })
   avatar: string;
 
-  @Field(() => [String])
-  @Column({ default: [], type: 'varchar', array: true })
-  images: string[];
+  @Field()
+  @Column({ type: 'int', width: 1 })
+  gender: 0 | 1;
 
   @Field()
   @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
@@ -60,14 +52,12 @@ export class Person {
 
   @Field(() => User, { nullable: true })
   @OneToOne(() => User, (user) => user.person, {
-    cascade: true,
     onDelete: 'CASCADE',
   })
   user?: User;
 
   @Field(() => [Discover])
   @OneToMany(() => Discover, (discover) => discover.person, {
-    cascade: true,
     onDelete: 'CASCADE',
   })
   discover: Discover;

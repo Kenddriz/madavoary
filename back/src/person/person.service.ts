@@ -18,4 +18,12 @@ export class PersonService {
   async findOneByEmail(email: string): Promise<Person> {
     return this.repository.findOne({ email });
   }
+  async findOneById(id: number): Promise<Person> {
+    return this.repository.findOne(id);
+  }
+  async findOneByContact(email: string, phone: string): Promise<Person> {
+    return this.repository.findOne({
+      where: [{ email }, { phone }],
+    });
+  }
 }
