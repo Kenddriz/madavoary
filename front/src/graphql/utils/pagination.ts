@@ -15,7 +15,7 @@ export const PAGINATION_META = `
     ${Object.keys(InitialPagination.meta).join(' ')}
   }
 `;
-export const deletePaginationCache = (id: number|string, existingRef: any, readField: any, toReference: any) => {
+export const removePaginationCache = (id: number|string, existingRef: any, readField: any, toReference: any) => {
   const meta: any = { ... existingRef.meta };
   meta.totalItems -= 1; meta.itemCount -= 1;
   return {
@@ -35,10 +35,3 @@ export const addPaginationCache = (data: any, existingRef: any, toReference: any
   }
 }
 
-export const emptyPaginationCache = (existingRef: any, toReference: any) => {
-  return {
-    ...existingRef,
-    meta: toReference({...InitialPagination.meta}),
-    items: []
-  }
-}

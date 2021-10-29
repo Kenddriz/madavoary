@@ -1,48 +1,46 @@
 <template>
   <q-form
-    class="q-gutter-md"
+    class="q-gutter-y-md"
+    @submit.prevent="submitLogin"
   >
     <div class="q-pb-md text-center text-h5">
-      Authentification
+      {{$t('account.authentication')}}
     </div>
     <q-input
-      v-model="input.identity"
+      :model-value="input.email"
+      v-model="input.email"
       label-color="white"
       square
       dense
-      label="Identifiant"
-      class="register-input-field full-width"
+      :label="$t('email')"
+      class="register-input-field"
+      :lazy-rules="true"
+      :rules="[v => validMail(v)]"
+      no-error-icon
     >
       <template v-slot:prepend>
-        <q-icon name="person" />
+        <q-icon name="mail" />
       </template>
     </q-input>
-    <q-input
+    <PasswordInput
       v-model="input.password"
-      label-color="white"
-      square
-      dense
-      type="password"
-      label="Mot de passe"
-      class="register-input-field full-width"
-    >
-      <template v-slot:prepend>
-        <q-icon name="lock" />
-      </template>
-    </q-input>
+      :label="$t('password')"
+      class="register-input-field"
+    />
 
     <q-btn
       outline
       rounded
-      label="se connecter"
+      :label="$t('account.login')"
       type="submit"
       icon-right="login"
+      :loading="loading"
     />
 
     <q-btn
       flat
       no-caps
-      label="Mot de passe oublié ?"
+      :label="$t('account.passwordForgotten')"
       type="button"
     />
     <social-network />
@@ -50,17 +48,21 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, reactive } from 'vue'
-  import SocialNetwork from './SocialNetwork.vue';
+import { defineComponent } from 'vue'
+import SocialNetwork from './SocialNetwork.vue';
+import {useLogin} from 'src/graphql/user/login';
+import {validMail} from 'src/graphql/utils/utils';
+import PasswordInput from './PasswordInput.vue';
 
-  export default defineComponent({
-    name: 'SignIn',
-    components: {SocialNetwork},
-    setup() {
-      return {
-        input: reactive({ identity: '', password: ''})
-      }
+export default defineComponent({
+  name: 'SignIn',
+  components: {SocialNetwork, PasswordInput},
+  setup() {
+    return {
+      ...useLogin(),
+      validMail
     }
-  })
+  }
+})
 </script>
 

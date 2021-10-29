@@ -2,7 +2,7 @@
   <div :class="`container bg-dark ${sign_up_mode ? 'sign-up-mode' : ''}`">
       <div class="forms-container">
         <div class="signin-signup">
-          <SignUp class="sign-up-form" />
+          <CreateUserForm class="sign-up-form" />
           <SignIn class="sign-in-form" />
         </div>
       </div>
@@ -42,13 +42,13 @@
 
 <script lang="ts">
   import { defineComponent, ref } from 'vue';
-  import SignUp from 'components/user/SignUp.vue';
+  import CreateUserForm from 'components/user/CreateUserForm.vue';
   import SignIn from 'components/user/SingIn.vue';
 
   export default defineComponent({
     name: 'Account',
     components: {
-      SignUp,
+      CreateUserForm,
       SignIn
     },
     setup() {

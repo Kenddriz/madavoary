@@ -11,8 +11,8 @@ type User {
   id: Int!
   password: String!
   verifiedAt: DateTime
-  role: String!
-  disabled: Boolean!
+  role: Float!
+  active: Boolean!
   person: Person!
 }
 
@@ -32,12 +32,13 @@ type Person {
   createdAt: DateTime!
   updatedAt: DateTime!
   user: User
-  discover: [Discover!]!
+  discovers: [Discover!]!
 }
 
 type Discover {
   id: Int!
-  date: String!
+  when: String!
+  validatedAt: DateTime
   description: [String!]!
   person: Person!
   species: Species!
@@ -73,6 +74,19 @@ type Area {
   user: User!
 }
 
+type Meta {
+  itemCount: Float!
+  totalItems: Float
+  itemsPerPage: Float!
+  totalPages: Float
+  currentPage: Float!
+}
+
+type UserPagination {
+  items: [User!]!
+  meta: Meta!
+}
+
 type Collection {
   id: Int!
   natureId: Float!
@@ -83,6 +97,17 @@ type Collection {
   createdAt: DateTime!
   updatedAt: DateTime!
   user: User!
+  userId: Float!
+}
+
+type CollectionPagination {
+  items: [Collection!]!
+  meta: Meta!
+}
+
+type CountCollectionsOutput {
+  natureId: Int!
+  count: Int!
 }
 
 type Visit {
@@ -107,29 +132,64 @@ type Price {
   foreigner: [Cost!]!
 }
 
+type LoginDto {
+  token: String!
+  user: User!
+}
+
 type Query {
   area(id: Int!): Area!
   species(id: Int!): Species!
   discover(id: Int!): Discover!
-  collection(id: Int!): Collection!
+  paginateUsers(input: PaginateUserInput!): UserPagination!
+  countCollections(input: CountCollectionInput!): [CountCollectionsOutput!]!
+  paginateCollections(input: PaginateCollectionInput!): CollectionPagination!
   visit(id: Int!): Visit!
   subscription(id: Int!): Subscription!
   localization(id: Int!): Localization!
   price(id: Int!): Price!
+  login(input: AuthInput!): LoginDto!
+  whoAmI: User!
+}
+
+input PaginateUserInput {
+  keyword: String
+  page: Float!
+  limit: Float!
+  filter: [String!]!
+}
+
+input CountCollectionInput {
+  id: Float!
+}
+
+input PaginateCollectionInput {
+  keyword: String
+  page: Float!
+  limit: Float!
+  natureId: Float!
+  userId: Float!
+}
+
+input AuthInput {
+  email: String!
+  password: String!
 }
 
 type Mutation {
   createArea(input: CreateAreaInput!): Area!
   removeArea(id: Int!): Area!
   createSpecies(createSpeciesInput: CreateSpeciesInput!): Species!
-  updateSpecies(updateSpeciesInput: UpdateSpeciesInput!): Species!
   removeSpecies(id: Int!): Species!
   createDiscover(createDiscoverInput: CreateDiscoverInput!): Discover!
   updateDiscover(updateDiscoverInput: UpdateDiscoverInput!): Discover!
   removeDiscover(id: Int!): Discover!
+  updatePersonAvatar(id: Int!, avatar: Upload!): Person!
   createUser(input: CreateUserInput!, avatar: Upload!): User!
-  createCollection(createCollectionInput: CreateCollectionInput!): Collection!
-  updateCollection(updateCollectionInput: UpdateCollectionInput!): Collection!
+  updateUser(input: UpdateUserInput!): User!
+  updatePassword(input: UpdatePasswordInput!): User
+  createCollection(detail: CreateCollectionInput!, images: [Upload!]!): Collection!
+  updateCollection(input: UpdateCollectionInput!): Collection!
   removeCollection(id: Int!): Collection!
   createVisit(createVisitInput: CreateVisitInput!): Visit!
   updateVisit(updateVisitInput: UpdateVisitInput!): Visit!
@@ -154,12 +214,6 @@ input CreateSpeciesInput {
   exampleField: Int!
 }
 
-input UpdateSpeciesInput {
-  """Example field (placeholder)"""
-  exampleField: Int
-  id: Int!
-}
-
 input CreateDiscoverInput {
   """Example field (placeholder)"""
   exampleField: Int!
@@ -171,6 +225,9 @@ input UpdateDiscoverInput {
   id: Int!
 }
 
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
+
 input CreateUserInput {
   lastName: String!
   firstName: String!
@@ -180,18 +237,35 @@ input CreateUserInput {
   password: String!
 }
 
-"""The `Upload` scalar type represents a file upload."""
-scalar Upload
+input UpdateUserInput {
+  lastName: String!
+  firstName: String!
+  email: String!
+  phone: String!
+  gender: Float!
+  id: Int!
+  role: Int!
+  active: Boolean!
+}
+
+input UpdatePasswordInput {
+  currentPassword: String!
+  newPassword: String!
+}
 
 input CreateCollectionInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
+  naming: String!
+  place: String!
+  description: String!
+  natureId: Int!
 }
 
 input UpdateCollectionInput {
-  """Example field (placeholder)"""
-  exampleField: Int
-  id: Int!
+  naming: String!
+  place: String!
+  description: String!
+  natureId: Int!
+  id: Float!
 }
 
 input CreateVisitInput {

@@ -5,7 +5,7 @@ import {
   JoinColumn,
   OneToMany,
   OneToOne,
-  PrimaryColumn,
+  PrimaryGeneratedColumn,
   RelationId,
 } from 'typeorm';
 import { Person } from '../person/person.entity';
@@ -16,7 +16,7 @@ import { Species } from '../species/species.entity';
 @Entity({ name: 'users' })
 export class User {
   @Field(() => Int)
-  @PrimaryColumn()
+  @PrimaryGeneratedColumn()
   id: number;
 
   @Field()
@@ -28,12 +28,12 @@ export class User {
   verifiedAt?: Date;
 
   @Field()
-  @Column({ type: 'varchar', length: 7, default: 'invited' })
-  role: string;
+  @Column({ type: 'int', width: 1, default: 0 })
+  role: number;
 
   @Field()
-  @Column({ type: 'boolean', default: false })
-  disabled: boolean;
+  @Column({ type: 'boolean', default: true })
+  active: boolean;
 
   @Field(() => Person)
   @OneToOne(() => Person, (person) => person.user, {

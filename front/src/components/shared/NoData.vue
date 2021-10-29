@@ -7,7 +7,7 @@
     <span>
       <img  src="no-data.svg" :height="sizes[1]" :width="sizes[1]" />
       <slot v-if="$slots.default"></slot>
-      <div v-else class="text-subtitle1">Aucune donnée</div>
+      <div v-else class="text-subtitle1">{{$t('noData')}}</div>
     </span>
   </div>
   <q-inner-loading :showing="loading">

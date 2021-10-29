@@ -8,10 +8,7 @@
     @submit.prevent="onSubmit"
     ref="signForm"
   >
-    <q-item-section class="full-width">
-      <q-item-label class="text-h6">Créer un compte</q-item-label>
-      <q-item-label caption class="text-red">{{errorOn}}</q-item-label>
-    </q-item-section>
+    <div class="text-h6">Créer un compte</div>
     <q-stepper
       v-model="params.step"
       vertical
@@ -68,25 +65,7 @@
               <q-icon name="person" />
             </template>
           </q-input>
-          <q-select
-            :model-value="input.gender"
-            v-model="input.gender"
-            :options="genders"
-            rounded
-            label-color="white"
-            dense
-            outlined
-            label="Genre"
-            options-selected-class="text-deep-orange"
-            class="register-input-field"
-            emit-value
-            map-options
-            popup-content-class="bg-primary"
-          >
-            <template v-slot:prepend>
-              <q-icon class="q-ml-sm" name="transgenders" />
-            </template>
-          </q-select>
+          <UserSelect class="register-input-field" v-model="input.gender" />
         </div>
         <q-stepper-navigation class="q-pb-none q-pt-sm">
           <q-btn
@@ -106,14 +85,7 @@
         :done="params.step > 2"
       >
         <div style="max-height: 160px;" class="q-gutter-y-lg flex q-pt-sm overflow-auto">
-          <vue-tel-input
-            mode="international"
-            :value="input.phone"
-            @validate="input.phone = $event.formatted"
-            class="register-input-field"
-            :inputOptions="{placeholder:'Votre numéro de téléphone'}"
-            :style="`border:1px solid ${ input.phone ? 'gainsboro' : 'red'};`"
-          />
+          <PhoneInput class="register-input-field" v-model="input.phone" />
           <q-input
             :model-value="input.phone"
             v-model="input.phone"
@@ -208,7 +180,7 @@
             type="submit"
             no-caps
             color="primary"
-            label="S'inscrire"
+            :label="$t('signIn')"
           />
           <q-btn
             no-caps
@@ -225,44 +197,28 @@
 
 <script lang="ts">
 import {defineComponent} from 'vue';
-  import {useCreateUser} from 'src/graphql/user/create.user';
-  import ImageInput from 'components/shared/ImageInput.vue';
-  import {validMail} from 'src/graphql/utils/utils';
+import {useCreateUser} from 'src/graphql/user/create.user';
+import ImageInput from 'components/shared/ImageInput.vue';
+import PhoneInput from 'components/shared/PhoneInput.vue';
+import {useValidationError, validMail} from 'src/graphql/utils/utils';
+import UserSelect from 'components/shared/UserSelect.vue';
 
-  export default defineComponent({
-    name: 'SignUp',
-    components: {
-      ImageInput
-    },
-    setup() {
-      return {
-        ...useCreateUser(),
-        validMail
-      }
+export default defineComponent({
+  name: 'CreateUserForm',
+  components: {
+    ImageInput,
+    PhoneInput,
+    UserSelect
+  },
+  setup() {
+    return {
+      ...useCreateUser(),
+      validMail,
+      ...useValidationError()
     }
-  });
+  }
+});
 </script>
 
-<style lang="scss">
-.vti__dropdown-list {
-  background: $primary;
-  max-width: 90vw;
-}
-.vti__dropdown-item.highlighted{background-color:$amber}
-.vti__input{
-  background: transparent;
-  color: white;
-  height: 40px;
-  &::-webkit-input-placeholder {color: white;}
-  &::-moz-placeholder          {color: white;}
-  &::-ms-input-placeholder      {color: white;}
-}
-.vue-tel-input{
-  border-radius: 20px;
-  &:focus-within{
-    -webkit-box-shadow: unset;
-    box-shadow: unset;
-    border-color: $primary
-  }
-}
+<style lang="scss" scoped>
 </style>

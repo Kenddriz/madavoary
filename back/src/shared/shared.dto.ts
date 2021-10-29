@@ -5,12 +5,12 @@ import { IPaginationMeta } from 'nestjs-typeorm-paginate';
 export class Meta implements IPaginationMeta {
   @Field()
   itemCount: number;
-  @Field()
-  totalItems: number;
+  @Field({ nullable: true })
+  totalItems?: number;
   @Field()
   itemsPerPage: number;
-  @Field()
-  totalPages: number;
+  @Field({ nullable: true })
+  totalPages?: number;
   @Field()
   currentPage: number;
 }

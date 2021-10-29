@@ -5,7 +5,7 @@ import {
   Entity,
   OneToMany,
   OneToOne,
-  PrimaryGeneratedColumn,
+  PrimaryColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { User } from '../user/user.entity';
@@ -15,7 +15,7 @@ import { Discover } from '../discover/discover.entity';
 @Entity({ name: 'persons' })
 export class Person {
   @Field(() => Int)
-  @PrimaryGeneratedColumn('increment')
+  @PrimaryColumn()
   id: number;
 
   @Field()
@@ -60,5 +60,5 @@ export class Person {
   @OneToMany(() => Discover, (discover) => discover.person, {
     onDelete: 'CASCADE',
   })
-  discover: Discover;
+  discovers: Discover[];
 }

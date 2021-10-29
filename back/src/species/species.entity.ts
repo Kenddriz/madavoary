@@ -1,14 +1,16 @@
 import { ObjectType, Field, Int } from '@nestjs/graphql';
 import {
   Column,
-  Entity, ManyToOne,
+  Entity,
+  ManyToOne,
   OneToMany,
   OneToOne,
-  PrimaryGeneratedColumn, RelationId,
+  PrimaryGeneratedColumn,
+  RelationId,
 } from 'typeorm';
 import { Discover } from '../discover/discover.entity';
 import { Localization } from '../localization/localization.entity';
-import {User} from "../user/user.entity";
+import { User } from '../user/user.entity';
 /*Array(0) is english translation, except for names**/
 @ObjectType()
 @Entity({ name: 'species' })

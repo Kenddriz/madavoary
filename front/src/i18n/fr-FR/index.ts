@@ -1,10 +1,8 @@
 // This is just an example,
 // so you can safely delete all default props below
 import dashboard from './dashboard';
-import register from './register';
+import account from './account';
 export default {
-  failed: 'Action failed',
-  success: 'Action was successful',
   lastName: 'Nom',
   firstName: 'Prénom',
   id: 'Identifiant',
@@ -16,8 +14,9 @@ export default {
   address: 'Adresse',
   gender: 'Genre',
   name: 'Nom',
+  password: 'Mot de passe',
   surface: 'Superficie',
-  roles: ['Administrateur', 'Invité'],
+  roles: ['Invité', 'Administrateur'],
   role: 'Rôle',
   genders: ['Masculin', 'Féminin'],
   when: 'Quand ?',
@@ -26,9 +25,50 @@ export default {
   names: ['Local', 'Scientifique', 'Vernaculaire en anglais', 'Vernaculaire en français'],
   male: 'Masculin',
   female: 'Féminin',
+  place: 'Endroit',
+  naming: 'Titre ou nom',
+  description: 'Description',
   networkError: 'Problème de réseau, assurez-vous que vous avez d\'internet',
   mailExist: 'Adresse email existe déjà',
   phoneExist: 'Numéro de téléphone existe déjà',
+  phoneNumber: 'Numéro de téléphone',
+  mailAddress: 'Adresse email',
+  validate: 'Valider',
+  submit: 'Envoyer',
+  signIn: 'S\'inscrire',
+  reset: 'Réinitialiser',
+  logout: 'Se déconnecter',
+  save: 'Enregistrer',
+  dateTime: 'DD-MM-YYYY T HH:mm:ss',
+  shortDate: 'DD/MM/YYYY',
+  inputMaskFormat: '##/##/####',
+  timeOnly: 'HH:mm:ss',
+  loading: {
+    update: 'Mise à jour ...',
+    upload: 'Téléchargement ...',
+    remove: 'Suppression ...',
+    create: 'Création ...',
+  },
+  update: {
+    success: 'Mise à jour avec succès',
+    failed: 'Echec de mise à jour',
+    wrongCurPwd: 'Mot de passe actuel erroné'
+  },
+  create: {
+    btn: 'Créer',
+    success: 'Création avec succès',
+    failed: 'Echec de création',
+  },
+  remove: {
+    success: 'Suppression avec succès',
+    failed: 'Echec de suppression'
+  },
+  status: 'Etat du compte',
+  subject: 'Sujet',
+  close: 'Fermer',
+  enabled: 'Activé',
+  disabled: 'Désactivé',
+  noData: 'Aucune donnée',
   'collection-subjects': [
     {
       id: '0',
@@ -68,5 +108,5 @@ export default {
     }
   ],
   dashboard,
-  register
+  account
 };

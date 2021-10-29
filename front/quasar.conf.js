@@ -119,6 +119,12 @@ module.exports = configure(function (ctx) {
       // manualStoreHydration: true,
       // manualPostHydrationTrigger: true,
 
+      manualStoreHydration: true,
+      // Manually hydrate the store.
+      // This is detailed in a subsection below
+
+      manualPostHydrationTrigger: true,
+
       prodPort: 3000, // The default port that the production server should use
                       // (gets superseded if process.env.PORT is specified at runtime)
 

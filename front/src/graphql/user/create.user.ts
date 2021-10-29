@@ -19,7 +19,6 @@ const CREATE_USER = gql`
 export const useCreateUser = () => {
   const { t } = useI18n();
   const genders = [{ value: 0, label: t('male')}, { value: 1, label: t('female')}];
-  const errorOn = ref<string>('');
   const { mutate, onDone } = useMutation<
     CreateUserData,
     MutationCreateUserArgs
@@ -45,12 +44,8 @@ export const useCreateUser = () => {
       void mutate({ avatar: avatar.value[0], input });
     }else notify('Vous devez mettre votre photo recente !', 'warning');
   }
-  function validationError (reference: Record<string, any>) {
-    errorOn.value =  '(' + t('register.errorOn') + ' ' + t(reference.name).toLowerCase() + ')';
-    setTimeout(() => errorOn.value = '', 5000);
-  }
   function resetValidation(){
     if (params.confirm === input.password) signForm.value.resetValidation();
   }
-  return { input, avatar, onSubmit, errorOn, genders, validationError, params, resetValidation, signForm }
+  return { input, avatar, onSubmit, genders, params, resetValidation, signForm }
 }

@@ -18,7 +18,7 @@ export class Collection {
   id: number;
 
   @Field()
-  @Column({ type: 'int', name: 'nature_id' })
+  @Column({ type: 'int' })
   natureId: number;
 
   @Field()
@@ -48,6 +48,7 @@ export class Collection {
   @Field(() => User)
   @ManyToOne(() => User, { onDelete: 'CASCADE' })
   user: User;
+  @Field()
   @RelationId((collection: Collection) => collection.user)
   userId: number;
 }

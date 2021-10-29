@@ -25,35 +25,40 @@
       bordered
       class="bg-primary"
     >
-      <div class="flex flex-center bordered-bottom q-py-sm">
-        <q-avatar size="150px">
-          <q-img spinner-color="warning" src="travelers.svg" />
-        </q-avatar>
-        <q-item-section class="col-12">
-          <q-item-label>
-            RANDRIAMANAJA Charlin
-          </q-item-label>
-          <q-item-label class="text-white" caption>
-            [Admin]
-          </q-item-label>
-        </q-item-section>
-      </div>
-      <q-list>
-        <q-item
-          v-for="(item, index) in $tm('dashboard.menu')"
-          :key="index"
-          :to="`/admin/${urls[index].to}`"
-          exact
-          active-class="text-amber"
-        >
-          <q-item-section side>
-            <q-icon :name="urls[index].icon" />
+      <template v-if="user">
+        <div class="row justify-center bordered-bottom q-py-sm">
+          <q-avatar size="150px">
+            <img :src="avatar()" />
+          </q-avatar>
+          <q-item-section class="col-12 text-center">
+            <q-item-label>
+              {{user.person.lastName}} {{user.person.firstName}}
+            </q-item-label>
+            <q-item-label class="text-white" caption>
+              [{{$tm('roles')[user.role]}}]
+            </q-item-label>
           </q-item-section>
-          <q-item-section>
-            {{item}}
-          </q-item-section>
-        </q-item>
-      </q-list>
+        </div>
+        <q-list>
+          <q-item
+            v-for="(item, index) in $tm('dashboard.menu')"
+            :key="index"
+            :to="`/${USER_HOME[user.role]}/${urls[index].to}`"
+            exact
+            active-class="text-amber"
+          >
+            <q-item-section side>
+              <q-icon :name="urls[index].icon" />
+            </q-item-section>
+            <q-item-section>
+              {{item}}
+            </q-item-section>
+          </q-item>
+        </q-list>
+      </template>
+      <q-inner-loading :showing="loading">
+        <q-spinner-dots size="80px" color="amber" />
+      </q-inner-loading>
     </q-drawer>
 
     <q-page-container>
@@ -63,9 +68,10 @@
 </template>
 
 <script lang="ts">
-
 import {computed, defineComponent, ref} from 'vue'
 import { useRoute } from 'vue-router';
+import {useWHoAmI} from 'src/graphql/user/whoAmi';
+import {USER_HOME} from 'src/graphql/user/session';
 const urls = [
   { to: 'dashboard', icon: 'dashboard'},
   { to: 'users', icon: 'group'},
@@ -85,7 +91,9 @@ export default defineComponent({
     return {
       leftDrawerOpen: ref(false),
       pathIndex,
-      urls
+      urls,
+      ...useWHoAmI(),
+      USER_HOME
     }
   }
 })

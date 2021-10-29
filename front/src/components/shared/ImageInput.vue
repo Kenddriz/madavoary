@@ -1,12 +1,13 @@
 <template>
   <q-img :src="urlList[0]||src" spinner-color="amber">
     <div class="absolute-center bg-transparent">
-      <q-btn-group outline v-if="urlList.length" rounded push>
+      <q-btn-group outline v-if="images.length" rounded push>
         <q-btn
           outline
           color="positive"
           size="sm"
           icon="check"
+          @click="$emit('upload', images); images.length = 0;"
         />
         <q-btn
           outline
@@ -14,13 +15,13 @@
           color="amber"
           size="sm"
           icon="close"
-          @click="urlList.length = 0; images = null"
+          @click="urlList.length = 0; images.length = 0"
         />
       </q-btn-group>
       <q-btn
         outline
         v-else
-        color="brown"
+        color="amber"
         round
         size="sm"
         icon="photo_camera"
@@ -55,7 +56,7 @@ export default defineComponent({
         default: 'travelers.svg'
       }
     },
-    emits: ['update:modelValue'],
+    emits: ['update:modelValue', 'upload'],
     setup(_, { emit }) {
       const { urlList, previewImages} = useImageLoader();
       const preview = (e: FileList) => {
@@ -65,7 +66,7 @@ export default defineComponent({
         }
       }
       return {
-        images: ref(null),
+        images: ref<any[]>([]),
         preview,
         urlList
       }

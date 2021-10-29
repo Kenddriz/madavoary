@@ -41,7 +41,7 @@ export const uniqId = async (repo: string): Promise<number> => {
 export const upload = async (
   file: Upload,
   dossier: string,
-  id: number,
+  id: number | number,
 ): Promise<FileParams> => {
   const { createReadStream, filename, mimetype } = await file;
 

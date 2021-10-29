@@ -15,6 +15,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { join } from 'path';
 import { LocalizationModule } from './localization/localization.module';
 import { PriceModule } from './price/price.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { PriceModule } from './price/price.module';
     SubscriptionModule,
     LocalizationModule,
     PriceModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

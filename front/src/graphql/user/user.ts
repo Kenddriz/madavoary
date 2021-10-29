@@ -4,5 +4,5 @@ export const USER_FIELDS = `
   password
   verifiedAt
   role
-  disabled
+  active
 `;
