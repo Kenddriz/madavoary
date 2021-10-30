@@ -160,6 +160,7 @@ export type Meta = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  addCollectionImage: Collection;
   createArea: Area;
   createCollection: Collection;
   createDiscover: Discover;
@@ -178,6 +179,7 @@ export type Mutation = {
   removeSubscription: Subscription;
   removeVisit: Visit;
   updateCollection: Collection;
+  updateCollectionImage: Collection;
   updateDiscover: Discover;
   updateLocalization: Localization;
   updatePassword?: Maybe<User>;
@@ -186,6 +188,12 @@ export type Mutation = {
   updateSubscription: Subscription;
   updateUser: User;
   updateVisit: Visit;
+};
+
+
+export type MutationAddCollectionImageArgs = {
+  collectionId: Scalars['Int'];
+  image: Scalars['Upload'];
 };
 
 
@@ -278,6 +286,12 @@ export type MutationRemoveVisitArgs = {
 
 export type MutationUpdateCollectionArgs = {
   input: UpdateCollectionInput;
+};
+
+
+export type MutationUpdateCollectionImageArgs = {
+  image: Scalars['Upload'];
+  input: UpdateCollectionImageInput;
 };
 
 
@@ -452,6 +466,11 @@ export type Subscription = {
   createdAt: Scalars['DateTime'];
   id: Scalars['Int'];
   verifiedAt: Scalars['DateTime'];
+};
+
+export type UpdateCollectionImageInput = {
+  collectionId: Scalars['Float'];
+  imageIndex: Scalars['Float'];
 };
 
 export type UpdateCollectionInput = {

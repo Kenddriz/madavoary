@@ -60,7 +60,7 @@ export const useLoading = () => {
 export const useValidationError = () => {
   const { t } = useI18n();
   function validationError(reference: Record<string, any>) {
-    notify(t('account.errorOn') + ' ' + t(reference.name).toLowerCase(), 'warning');
+    notify(t('user.errorOn') + ' ' + t(reference.name).toLowerCase(), 'warning');
   }
   return { validationError }
 }

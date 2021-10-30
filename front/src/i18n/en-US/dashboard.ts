@@ -1,4 +1,4 @@
 export default {
-  menu: ['Dashboard', 'Users', 'Collections', 'Parks', 'My account'],
+  menu: ['Dashboard', 'Users', 'Collections', 'Parks', 'My user'],
   park: ['Areas', 'Price', 'Species']
 }

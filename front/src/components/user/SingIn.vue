@@ -4,7 +4,7 @@
     @submit.prevent="submitLogin"
   >
     <div class="q-pb-md text-center text-h5">
-      {{$t('account.authentication')}}
+      {{$t('user.authentication')}}
     </div>
     <q-input
       :model-value="input.email"
@@ -31,7 +31,7 @@
     <q-btn
       outline
       rounded
-      :label="$t('account.login')"
+      :label="$t('user.login')"
       type="submit"
       icon-right="login"
       :loading="loading"
@@ -40,7 +40,7 @@
     <q-btn
       flat
       no-caps
-      :label="$t('account.passwordForgotten')"
+      :label="$t('user.passwordForgotten')"
       type="button"
     />
     <social-network />

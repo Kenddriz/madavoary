@@ -45,7 +45,7 @@ export const usePaginateUsers = () => {
     void refetch({ input });
   }
   function setFilter(value: number) {
-    checkboxes.value = checkboxes.value.filter(v => v === value);
+    if(checkboxes.value.length) checkboxes.value = [value];
     switch (value) {
       case 0:
         input.filter = [];

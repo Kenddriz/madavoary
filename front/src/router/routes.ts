@@ -17,7 +17,7 @@ const routes: RouteRecordRaw[] = [
       },
       {
         path: 'my-account',
-        component: () => import('pages/account/MyAccount.vue')
+        component: () => import('pages/user/MyAccount.vue')
       },
       {
         path: 'collections',
@@ -31,7 +31,7 @@ const routes: RouteRecordRaw[] = [
   },
   {
     path: '/sign-in-sign-up',
-    component: () => import('src/pages/account/SignInSingUp.vue')
+    component: () => import('src/pages/user/SignInSingUp.vue')
   },
   // Always leave this as last one,
   // but you can also remove it

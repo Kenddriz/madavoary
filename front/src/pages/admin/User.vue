@@ -44,7 +44,7 @@
                 :val="index"
                 :label="$t(`dashboard.user.${flt}`)"
                 color="orange"
-                @update:model-value="setFilter(index)"
+                @click="setFilter(index)"
               />
               <q-checkbox
                 :model-value="index + 3"
