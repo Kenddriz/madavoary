@@ -32,6 +32,14 @@ export class PaginateCollectionInput extends PaginationInput {
 }
 
 @InputType()
+export class UpdateCollectionImageInput {
+  @Field()
+  collectionId: number;
+  @Field()
+  imageIndex: number;
+}
+
+@InputType()
 export class CountCollectionInput {
   @Field()
   id: number;

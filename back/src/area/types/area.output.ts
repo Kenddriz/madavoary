@@ -7,3 +7,11 @@ export class Contact {
   @Field(() => [String])
   list: string[];
 }
+
+@ObjectType()
+export class Peripheral {
+  @Field()
+  city: string;
+  @Field()
+  distant: number;
+}

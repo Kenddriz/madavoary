@@ -189,6 +189,8 @@ type Mutation {
   updateUser(input: UpdateUserInput!): User!
   updatePassword(input: UpdatePasswordInput!): User
   createCollection(detail: CreateCollectionInput!, images: [Upload!]!): Collection!
+  updateCollectionImage(input: UpdateCollectionImageInput!, image: Upload!): Collection!
+  addCollectionImage(collectionId: Int!, image: Upload!): Collection!
   updateCollection(input: UpdateCollectionInput!): Collection!
   removeCollection(id: Int!): Collection!
   createVisit(createVisitInput: CreateVisitInput!): Visit!
@@ -258,6 +260,11 @@ input CreateCollectionInput {
   place: String!
   description: String!
   natureId: Int!
+}
+
+input UpdateCollectionImageInput {
+  collectionId: Float!
+  imageIndex: Float!
 }
 
 input UpdateCollectionInput {

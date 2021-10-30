@@ -19,12 +19,13 @@ import { GraphQLUpload } from 'graphql-upload';
 import { StrategyType } from '../auth/types/strategy.type';
 import { CurrentUser } from '../auth/current-user-decorator';
 import { UserService } from '../user/user.service';
-import { upload } from '../utils';
+import { moveFile, removeFile, upload } from '../utils';
 import { Upload } from '../shared/shared.input';
 import {
   CountCollectionInput,
   CreateCollectionInput,
   PaginateCollectionInput,
+  UpdateCollectionImageInput,
   UpdateCollectionInput,
 } from './types/collection.input';
 import { User } from '../user/user.entity';
@@ -59,15 +60,59 @@ export class CollectionResolver {
     }
     return this.collectionService.save(collection);
   }
+
+  @UseGuards(GqlAuthGuard)
+  @Mutation(() => Collection)
+  async updateCollectionImage(
+    @CurrentUser() strategy: StrategyType,
+    @Args({ name: 'image', type: () => GraphQLUpload }) image: Upload,
+    @Args('input') input: UpdateCollectionImageInput,
+  ): Promise<Collection> {
+    const { collectionId, imageIndex } = input;
+    const collection = await this.collectionService.findOneById(collectionId);
+    const { filename } = await upload(
+      image,
+      'collections/' + collection.natureId,
+      strategy.payload + imageIndex,
+    );
+    collection.images[imageIndex] = filename;
+    return this.collectionService.save(collection);
+  }
+
+  @UseGuards(GqlAuthGuard)
+  @Mutation(() => Collection)
+  async addCollectionImage(
+    @CurrentUser() strategy: StrategyType,
+    @Args({ name: 'image', type: () => GraphQLUpload }) image: Upload,
+    @Args({ name: 'collectionId', type: () => Int }) collectionId: number,
+  ): Promise<Collection> {
+    const collection = await this.collectionService.findOneById(collectionId);
+    const { filename } = await upload(
+      image,
+      'collections/' + collection.natureId,
+      strategy.payload + collection.images.length,
+    );
+    collection.images.push(filename);
+    return this.collectionService.save(collection);
+  }
+
   @UseGuards(GqlAuthGuard)
   @Mutation(() => Collection)
   async updateCollection(
     @Args('input') input: UpdateCollectionInput,
   ): Promise<Collection> {
-    const collection = await this.collectionService.findOne(input.id);
+    const collection = await this.collectionService.findOneById(input.id);
+    if (input.natureId !== collection.natureId) {
+      collection.images.forEach((image) => {
+        const source = 'collections/' + collection.natureId + '/' + image;
+        const destination = 'collections/' + input.natureId + '/';
+        moveFile(source, destination, image);
+      });
+    }
     Object.assign(collection, input);
     return this.collectionService.save(collection);
   }
+
   @UseGuards(GqlAuthGuard)
   @Query(() => [CountCollectionsOutput])
   async countCollections(
@@ -75,6 +120,7 @@ export class CollectionResolver {
   ): Promise<CountCollectionsOutput[]> {
     return this.collectionService.countCollections(input.id);
   }
+
   @Query(() => CollectionPagination)
   async paginateCollections(
     @Args('input') input: PaginateCollectionInput,
@@ -83,9 +129,14 @@ export class CollectionResolver {
   }
 
   @Mutation(() => Collection)
-  removeCollection(@Args('id', { type: () => Int }) id: number) {
+  async removeCollection(@Args('id', { type: () => Int }) id: number) {
+    const { natureId, images } = await this.collectionService.findOneById(id);
+    images.forEach((image) => {
+      removeFile('collections/' + natureId + '/' + image);
+    });
     return this.collectionService.remove(id);
   }
+
   @ResolveField(() => User)
   async user(@Root() species: Species): Promise<User> {
     return this.userService.findOneById(species.userId);

@@ -9,7 +9,7 @@ import {
   RelationId,
   UpdateDateColumn,
 } from 'typeorm';
-import { Contact } from './types/area.output';
+import { Contact, Peripheral } from './types/area.output';
 import { Localization } from '../localization/localization.entity';
 import { User } from '../user/user.entity';
 
@@ -24,13 +24,21 @@ export class Area {
   @Column({ type: 'varchar', length: 30 })
   name: string;
 
+  @Field(() => Int)
+  @Column({ type: 'int', length: 1, default: 0 })
+  type: number;
+
   @Field()
   @Column({ type: 'varchar', length: 6, default: '' })
   banner: string;
 
-  @Field(() => [String])
-  @Column({ default: [], type: 'varchar', array: true })
-  cities: string[]; /**peripheral cities*/
+  @Field()
+  @Column({ type: 'varchar', length: 25, default: '' })
+  region: string;
+
+  @Field(() => [Peripheral])
+  @Column({ default: [], type: 'jsonb' })
+  peripherals: Peripheral[]; /**peripheral cities*/
 
   @Field()
   @Column({ type: 'float', width: 5, default: 0 })

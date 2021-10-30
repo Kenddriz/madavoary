@@ -3,17 +3,18 @@ import { Upload } from './shared/shared.input';
 import {
   access,
   constants,
+  copyFileSync,
   createWriteStream,
   existsSync,
   mkdirSync,
   unlinkSync,
 } from 'fs';
 import { UnauthorizedException } from '@nestjs/common';
+import { join } from 'path';
 type FileParams = {
   filename: string;
   mimetype: string;
 };
-import { join } from 'path';
 
 export const publicDir = () => join(__dirname, '..', 'public/');
 export const uniqId = async (repo: string): Promise<number> => {
@@ -37,7 +38,6 @@ export const uniqId = async (repo: string): Promise<number> => {
   /**Make sure that last id !=id, in the case of 1,2,3,...completed number*/
   return id != lastId ? id : ++id;
 };
-
 export const upload = async (
   file: Upload,
   dossier: string,
@@ -75,4 +75,15 @@ export const removeFile = (filename: string): boolean => {
     }
   });
   return removed;
+};
+
+export const moveFile = (
+  source: string,
+  destination: string,
+  filename: string,
+) => {
+  const destDir = `${publicDir()}${destination}/`;
+  if (!existsSync(destDir)) mkdirSync(destDir, { recursive: true });
+  copyFileSync(publicDir() + source, destDir + filename);
+  removeFile(source);
 };

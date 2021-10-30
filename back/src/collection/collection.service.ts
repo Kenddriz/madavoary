@@ -19,12 +19,13 @@ export class CollectionService {
     return this.repository.save(collection);
   }
 
-  async findOne(id: number): Promise<Collection> {
+  async findOneById(id: number): Promise<Collection> {
     return this.repository.findOne(id);
   }
 
-  async remove(id: number) {
-    return `This action removes a #${id} collection`;
+  async remove(id: number): Promise<boolean> {
+    const query = await this.repository.delete(id);
+    return query.affected > 0;
   }
   async countCollections(userId: number) {
     const query = this.repository
