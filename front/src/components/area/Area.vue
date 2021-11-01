@@ -1,7 +1,7 @@
 <template>
   <div class="col-md-6 col-sm-12 q-pa-sm">
     <q-table
-      bordered
+      :bordered="areas.length > 0"
       flat
       :style="`max-height:${$q.screen.height - 105}px`"
       table-class="sticky-header-table"
@@ -89,7 +89,8 @@
     </q-table>
   </div>
   <div class="col-md-6 col-sm-12 q-pa-sm">
-    <AreaDetails />
+    <AreaDetails v-if="selected.length" :area="selected[0]" />
+    <NoData v-else :total-items="0" :loading="false" />
   </div>
 </template>
 
@@ -100,6 +101,7 @@ import {useQuasar} from 'quasar';
 import AreaForm from 'components/area/AreaForm.vue';
 import {useAreas} from 'src/graphql/area/areas';
 import {Area} from 'src/graphql/types';
+import NoData from 'components/shared/NoData.vue';
 
 const columns = [
   {name: 'name', align: 'left', field: 'name'},
@@ -108,7 +110,7 @@ const columns = [
 ];
 export default defineComponent({
   name: 'Area',
-  components: { AreaDetails },
+  components: { AreaDetails, NoData },
   setup() {
     const { dialog } = useQuasar();
     return {

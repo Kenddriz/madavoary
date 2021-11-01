@@ -1,8 +1,8 @@
 <template>
   <q-card flat bordered>
-    <q-img height="184px" src="sign-in.svg">
+    <q-img height="184px" :src="uri + area.banner">
       <div class="absolute-center text-h6 flex flex-center">
-        Marojejy
+        {{area.name}}
       </div>
     </q-img>
 
@@ -11,25 +11,25 @@
     <q-list>
       <q-item>
         <q-item-section>
-          <q-item-label>Surface</q-item-label>
+          <q-item-label>{{$t('surface')}}</q-item-label>
           <q-item-label caption>
-            45 550
+            {{area.surface}}
           </q-item-label>
         </q-item-section>
       </q-item>
       <q-item>
         <q-item-section>
-          <q-item-label>Bureau</q-item-label>
+          <q-item-label>{{$t('region')}}</q-item-label>
           <q-item-label caption>
-            FT-485 Andapa
+            {{area.region}}
           </q-item-label>
         </q-item-section>
       </q-item>
       <q-item>
         <q-item-section>
-          <q-item-label>Contacts</q-item-label>
+          <q-item-label>{{$t('area.type')}}</q-item-label>
           <q-item-label caption>
-            45 550
+            {{$tm('area.longTypes')[area.type]}}
           </q-item-label>
         </q-item-section>
       </q-item>
@@ -51,7 +51,7 @@
     <q-separator />
 
     <q-list dense>
-      <q-item-label class="q-py-sm" header>Autheur</q-item-label>
+      <q-item-label class="q-py-sm" header>{{$t('author')}}</q-item-label>
       <q-item>
         <q-item-section avatar>
           <q-avatar size="lg">
@@ -59,8 +59,11 @@
           </q-avatar>
         </q-item-section>
         <q-item-section>
-          <q-item-label>RANDRIAMANAJA Charlin</q-item-label>
-          <q-item-label caption>{{$tm('roles')[0]}}</q-item-label>
+          <q-item-label>
+            {{area.user.person.lastName}}
+            {{area.user.person.firstName}}
+          </q-item-label>
+          <q-item-label caption>{{$tm('roles')[area.user.role]}}</q-item-label>
         </q-item-section>
         <q-item-section side top>
           <q-btn icon="read_more" round flat dense color="white" />
@@ -84,9 +87,10 @@ import {defineComponent} from 'vue';
 export default defineComponent({
   name: 'AreaDetails',
   components: {  },
+  props: ['area'],
   setup() {
     return {
-
+      uri: process.env.uri + 'areas/'
     }
   }
 })

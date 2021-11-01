@@ -4,6 +4,7 @@ import {AREA_FIELDS} from 'src/graphql/area/area';
 import { USER_FIELDS } from 'src/graphql/user/user';
 import {useQuery, useResult} from '@vue/apollo-composable';
 import {ref} from 'vue';
+import {PERSON_FIELDS} from 'src/graphql/person/person';
 
 type AreasData = {
   areas: Area[];
@@ -12,7 +13,10 @@ const AREAS = gql`
   query Areas {
     areas {
       ${AREA_FIELDS}
-      user{${USER_FIELDS}}
+      user{
+        ${USER_FIELDS}
+        person{${PERSON_FIELDS}}
+      }
     }
   }
 `;

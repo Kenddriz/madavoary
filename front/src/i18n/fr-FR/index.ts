@@ -33,7 +33,7 @@ export default {
   peripherals: 'Villes périphériques',
   distance: 'Distance',
   office: 'Bureau',
-  contacts: 'Contacts',
+  author: 'Autheur',
   networkError: 'Problème de réseau, assurez-vous que vous avez d\'internet',
   mailExist: 'Adresse email existe déjà',
   phoneExist: 'Numéro de téléphone existe déjà',
