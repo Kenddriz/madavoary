@@ -1,5 +1,5 @@
 <template>
-  <q-img :src="urlList[0]||src" spinner-color="amber">
+  <q-img :src="urlList[0]||src||'travelers.svg'" spinner-color="amber">
     <div class="absolute-center bg-transparent">
       <q-btn-group outline v-if="images.length" rounded push>
         <q-btn
@@ -8,6 +8,7 @@
           size="sm"
           icon="check"
           @click="$emit('upload', images); images.length = 0;"
+          v-if="src"
         />
         <q-btn
           outline
@@ -51,10 +52,7 @@ export default defineComponent({
     name: 'ImageInput',
     props: {
       modelValue: Object as PropType<FileList>,
-      src: {
-        type: String,
-        default: 'travelers.svg'
-      }
+      src: String
     },
     emits: ['update:modelValue', 'upload'],
     setup(_, { emit }) {

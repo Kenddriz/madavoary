@@ -1,32 +1,77 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import {
+  Resolver,
+  Query,
+  Mutation,
+  Args,
+  Int,
+  ResolveField,
+  Root,
+} from '@nestjs/graphql';
 import { AreaService } from './area.service';
 import { Area } from './area.entity';
-import { CreateAreaInput } from './types/area.input';
+import { CreateAreaInput, UpdateAreaInput } from './types/area.input';
+import { UseGuards } from '@nestjs/common';
+import { GqlAuthGuard } from '../auth/jwt-auth.guard';
+import { CurrentUser } from '../auth/current-user-decorator';
+import { StrategyType } from '../auth/types/strategy.type';
+import { UserService } from '../user/user.service';
+import { User } from '../user/user.entity';
+import { GraphQLUpload } from 'graphql-upload';
+import { Upload } from '../shared/shared.input';
+import { removeFile, uniqId, upload } from '../utils';
 
 @Resolver(() => Area)
 export class AreaResolver {
-  constructor(private areaService: AreaService) {}
+  constructor(
+    private areaService: AreaService,
+    private userService: UserService,
+  ) {}
 
+  @UseGuards(GqlAuthGuard)
   @Mutation(() => Area)
-  async createArea(@Args('input') input: CreateAreaInput): Promise<Area> {
-    const area: Area = new Area();
+  async createArea(
+    @CurrentUser() strategy: StrategyType,
+    @Args({ name: 'banner', type: () => GraphQLUpload }) banner: Upload,
+    @Args('input') input: CreateAreaInput,
+  ): Promise<Area> {
+    const area = new Area();
+    area.id = await uniqId('Area');
+    const { filename } = await upload(banner, 'areas/', area.id);
+    area.banner = filename;
+    area.user = await this.userService.findOneById(strategy.payload);
     Object.assign(area, input);
     return this.areaService.save(area);
   }
-
-  @Query(() => [Area], { name: 'area' })
-  findAll() {
+  @UseGuards(GqlAuthGuard)
+  @Mutation(() => Area)
+  async updateArea(@Args('input') input: UpdateAreaInput): Promise<Area> {
+    const area = await this.areaService.findOneById(input.id);
+    Object.assign(area, input);
+    return this.areaService.save(area);
+  }
+  @UseGuards(GqlAuthGuard)
+  @Mutation(() => Area)
+  async updateAreaBanner(
+    @Args({ name: 'banner', type: () => GraphQLUpload }) banner: Upload,
+    @Args({ name: 'areaId', type: () => Int }) id: number,
+  ): Promise<Area> {
+    const area = await this.areaService.findOneById(id);
+    const { filename } = await upload(banner, 'areas/', id);
+    removeFile('areas/' + area.banner);
+    area.banner = filename;
+    return this.areaService.save(area);
+  }
+  @Query(() => [Area])
+  async areas() {
     return this.areaService.findAll();
   }
 
-  @Query(() => Area, { name: 'area' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
-    return this.areaService.findOne(id);
-  }
-
-
   @Mutation(() => Area)
-  removeArea(@Args('id', { type: () => Int }) id: number) {
+  async removeArea(@Args('id', { type: () => Int }) id: number) {
     return this.areaService.remove(id);
+  }
+  @ResolveField(() => User)
+  async user(@Root() area: Area): Promise<User> {
+    return this.userService.findOneById(area.userId);
   }
 }

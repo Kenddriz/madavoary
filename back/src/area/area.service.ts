@@ -13,12 +13,12 @@ export class AreaService {
     return this.repository.save(area);
   }
 
-  findAll() {
-    return `This action returns all area`;
+  async findAll(): Promise<Area[]> {
+    return this.repository.find({ order: { name: 'ASC' } });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} area`;
+  async findOneById(id: number): Promise<Area> {
+    return this.repository.findOne(id);
   }
 
   remove(id: number) {

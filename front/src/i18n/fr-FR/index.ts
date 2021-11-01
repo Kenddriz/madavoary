@@ -2,6 +2,7 @@
 // so you can safely delete all default props below
 import dashboard from './dashboard';
 import account from './account';
+import area from './area';
 export default {
   lastName: 'Nom',
   firstName: 'Prénom',
@@ -28,6 +29,11 @@ export default {
   place: 'Endroit',
   naming: 'Titre ou nom',
   description: 'Description',
+  region: 'Région',
+  peripherals: 'Villes périphériques',
+  distance: 'Distance',
+  office: 'Bureau',
+  contacts: 'Contacts',
   networkError: 'Problème de réseau, assurez-vous que vous avez d\'internet',
   mailExist: 'Adresse email existe déjà',
   phoneExist: 'Numéro de téléphone existe déjà',
@@ -42,6 +48,7 @@ export default {
   dateTime: 'DD-MM-YYYY T HH:mm:ss',
   shortDate: 'DD/MM/YYYY',
   inputMaskFormat: '##/##/####',
+  errorOn: 'Champs invalide : ',
   timeOnly: 'HH:mm:ss',
   loading: {
     update: 'Mise à jour ...',
@@ -108,5 +115,6 @@ export default {
     }
   ],
   dashboard,
-  account
+  account,
+  area
 };

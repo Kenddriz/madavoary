@@ -5,11 +5,11 @@ import {
   Entity,
   ManyToOne,
   OneToMany,
-  PrimaryGeneratedColumn,
+  PrimaryColumn,
   RelationId,
   UpdateDateColumn,
 } from 'typeorm';
-import { Contact, Peripheral } from './types/area.output';
+import { Peripheral } from './types/area.output';
 import { Localization } from '../localization/localization.entity';
 import { User } from '../user/user.entity';
 
@@ -17,7 +17,7 @@ import { User } from '../user/user.entity';
 @Entity({ name: 'areas' })
 export class Area {
   @Field(() => Int)
-  @PrimaryGeneratedColumn('increment')
+  @PrimaryColumn()
   id: number;
 
   @Field()
@@ -25,11 +25,11 @@ export class Area {
   name: string;
 
   @Field(() => Int)
-  @Column({ type: 'int', length: 1, default: 0 })
+  @Column({ type: 'int', width: 1, default: 0 })
   type: number;
 
   @Field()
-  @Column({ type: 'varchar', length: 6, default: '' })
+  @Column({ type: 'varchar', length: 26, default: '' })
   banner: string;
 
   @Field()
@@ -43,14 +43,6 @@ export class Area {
   @Field()
   @Column({ type: 'float', width: 5, default: 0 })
   surface: number;
-
-  @Field(() => [Contact])
-  @Column({ type: 'jsonb', default: [] })
-  contacts: Contact[];
-
-  @Field()
-  @Column({ type: 'varchar', length: 60, default: '' })
-  office: string;
 
   @Field()
   @CreateDateColumn({ type: 'timestamp' })

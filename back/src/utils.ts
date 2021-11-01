@@ -45,9 +45,7 @@ export const upload = async (
 ): Promise<FileParams> => {
   const { createReadStream, filename, mimetype } = await file;
 
-  let m_filename =
-    filename.lastIndexOf('.') > 20 ? filename.substr(20) : filename;
-  m_filename = id + '-' + m_filename;
+  const m_filename = id + filename.substr(-20);
 
   const path = `${publicDir()}${dossier}/`;
   if (!existsSync(path)) mkdirSync(path, { recursive: true });

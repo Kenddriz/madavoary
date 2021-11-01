@@ -18,13 +18,13 @@ export type Scalars = {
 export type Area = {
   __typename?: 'Area';
   banner: Scalars['String'];
-  cities: Array<Scalars['String']>;
-  contacts: Array<Contact>;
   createdAt: Scalars['DateTime'];
   id: Scalars['Int'];
   name: Scalars['String'];
-  office: Scalars['String'];
+  peripherals: Array<Peripheral>;
+  region: Scalars['String'];
   surface: Scalars['Float'];
+  type: Scalars['Int'];
   updatedAt: Scalars['DateTime'];
   user: User;
 };
@@ -54,12 +54,6 @@ export type CollectionPagination = {
   meta: Meta;
 };
 
-export type Contact = {
-  __typename?: 'Contact';
-  list: Array<Scalars['String']>;
-  type: Scalars['Float'];
-};
-
 export type Cost = {
   __typename?: 'Cost';
   ageSlice: Scalars['Int'];
@@ -78,6 +72,10 @@ export type CountCollectionsOutput = {
 
 export type CreateAreaInput = {
   name: Scalars['String'];
+  peripherals: Array<PeripheralInput>;
+  region: Scalars['String'];
+  surface: Scalars['Float'];
+  type: Scalars['Int'];
 };
 
 export type CreateCollectionInput = {
@@ -178,6 +176,8 @@ export type Mutation = {
   removeSpecies: Species;
   removeSubscription: Subscription;
   removeVisit: Visit;
+  updateArea: Area;
+  updateAreaBanner: Area;
   updateCollection: Collection;
   updateCollectionImage: Collection;
   updateDiscover: Discover;
@@ -198,6 +198,7 @@ export type MutationAddCollectionImageArgs = {
 
 
 export type MutationCreateAreaArgs = {
+  banner: Scalars['Upload'];
   input: CreateAreaInput;
 };
 
@@ -284,6 +285,17 @@ export type MutationRemoveVisitArgs = {
 };
 
 
+export type MutationUpdateAreaArgs = {
+  input: UpdateAreaInput;
+};
+
+
+export type MutationUpdateAreaBannerArgs = {
+  areaId: Scalars['Int'];
+  banner: Scalars['Upload'];
+};
+
+
 export type MutationUpdateCollectionArgs = {
   input: UpdateCollectionInput;
 };
@@ -350,6 +362,17 @@ export type PaginateUserInput = {
   page: Scalars['Float'];
 };
 
+export type Peripheral = {
+  __typename?: 'Peripheral';
+  city: Scalars['String'];
+  distance: Scalars['Float'];
+};
+
+export type PeripheralInput = {
+  city: Scalars['String'];
+  distance: Scalars['Float'];
+};
+
 export type Person = {
   __typename?: 'Person';
   avatar: Scalars['String'];
@@ -380,7 +403,7 @@ export type PriceOutput = {
 
 export type Query = {
   __typename?: 'Query';
-  area: Area;
+  areas: Array<Area>;
   countCollections: Array<CountCollectionsOutput>;
   discover: Discover;
   localization: Localization;
@@ -392,11 +415,6 @@ export type Query = {
   subscription: Subscription;
   visit: Visit;
   whoAmI: User;
-};
-
-
-export type QueryAreaArgs = {
-  id: Scalars['Int'];
 };
 
 
@@ -466,6 +484,15 @@ export type Subscription = {
   createdAt: Scalars['DateTime'];
   id: Scalars['Int'];
   verifiedAt: Scalars['DateTime'];
+};
+
+export type UpdateAreaInput = {
+  id: Scalars['Float'];
+  name: Scalars['String'];
+  peripherals: Array<PeripheralInput>;
+  region: Scalars['String'];
+  surface: Scalars['Float'];
+  type: Scalars['Int'];
 };
 
 export type UpdateCollectionImageInput = {

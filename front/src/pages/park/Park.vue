@@ -37,7 +37,7 @@
 
 <script lang="ts">
 import {defineComponent, ref} from 'vue';
-import AreaCpt from 'components/area/AreaCpt.vue';
+import AreaCpt from 'components/area/Area.vue';
 import SpeciesCpt from 'components/species/SpeciesCpt.vue';
 import PriceCpt from 'components/price/PriceCpt.vue';
 
