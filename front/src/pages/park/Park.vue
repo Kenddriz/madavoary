@@ -25,11 +25,15 @@
       </q-tab-panel>
 
       <q-tab-panel class="q-pa-sm" :name="1">
-        <PriceCpt />
+        Relief
       </q-tab-panel>
 
-      <q-tab-panel class="q-pa-none row" :name="2">
-        <SpeciesCpt />
+      <q-tab-panel class="q-pa-sm" :name="2">
+        Hydraulic
+      </q-tab-panel>
+
+      <q-tab-panel class="q-pa-none row" :name="3">
+        <LivingBeing />
       </q-tab-panel>
     </q-tab-panels>
   </q-page>
@@ -38,12 +42,11 @@
 <script lang="ts">
 import {defineComponent, ref} from 'vue';
 import AreaCpt from 'components/area/Area.vue';
-import SpeciesCpt from 'components/species/SpeciesCpt.vue';
-import PriceCpt from 'components/price/PriceCpt.vue';
+import LivingBeing from 'components/living-being/LivingBeing.vue';
 
 export default defineComponent({
   name: 'Park',
-  components: { AreaCpt, SpeciesCpt, PriceCpt },
+  components: { AreaCpt, LivingBeing },
   setup() {
     return {
       tab: ref<number>(0)

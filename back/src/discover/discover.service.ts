@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { CreateDiscoverInput } from './dto/create-discover.input';
-import { UpdateDiscoverInput } from './dto/update-discover.input';
+import { CreateDiscoverInput } from './types/create-discover.input';
+import { UpdateDiscoverInput } from './types/update-discover.input';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Discover } from './discover.entity';
 import { Repository } from 'typeorm';
@@ -37,10 +37,10 @@ export class DiscoverService {
       .orderBy('disc.when', 'DESC')
       .getMany();
   }
-  async findBySpecies(speciesId: number): Promise<Discover> {
+  async findByLivingBeing(livingBeingId: number): Promise<Discover> {
     return this.repository
       .createQueryBuilder('disc')
-      .where('disc.speciesId = :speciesId', { speciesId })
+      .where('disc.livingBeingId = :livingBeingId', { livingBeingId })
       .getOne();
   }
 }

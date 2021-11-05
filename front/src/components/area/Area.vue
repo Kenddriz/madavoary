@@ -14,6 +14,7 @@
       v-model:selected="selected"
       :loading="false"
       :rows-per-page-options="[10, 20]"
+      :filter="filter"
     >
       <template v-slot:top>
         <div class="flex flex-center q-gutter-md full-width">
@@ -24,6 +25,8 @@
             debounce="300"
             label="Chercher ..."
             label-color="white"
+            :model-value="filter"
+            v-model="filter"
           >
             <template v-slot:append>
               <q-icon name="search" />

@@ -1,8 +1,10 @@
 // This is just an example,
 // so you can safely delete all default props below
 import dashboard from './dashboard';
-import account from './account';
+import user from './user';
 import area from './area';
+import classification from './classification';
+
 export default {
   lastName: 'Nom',
   firstName: 'Prénom',
@@ -115,6 +117,7 @@ export default {
     }
   ],
   dashboard,
-  account,
-  area
+  user,
+  area,
+  classification
 };

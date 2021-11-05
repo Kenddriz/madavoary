@@ -9,16 +9,19 @@ import {
 } from '@nestjs/graphql';
 import { DiscoverService } from './discover.service';
 import { Discover } from './discover.entity';
-import { CreateDiscoverInput } from './dto/create-discover.input';
-import { UpdateDiscoverInput } from './dto/update-discover.input';
-import { SpeciesService } from '../species/species.service';
-import { Species } from '../species/species.entity';
+import { CreateDiscoverInput } from './types/create-discover.input';
+import { UpdateDiscoverInput } from './types/update-discover.input';
+import { LivingBeingService } from '../living-being/livng-being.service';
+import { LivingBeing } from '../living-being/living-being.entity';
+import { PersonService } from '../person/person.service';
+import { Person } from '../person/person.entity';
 
 @Resolver(() => Discover)
 export class DiscoverResolver {
   constructor(
     private discoverService: DiscoverService,
-    private speciesService: SpeciesService,
+    private livingBeingService: LivingBeingService,
+    private personService: PersonService,
   ) {}
 
   @Mutation(() => Discover)
@@ -39,21 +42,20 @@ export class DiscoverResolver {
   }
 
   @Mutation(() => Discover)
-  updateDiscover(
-    @Args('updateDiscoverInput') updateDiscoverInput: UpdateDiscoverInput,
-  ) {
-    return this.discoverService.update(
-      updateDiscoverInput.id,
-      updateDiscoverInput,
-    );
+  updateDiscover(@Args('input') input: UpdateDiscoverInput) {
+    return this.discoverService.update(input.id, input);
   }
 
   @Mutation(() => Discover)
   removeDiscover(@Args('id', { type: () => Int }) id: number) {
     return this.discoverService.remove(id);
   }
-  @ResolveField(() => Species)
-  async species(@Root() discover: Discover): Promise<Species> {
-    return this.speciesService.findOneById(discover.speciesId);
+  @ResolveField(() => LivingBeing)
+  async livingBeing(@Root() discover: Discover): Promise<LivingBeing> {
+    return this.livingBeingService.findOneById(discover.livingBeingId);
+  }
+  @ResolveField(() => Person)
+  async person(@Root() discover: Discover): Promise<Person> {
+    return this.personService.findOneById(discover.personId);
   }
 }

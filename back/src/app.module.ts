@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AreaModule } from './area/area.module';
-import { SpeciesModule } from './species/species.module';
+import { LivingBeingModule } from './living-being/living-being.module';
 import { DiscoverModule } from './discover/discover.module';
 import { PersonModule } from './person/person.module';
 import { UserModule } from './user/user.module';
@@ -14,7 +14,6 @@ import { connexionOptions } from './configuration/connexionLoader';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { join } from 'path';
 import { LocalizationModule } from './localization/localization.module';
-import { PriceModule } from './price/price.module';
 import { AuthModule } from './auth/auth.module';
 
 @Module({
@@ -30,7 +29,7 @@ import { AuthModule } from './auth/auth.module';
       installSubscriptionHandlers: true,
     }),
     AreaModule,
-    SpeciesModule,
+    LivingBeingModule,
     DiscoverModule,
     PersonModule,
     UserModule,
@@ -38,7 +37,6 @@ import { AuthModule } from './auth/auth.module';
     VisitModule,
     SubscriptionModule,
     LocalizationModule,
-    PriceModule,
     AuthModule,
   ],
   controllers: [AppController],

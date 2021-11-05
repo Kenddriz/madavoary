@@ -1,22 +1,35 @@
-import { ObjectType, Field } from '@nestjs/graphql';
-import { Column, Entity, ManyToOne, RelationId } from 'typeorm';
-import { Species } from '../species/species.entity';
+import { ObjectType, Field, Int } from '@nestjs/graphql';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  RelationId,
+} from 'typeorm';
+import { LivingBeing } from '../living-being/living-being.entity';
 import { Area } from '../area/area.entity';
 
 @ObjectType()
 @Entity({ name: 'localizations' })
 export class Localization {
-  @Field(() => Area)
+  @Field(() => Int)
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @Field(() => Area, { nullable: true })
   @ManyToOne(() => Area, { primary: true, onDelete: 'CASCADE' })
-  area: Area;
+  area?: Area;
   @RelationId((localization: Localization) => localization.area)
   areaId: number;
 
-  @Field(() => Species)
-  @ManyToOne(() => Species, { primary: true, onDelete: 'CASCADE' })
-  species: Species;
-  @RelationId((localization: Localization) => localization.species)
-  speciesId: number;
+  @Field(() => LivingBeing)
+  @ManyToOne(() => LivingBeing, {
+    primary: true,
+    onDelete: 'CASCADE',
+  })
+  livingBeing: LivingBeing;
+  @RelationId((localization: Localization) => localization.livingBeing)
+  livingBeingId: number;
 
   @Field(() => [String])
   @Column({ default: [], type: 'varchar', array: true })

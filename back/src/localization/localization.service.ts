@@ -1,11 +1,16 @@
 import { Injectable } from '@nestjs/common';
-import { CreateLocalizationInput } from './dto/create-localization.input';
-import { UpdateLocalizationInput } from './dto/update-localization.input';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Localization } from './localization.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class LocalizationService {
-  create(createLocalizationInput: CreateLocalizationInput) {
-    return 'This action adds a new localization';
+  constructor(
+    @InjectRepository(Localization)
+    private repository: Repository<Localization>,
+  ) {}
+  async save(localisation: Localization): Promise<Localization> {
+    return this.repository.save(localisation);
   }
 
   findAll() {
@@ -15,8 +20,13 @@ export class LocalizationService {
   findOne(id: number) {
     return `This action returns a #${id} localization`;
   }
-
-  update(id: number, updateLocalizationInput: UpdateLocalizationInput) {
+  async findByLivingBeing(livingBeingId: number): Promise<Localization[]> {
+    return this.repository
+      .createQueryBuilder('loc')
+      .where('loc."livingBeingId" = :id', { livingBeingId })
+      .getMany();
+  }
+  update(id: number) {
     return `This action updates a #${id} localization`;
   }
 

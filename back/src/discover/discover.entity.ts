@@ -9,7 +9,7 @@ import {
   RelationId,
 } from 'typeorm';
 import { Person } from '../person/person.entity';
-import { Species } from '../species/species.entity';
+import { LivingBeing } from '../living-being/living-being.entity';
 
 @ObjectType()
 @Entity({ name: 'discovers' })
@@ -26,10 +26,6 @@ export class Discover {
   @Column({ type: 'timestamp', nullable: true })
   validatedAt?: Date;
 
-  @Field(() => [String])
-  @Column({ default: [], type: 'varchar', array: true })
-  description: string[];
-
   @Field(() => Person)
   @ManyToOne(() => Person, (person) => person.discovers, {
     onDelete: 'CASCADE',
@@ -38,12 +34,12 @@ export class Discover {
   @RelationId((discover: Discover) => discover.person)
   personId: number;
 
-  @Field(() => Species)
-  @OneToOne(() => Species, (species) => species.discover, {
+  @Field(() => LivingBeing)
+  @OneToOne(() => LivingBeing, (livingBeing) => livingBeing.discover, {
     onDelete: 'CASCADE',
   })
-  @JoinColumn({ name: 'speciesId' })
-  species: Species;
-  @RelationId((discover: Discover) => discover.species)
-  speciesId: number;
+  @JoinColumn({ name: 'livingBeingId' })
+  livingBeing: LivingBeing;
+  @RelationId((discover: Discover) => discover.livingBeing)
+  livingBeingId: number;
 }

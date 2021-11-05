@@ -29,7 +29,6 @@ import {
   UpdateCollectionInput,
 } from './types/collection.input';
 import { User } from '../user/user.entity';
-import { Species } from '../species/species.entity';
 
 @Resolver(() => Collection)
 export class CollectionResolver {
@@ -49,7 +48,6 @@ export class CollectionResolver {
     collection.user = await this.userService.findOneById(strategy.payload);
     Object.assign(collection, input);
     collection.images = [];
-
     for (const img of images) {
       const { filename } = await upload(
         img,
@@ -138,7 +136,7 @@ export class CollectionResolver {
   }
 
   @ResolveField(() => User)
-  async user(@Root() species: Species): Promise<User> {
-    return this.userService.findOneById(species.userId);
+  async user(@Root() collection: Collection): Promise<User> {
+    return this.userService.findOneById(collection.userId);
   }
 }

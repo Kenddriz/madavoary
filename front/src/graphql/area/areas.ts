@@ -28,6 +28,7 @@ export const useAreas = () => {
     rowsPerPage: 10,
   });
   const selected = ref<Area[]>([]);
+  const filter = ref<string>('');
   const { result, loading } = useQuery<AreasData>(AREAS);
   const areas = useResult<
     AreasData|undefined,
@@ -46,5 +47,5 @@ export const useAreas = () => {
     selected.value.length = 0;
       return  []
   });
-  return { areas, loading, pagination, selected }
+  return { areas, loading, pagination, selected, filter }
 }

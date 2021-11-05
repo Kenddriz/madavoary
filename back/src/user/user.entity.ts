@@ -10,7 +10,7 @@ import {
 } from 'typeorm';
 import { Person } from '../person/person.entity';
 import { Area } from '../area/area.entity';
-import { Species } from '../species/species.entity';
+import { LivingBeing } from '../living-being/living-being.entity';
 
 @ObjectType()
 @Entity({ name: 'users' })
@@ -48,6 +48,8 @@ export class User {
   @OneToMany(() => Area, (area) => area.user, { onDelete: 'CASCADE' })
   areas: Area[];
 
-  @OneToMany(() => Species, (species) => species.user, { onDelete: 'CASCADE' })
-  species: Species[];
+  @OneToMany(() => LivingBeing, (livingBeing) => livingBeing.user, {
+    onDelete: 'CASCADE',
+  })
+  livingBeing: LivingBeing[];
 }

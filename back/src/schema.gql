@@ -39,25 +39,29 @@ type Discover {
   id: Int!
   when: String!
   validatedAt: DateTime
-  description: [String!]!
   person: Person!
-  species: Species!
+  livingBeing: LivingBeing!
 }
 
-type Species {
-  id: Int!
+type LivingBeing {
+  id: Float!
   images: [String!]!
-  when: [String!]!
-  names: [String!]!
-  description: [String!]!
+  localNames: [Float!]!
+  names: [Float!]!
+  endemic: Boolean!
+  endangered: Boolean!
+  characteristics: [String!]!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   localizations: [Localization!]!
   discover: Discover
   user: User!
 }
 
 type Localization {
-  area: Area!
-  species: Species!
+  id: Int!
+  area: Area
+  livingBeing: LivingBeing!
   places: [String!]!
 }
 
@@ -80,6 +84,11 @@ type Meta {
   itemsPerPage: Float!
   totalPages: Float
   currentPage: Float!
+}
+
+type LivingBeingPagination {
+  items: [LivingBeing!]!
+  meta: Meta!
 }
 
 type UserPagination {
@@ -121,35 +130,35 @@ type Subscription {
   createdAt: DateTime!
 }
 
-type Cost {
-  ageSlice: Int!
-  value: Float!
-}
-
-type Price {
-  id: Int!
-  malagasy: [Cost!]!
-  foreigner: [Cost!]!
-}
-
 type LoginDto {
   token: String!
   user: User!
 }
 
+type Cost {
+  ageSlice: Int!
+  value: Float!
+}
+
 type Query {
   areas: [Area!]!
-  species(id: Int!): Species!
+  findLivingBeingByName(name: String!): LivingBeing!
+  paginateLivingBeings(input: PaginateLivingBeingsInput!): LivingBeingPagination!
   discover(id: Int!): Discover!
   paginateUsers(input: PaginateUserInput!): UserPagination!
   countCollections(input: CountCollectionInput!): [CountCollectionsOutput!]!
   paginateCollections(input: PaginateCollectionInput!): CollectionPagination!
   visit(id: Int!): Visit!
   subscription(id: Int!): Subscription!
-  localization(id: Int!): Localization!
-  price(id: Int!): Price!
   login(input: AuthInput!): LoginDto!
   whoAmI: User!
+}
+
+input PaginateLivingBeingsInput {
+  keyword: String
+  page: Float!
+  limit: Float!
+  areaId: Int!
 }
 
 input PaginateUserInput {
@@ -181,10 +190,10 @@ type Mutation {
   updateArea(input: UpdateAreaInput!): Area!
   updateAreaBanner(areaId: Int!, banner: Upload!): Area!
   removeArea(id: Int!): Area!
-  createSpecies(createSpeciesInput: CreateSpeciesInput!): Species!
-  removeSpecies(id: Int!): Species!
+  createLivingBeing(input: CreateLivingBeingInput!, images: [Upload!]!): LivingBeing!
+  removeLivingBeing(id: Int!): LivingBeing!
   createDiscover(createDiscoverInput: CreateDiscoverInput!): Discover!
-  updateDiscover(updateDiscoverInput: UpdateDiscoverInput!): Discover!
+  updateDiscover(input: UpdateDiscoverInput!): Discover!
   removeDiscover(id: Int!): Discover!
   updatePersonAvatar(id: Int!, avatar: Upload!): Person!
   createUser(input: CreateUserInput!, avatar: Upload!): User!
@@ -201,12 +210,7 @@ type Mutation {
   createSubscription(createSubscriptionInput: CreateSubscriptionInput!): Subscription!
   updateSubscription(updateSubscriptionInput: UpdateSubscriptionInput!): Subscription!
   removeSubscription(id: Int!): Subscription!
-  createLocalization(createLocalizationInput: CreateLocalizationInput!): Localization!
-  updateLocalization(updateLocalizationInput: UpdateLocalizationInput!): Localization!
   removeLocalization(id: Int!): Localization!
-  createPrice(createPriceInput: CreatePriceInput!): Price!
-  updatePrice(updatePriceInput: PriceOutput!): Price!
-  removePrice(id: Int!): Price!
 }
 
 input CreateAreaInput {
@@ -234,9 +238,18 @@ input UpdateAreaInput {
   id: Float!
 }
 
-input CreateSpeciesInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
+input CreateLivingBeingInput {
+  localNames: [String!]!
+  characteristics: [String!]!
+  names: [String!]!
+  endemic: Boolean!
+  endangered: Boolean!
+  localizationInput: CreateLocalizationInput!
+}
+
+input CreateLocalizationInput {
+  areaId: Int!
+  places: [String!]!
 }
 
 input CreateDiscoverInput {
@@ -312,28 +325,6 @@ input CreateSubscriptionInput {
 }
 
 input UpdateSubscriptionInput {
-  """Example field (placeholder)"""
-  exampleField: Int
-  id: Int!
-}
-
-input CreateLocalizationInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
-}
-
-input UpdateLocalizationInput {
-  """Example field (placeholder)"""
-  exampleField: Int
-  id: Int!
-}
-
-input CreatePriceInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
-}
-
-input PriceOutput {
   """Example field (placeholder)"""
   exampleField: Int
   id: Int!

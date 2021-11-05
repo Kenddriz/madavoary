@@ -54,7 +54,6 @@ export class Area {
 
   @OneToMany(() => Localization, (localization) => localization.area, {
     onDelete: 'CASCADE',
-    cascade: true,
   })
   localizations: Localization[];
 
