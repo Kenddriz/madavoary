@@ -3,7 +3,7 @@
     outline
     color="brown"
     no-caps
-    label="Nouvelle"
+    :label="$t('create.btn')"
     text-color="white"
     icon="add"
     @click="show = true"
@@ -11,7 +11,7 @@
   <q-dialog seamless v-model="show">
     <MovableCard resizable class="bg-primary" style="padding-bottom: 70px;">
       <template v-slot:title>
-        Nouvelle collection
+        Nouvel être vivant
       </template>
       <q-form
         autocorrect="off"
@@ -45,8 +45,8 @@
             />
           </q-carousel>
           <q-file
-            :model-value="input.images"
-            v-model="input.images"
+            :model-value="images"
+            v-model="images"
             accept=".jpg, image/*"
             multiple
             max-files="5"
@@ -67,55 +67,53 @@
         <q-expansion-item
           group="group"
           icon="explore"
-          label="Informations générales"
+          label="Nominalisation"
           header-class="text-white"
         >
           <q-card class="q-mt-lg">
             <q-card-section class="q-gutter-y-md q-pt-none">
-              <CollectionSubjects :nullable="false" v-model="input.detail.natureId" />
               <q-input
-                :model-value="input.detail.naming"
-                v-model="input.detail.naming"
+                v-for="(name, index) in $tm('names')"
+                :key="index"
+                :label="name"
+                :model-value="input.names[index]"
+                v-model.trim="input.names[index]"
                 square
                 dense
                 type="text"
-                label="Titre ou nom"
                 label-color="white"
-                :lazy-rules="true"
-                :rules="[v => v && v.length]"
-                no-error-icon
-                hide-bottom-space
-                name="naming"
-              />
-              <q-input
-                :model-value="input.detail.place"
-                v-model="input.detail.place"
-                square
-                dense
-                type="text"
-                :label="$t('place')"
-                label-color="white"
-                :lazy-rules="true"
-                :rules="[v => v && v.length]"
-                no-error-icon
-                hide-bottom-space
-                name="place"
-              />
-              <q-input
-                :model-value="input.detail.description"
-                v-model="input.detail.description"
-                outlined
-                :label="$t('description')"
-                type="textarea"
-                spellcheck="false"
-                label-color="white"
-                :lazy-rules="true"
-                :rules="[v => v && v.length]"
-                no-error-icon
-                hide-bottom-space
-                name="description"
               />
             </q-card-section>
+          </q-card>
+        </q-expansion-item>
+        <q-expansion-item
+          group="group"
+          icon="explore"
+          label="Informations supplementaires"
+          header-class="text-white"
+        >
+          <q-card class="q-mt-lg q-pa-md q-gutter-y-md">
+            <div class="row justify-between">
+              <q-checkbox
+                :model-value="input.endangered"
+                v-model="input.endangered"
+                label="Espèce menacée"
+              />
+              <q-checkbox
+                :model-value="input.endemic"
+                v-model="input.endemic"
+                label="Espèce endemique"
+              />
+            </div>
+            <q-input
+              v-for="(c, i) in input.characteristics"
+              :key="i"
+              :model-value="c"
+              v-model="input.characteristics[i]"
+              autogrow
+              :label="`Caractéristiques en ${($tm('languages')[i]).label.toLowerCase()}`"
+              label-color="white"
+            />
           </q-card>
         </q-expansion-item>
       </q-form>
@@ -126,15 +124,6 @@
             :label="$t('create.btn')"
             no-caps
             color="white"
-            @click="validate"
-          />
-          <q-btn
-            color="white"
-            flat
-            type="reset"
-            no-caps
-            :label="$t('reset')"
-            @click="reset"
           />
         </q-card-actions>
       </template>
@@ -146,20 +135,19 @@
 import {defineComponent, ref} from 'vue';
 import MovableCard from 'components/shared/MovableCard.vue';
 import {useImageLoader} from 'src/graphql/utils/preview';
-import {useCreateCollection} from 'src/graphql/collection/create-collection';
-import CollectionSubjects from 'components/collection/CollectionSubjects.vue';
 import {useValidationError} from 'src/graphql/utils/utils';
+import {useCreateLivingBeing} from 'src/graphql/living-being/create-living-being';
 
 export default defineComponent({
-  name: 'CreateCollection',
-  components: { MovableCard, CollectionSubjects },
+  name: 'CreateLivingBeing',
+  components: { MovableCard },
   setup() {
     return {
       ...useImageLoader(),
       slide: ref(0),
       show: ref(false),
-      ...useCreateCollection(),
-      ...useValidationError()
+      ...useValidationError(),
+      ...useCreateLivingBeing()
     }
   }
 })

@@ -5,8 +5,6 @@ import { PaginationInput } from '../../shared/shared.input';
 @InputType()
 export class CreateLivingBeingInput {
   @Field(() => [String])
-  localNames: string[];
-  @Field(() => [String])
   characteristics: string[];
   @Field(() => [String])
   names: string[];

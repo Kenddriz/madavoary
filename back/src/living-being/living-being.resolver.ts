@@ -46,13 +46,15 @@ export class LivingBeingResolver {
     @Args({ name: 'images', type: () => [GraphQLUpload] }) images: [Upload],
     @Args('input') input: CreateLivingBeingInput,
   ): Promise<LivingBeing> {
-    const { localizationInput, ...livingBeingInput } = input;
+    const { localizationInput, names, ...livingBeingInput } = input;
     const localization = new Localization();
     localization.area = await this.areaService.findOneById(
       localizationInput.areaId,
     );
     localization.places = localizationInput.places;
     const livingBeing = new LivingBeing();
+    livingBeing.localNames = names.splice(0, 1);
+    livingBeing.names = names;
     livingBeing.images = [];
     livingBeing.id = await uniqId('LivingBeing');
     for (const img of images) {

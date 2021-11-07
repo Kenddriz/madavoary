@@ -29,7 +29,7 @@
           </template>
         </q-input>
         <q-space />
-        <q-btn outline color="brown" text-color="white" icon="add" />
+        <CreateLivingBeing />
       </template>
       <template v-slot:header="props">
         <q-tr :props="props">
@@ -77,6 +77,8 @@ import {defineComponent} from 'vue';
 import SpeciesDetails from './LivingBeingDetails.vue';
 import {usePaginateLivingBeings} from 'src/graphql/living-being/paginate-living-beings';
 import {LivingBeing} from 'src/graphql/types';
+import CreateLivingBeing from 'components/living-being/CreateLivingBeing.vue';
+
 const columns = [
   {name: 'localNames', align: 'left', field: (row: LivingBeing) => row.localNames.join('/')},
   {name: 'names', align: 'left', field: (row: LivingBeing) => row.localNames.slice(0).join()},
@@ -84,7 +86,7 @@ const columns = [
 ];
 export default defineComponent({
   name: 'SpeciesCpt',
-  components: { SpeciesDetails },
+  components: { SpeciesDetails, CreateLivingBeing },
   setup() {
     return {
       columns,

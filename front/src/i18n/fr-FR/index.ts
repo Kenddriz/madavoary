@@ -25,7 +25,7 @@ export default {
   when: 'Quand ?',
   'no-data': 'Aucune donnée disponible',
   controls: 'Contrôles',
-  names: ['Local', 'Scientifique', 'Vernaculaire en anglais', 'Vernaculaire en français'],
+  names: ['Malagasy', 'Scientifique', 'Anglais', 'Français'],
   male: 'Masculin',
   female: 'Féminin',
   place: 'Endroit',
@@ -116,6 +116,7 @@ export default {
       description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum'
     }
   ],
+  languages: [{ value: 'en', label: 'Anglais'},{ value: 'fr', label: 'Français'}],
   dashboard,
   user,
   area,

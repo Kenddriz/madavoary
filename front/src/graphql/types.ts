@@ -94,7 +94,6 @@ export type CreateLivingBeingInput = {
   characteristics: Array<Scalars['String']>;
   endangered: Scalars['Boolean'];
   endemic: Scalars['Boolean'];
-  localNames: Array<Scalars['String']>;
   localizationInput: CreateLocalizationInput;
   names: Array<Scalars['String']>;
 };

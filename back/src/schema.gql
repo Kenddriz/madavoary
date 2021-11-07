@@ -239,7 +239,6 @@ input UpdateAreaInput {
 }
 
 input CreateLivingBeingInput {
-  localNames: [String!]!
   characteristics: [String!]!
   names: [String!]!
   endemic: Boolean!
