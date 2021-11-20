@@ -47,6 +47,7 @@ export default {
   reset: 'Réinitialiser',
   logout: 'Se déconnecter',
   save: 'Enregistrer',
+  localNames: 'Noms Locaux',
   dateTime: 'DD-MM-YYYY T HH:mm:ss',
   shortDate: 'DD/MM/YYYY',
   inputMaskFormat: '##/##/####',

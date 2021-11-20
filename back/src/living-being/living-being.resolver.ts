@@ -7,7 +7,7 @@ import {
   ResolveField,
   Root,
 } from '@nestjs/graphql';
-import { LivingBeingService } from './livng-being.service';
+import { LivingBeingService } from './living-being.service';
 import { LivingBeing } from './living-being.entity';
 import { DiscoverService } from '../discover/discover.service';
 import { Discover } from '../discover/discover.entity';
@@ -46,16 +46,14 @@ export class LivingBeingResolver {
     @Args({ name: 'images', type: () => [GraphQLUpload] }) images: [Upload],
     @Args('input') input: CreateLivingBeingInput,
   ): Promise<LivingBeing> {
-    const { localizationInput, names, ...livingBeingInput } = input;
+    const { areaId, names, ...livingBeingInput } = input;
     const localization = new Localization();
-    localization.area = await this.areaService.findOneById(
-      localizationInput.areaId,
-    );
-    localization.places = localizationInput.places;
+    localization.area = await this.areaService.findOneById(areaId);
     const livingBeing = new LivingBeing();
+    livingBeing.images = [];
+    livingBeing.localizations = [];
     livingBeing.localNames = names.splice(0, 1);
     livingBeing.names = names;
-    livingBeing.images = [];
     livingBeing.id = await uniqId('LivingBeing');
     for (const img of images) {
       const { filename } = await upload(img, 'livingBeings/', livingBeing.id);
@@ -68,7 +66,7 @@ export class LivingBeingResolver {
     return this.livingBeingService.save(livingBeing);
   }
 
-  @Query(() => LivingBeing)
+  @Query(() => LivingBeing, { nullable: true })
   async findLivingBeingByName(
     @Args('name') name: string,
   ): Promise<LivingBeing> {
@@ -78,7 +76,7 @@ export class LivingBeingResolver {
   async paginateLivingBeings(
     @Args('input') input: PaginateLivingBeingsInput,
   ): Promise<LivingBeingPagination> {
-    return this.livingBeingService.paginate(input);
+    return this.livingBeingService.paginateLb(input);
   }
 
   @Mutation(() => LivingBeing)
@@ -97,6 +95,6 @@ export class LivingBeingResolver {
   async localizations(
     @Root() livingBeing: LivingBeing,
   ): Promise<Localization[]> {
-    return this.localizationService.findByLivingBeing(livingBeing.userId);
+    return this.localizationService.findByLivingBeing(livingBeing.id);
   }
 }

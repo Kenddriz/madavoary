@@ -1,11 +1,5 @@
 import { ObjectType, Field, Int } from '@nestjs/graphql';
-import {
-  Column,
-  Entity,
-  ManyToOne,
-  PrimaryGeneratedColumn,
-  RelationId,
-} from 'typeorm';
+import { Entity, ManyToOne, PrimaryGeneratedColumn, RelationId } from 'typeorm';
 import { LivingBeing } from '../living-being/living-being.entity';
 import { Area } from '../area/area.entity';
 
@@ -30,8 +24,4 @@ export class Localization {
   livingBeing: LivingBeing;
   @RelationId((localization: Localization) => localization.livingBeing)
   livingBeingId: number;
-
-  @Field(() => [String])
-  @Column({ default: [], type: 'varchar', array: true })
-  places: string[];
 }

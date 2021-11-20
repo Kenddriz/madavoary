@@ -91,16 +91,11 @@ export type CreateDiscoverInput = {
 };
 
 export type CreateLivingBeingInput = {
+  areaId: Scalars['Int'];
   characteristics: Array<Scalars['String']>;
   endangered: Scalars['Boolean'];
   endemic: Scalars['Boolean'];
-  localizationInput: CreateLocalizationInput;
   names: Array<Scalars['String']>;
-};
-
-export type CreateLocalizationInput = {
-  areaId: Scalars['Int'];
-  places: Array<Scalars['String']>;
 };
 
 export type CreateSubscriptionInput = {
@@ -140,9 +135,9 @@ export type LivingBeing = {
   endemic: Scalars['Boolean'];
   id: Scalars['Float'];
   images: Array<Scalars['String']>;
-  localNames: Array<Scalars['Float']>;
+  localNames: Array<Scalars['String']>;
   localizations: Array<Localization>;
-  names: Array<Scalars['Float']>;
+  names: Array<Scalars['String']>;
   updatedAt: Scalars['DateTime'];
   user: User;
 };
@@ -158,7 +153,6 @@ export type Localization = {
   area?: Maybe<Area>;
   id: Scalars['Int'];
   livingBeing: LivingBeing;
-  places: Array<Scalars['String']>;
 };
 
 export type LoginDto = {
@@ -391,7 +385,7 @@ export type Query = {
   areas: Array<Area>;
   countCollections: Array<CountCollectionsOutput>;
   discover: Discover;
-  findLivingBeingByName: LivingBeing;
+  findLivingBeingByName?: Maybe<LivingBeing>;
   login: LoginDto;
   paginateCollections: CollectionPagination;
   paginateLivingBeings: LivingBeingPagination;

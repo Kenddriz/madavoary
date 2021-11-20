@@ -1,5 +1,5 @@
 import { Global, Module } from '@nestjs/common';
-import { LivingBeingService } from './livng-being.service';
+import { LivingBeingService } from './living-being.service';
 import { LivingBeingResolver } from './living-being.resolver';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { LivingBeing } from './living-being.entity';

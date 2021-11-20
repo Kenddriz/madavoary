@@ -3,7 +3,11 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { LivingBeing } from './living-being.entity';
 import { Brackets, Repository } from 'typeorm';
 import { PaginateLivingBeingsInput } from './types/living-being.input';
-import { paginate, Pagination } from 'nestjs-typeorm-paginate';
+import {
+  IPaginationOptions,
+  paginate,
+  Pagination,
+} from 'nestjs-typeorm-paginate';
 
 @Injectable()
 export class LivingBeingService {
@@ -29,27 +33,31 @@ export class LivingBeingService {
       .orWhere(':name ILIKE ANY(lb.names)', { name })
       .getOne();
   }
-  async paginate(
+  async paginateLb(
     input: PaginateLivingBeingsInput,
   ): Promise<Pagination<LivingBeing>> {
-    const name = input.keyword;
     const query = this.repository.createQueryBuilder('lb');
+    const name = input.keyword;
     if (input.areaId > 0)
       query.innerJoin('localizations', 'loc', 'loc."livingBeingsId" = lb.id');
-    query.where(
-      new Brackets((qb) => {
-        qb.where(':name ILIKE ANY(lb."localNames")', { name }).orWhere(
-          ':name ILIKE ANY(lb.names)',
-          { name },
-        );
-      }),
-    );
+    if (input.keyword) {
+      query.where(
+        new Brackets((qb) => {
+          qb.where(':name ILIKE ANY(lb."localNames")', { name }).orWhere(
+            ':name ILIKE ANY(lb.names)',
+            { name },
+          );
+        }),
+      );
+    }
     if (input.areaId > 0)
       query.andWhere('loc."areaId" = :areaId', { areaId: input.areaId });
-    return await paginate<LivingBeing>(query, {
-      limit: input.limit,
+    const options: IPaginationOptions = {
       page: input.page,
-    });
+      limit: input.limit,
+    };
+    query.orderBy('lb."createdAt"', 'DESC');
+    return paginate<LivingBeing>(query, options);
   }
 
   remove(id: number) {

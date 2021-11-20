@@ -58,9 +58,9 @@ export const useLoading = () => {
 }
 
 export const useValidationError = () => {
-  const { t } = useI18n();
+  const { tm } = useI18n();
   function validationError(reference: Record<string, any>) {
-    notify(t('errorOn') + ' ' + t(reference.name).toLowerCase(), 'red');
+    notify(tm('errorOn') + ' ' + String(tm(reference.name)).toLowerCase(), 'red');
   }
   return { validationError }
 }

@@ -60,7 +60,7 @@ export class CollectionService {
       page: input.page,
       limit: input.limit,
     };
-    return await paginate<Collection>(queryBuilder, options);
+    return paginate<Collection>(queryBuilder, options);
   }
   async userBook(userId: number, year: number): Promise<Collection[]> {
     return this.repository

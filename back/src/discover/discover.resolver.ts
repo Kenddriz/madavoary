@@ -11,7 +11,7 @@ import { DiscoverService } from './discover.service';
 import { Discover } from './discover.entity';
 import { CreateDiscoverInput } from './types/create-discover.input';
 import { UpdateDiscoverInput } from './types/update-discover.input';
-import { LivingBeingService } from '../living-being/livng-being.service';
+import { LivingBeingService } from '../living-being/living-being.service';
 import { LivingBeing } from '../living-being/living-being.entity';
 import { PersonService } from '../person/person.service';
 import { Person } from '../person/person.entity';

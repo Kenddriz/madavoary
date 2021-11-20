@@ -29,7 +29,7 @@ export const PAGINATE_LIVING_BEINGS = (withUser: boolean) => gql`
     }
   }
 `;
-export const usePaginateLivingBeings = (id = 0, withUser = false) => {
+export const usePaginateLivingBeings = (id = 0, withUser = true) => {
   const pagination = ref({
     sortBy: 'asc',
     descending: false,
@@ -58,7 +58,7 @@ export const usePaginateLivingBeings = (id = 0, withUser = false) => {
       const find = res.paginateLivingBeings.items.find(item => item.id === id)||res.paginateLivingBeings.items[0];
       if(find){
         if(id)selected.value[0] = find;
-        else selected.value.push(find);
+        else selected.value = [find];
       }
       pagination.value.rowsNumber = res.paginateLivingBeings.meta.totalItems;
       return res.paginateLivingBeings;

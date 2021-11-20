@@ -23,7 +23,7 @@ export class LocalizationService {
   async findByLivingBeing(livingBeingId: number): Promise<Localization[]> {
     return this.repository
       .createQueryBuilder('loc')
-      .where('loc."livingBeingId" = :id', { livingBeingId })
+      .where('loc."livingBeingId" = :livingBeingId', { livingBeingId })
       .getMany();
   }
   update(id: number) {

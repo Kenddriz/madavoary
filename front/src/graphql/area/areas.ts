@@ -40,7 +40,7 @@ export const useAreas = () => {
       const find = res.areas.find(item => item.id === id)||res.areas[0];
       if(find){
         if(id)selected.value[0] = find;
-        else selected.value.push(find);
+        else selected.value = [find];
       }
       return res.areas;
     }

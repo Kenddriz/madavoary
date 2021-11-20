@@ -46,8 +46,8 @@ type Discover {
 type LivingBeing {
   id: Float!
   images: [String!]!
-  localNames: [Float!]!
-  names: [Float!]!
+  localNames: [String!]!
+  names: [String!]!
   endemic: Boolean!
   endangered: Boolean!
   characteristics: [String!]!
@@ -62,7 +62,6 @@ type Localization {
   id: Int!
   area: Area
   livingBeing: LivingBeing!
-  places: [String!]!
 }
 
 type Area {
@@ -142,7 +141,7 @@ type Cost {
 
 type Query {
   areas: [Area!]!
-  findLivingBeingByName(name: String!): LivingBeing!
+  findLivingBeingByName(name: String!): LivingBeing
   paginateLivingBeings(input: PaginateLivingBeingsInput!): LivingBeingPagination!
   discover(id: Int!): Discover!
   paginateUsers(input: PaginateUserInput!): UserPagination!
@@ -243,12 +242,7 @@ input CreateLivingBeingInput {
   names: [String!]!
   endemic: Boolean!
   endangered: Boolean!
-  localizationInput: CreateLocalizationInput!
-}
-
-input CreateLocalizationInput {
   areaId: Int!
-  places: [String!]!
 }
 
 input CreateDiscoverInput {

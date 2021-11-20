@@ -1,6 +1,5 @@
 import {InitialPagination, PAGINATION_META} from 'src/graphql/utils/pagination';
 import {USER_FIELDS} from 'src/graphql/user/user';
-import {PERSON_FIELDS} from 'src/graphql/person/person';
 import {reactive, ref} from 'vue';
 import {useQuery, useResult} from '@vue/apollo-composable';
 import {User, UserPagination, PaginateUserInput, QueryPaginateUsersArgs} from 'src/graphql/types';
@@ -14,7 +13,6 @@ const PAGINATE_PROVIDERS = gql`
     paginateUsers(input: $input){
       items{
         ${USER_FIELDS}
-        person{${PERSON_FIELDS}}
       }
       ${PAGINATION_META}
     }

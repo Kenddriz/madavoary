@@ -25,11 +25,11 @@ export class LivingBeing {
   @Column({ default: [], type: 'varchar', array: true })
   images: string[];
 
-  @Field(() => [Number])
+  @Field(() => [String])
   @Column({ type: 'varchar', array: true })
   localNames: string[];
 
-  @Field(() => [Number])
+  @Field(() => [String])
   @Column({ type: 'varchar', array: true })
   names: string[];
 

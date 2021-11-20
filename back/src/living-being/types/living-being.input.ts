@@ -1,5 +1,4 @@
 import { InputType, Field, Int } from '@nestjs/graphql';
-import { CreateLocalizationInput } from '../../localization/types/localization.input';
 import { PaginationInput } from '../../shared/shared.input';
 
 @InputType()
@@ -12,8 +11,8 @@ export class CreateLivingBeingInput {
   endemic: boolean;
   @Field()
   endangered: boolean;
-  @Field(() => CreateLocalizationInput)
-  localizationInput: CreateLocalizationInput;
+  @Field(() => Int)
+  areaId: number;
 }
 
 @InputType()
