@@ -40,6 +40,7 @@
       :updated-at="area.updatedAt"
       :user="area.user"
       @edit="openForm"
+      @back="$emit('back')"
     />
   </q-card>
 </template>
@@ -55,6 +56,7 @@ export default defineComponent({
   name: 'AreaDetails',
   components: { CommonActionsDetails },
   props: ['area'],
+  emits: ['back'],
   setup(props) {
     const { dialog } = useQuasar();
     return {

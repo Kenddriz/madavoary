@@ -44,9 +44,30 @@
   </q-list>
   <q-separator />
   <q-card-actions align="between">
-    <q-btn outline @click="$emit('edit')" color="brown" text-color="white" icon="edit" />
-    <q-btn outline @click="$emit('delete')" color="brown" text-color="white" icon="delete_forever"/>
-    <q-btn outline @click="$emit('info')" color="brown" text-color="white" icon="more_vert" />
+    <q-btn-group flat stretch>
+      <q-btn
+        @click="$emit('edit')"
+        text-color="white"
+        icon="edit"
+      />
+      <q-btn
+        @click="$emit('delete')"
+        text-color="white"
+        icon="delete_forever"
+      />
+      <q-btn
+        @click="$emit('info')"
+        text-color="white"
+        icon="more_vert"
+      />
+    </q-btn-group>
+    <q-btn
+      outline
+      @click="$emit('back')"
+      color="brown"
+      text-color="white"
+      icon="arrow_back"
+    />
   </q-card-actions>
 </template>
 
@@ -67,7 +88,7 @@ export default defineComponent({
       required: true
     }
   },
-  emits: ['edit', 'delete', 'info'],
+  emits: ['edit', 'delete', 'info', 'back'],
   setup(props) {
     const { dialog } = useQuasar();
     return {

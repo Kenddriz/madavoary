@@ -79,6 +79,8 @@ export default {
   enabled: 'Activé',
   disabled: 'Désactivé',
   noData: 'Aucune donnée',
+  scientificName: 'Nom scientifique',
+  characteristic: 'Caractéristique',
   'collection-subjects': [
     {
       id: '0',

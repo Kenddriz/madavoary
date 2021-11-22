@@ -28,21 +28,35 @@
 
     <q-separator />
 
-    <q-list>
-      <q-item v-for="(name, index) in $tm('names')" :key="index">
-        <q-item-section>
-          <q-item-label>{{name}}</q-item-label>
-          <q-item-label caption>
-            {{ index === 0 ? item.localNames.join(' - ') : item.names[index - 1] }}
-          </q-item-label>
-        </q-item-section>
-      </q-item>
-    </q-list>
+    <div class="row justify-between">
+      <q-list>
+        <q-item v-for="(name, index) in $tm('names')" :key="index">
+          <q-item-section>
+            <q-item-label>{{name}}</q-item-label>
+            <q-item-label caption>
+              {{ index === 0 ? item.localNames.join(' - ') : item.names[index - 1] }}
+            </q-item-label>
+          </q-item-section>
+        </q-item>
+      </q-list>
+      <q-list>
+        <q-expansion-item
+          v-for="(c, i) in item.characteristics"
+          :key="i"
+          group="characteristics"
+          :label="`${$t('characteristic')}s en ${($tm('languages')[i]).label.toLowerCase()}`"
+          :default-opened="i === 0"
+        >
+          <p>{{c}}</p>
+        </q-expansion-item>
+      </q-list>
+    </div>
 
     <CommonActionsDetails
       :created-at="item.createdAt"
       :updated-at="item.updatedAt"
       :user="item.user"
+      @back="$emit('back')"
     />
   </q-card>
 </template>
@@ -56,6 +70,7 @@ import CommonActionsDetails from 'components/shared/CommonActionsDetails.vue';
 export default defineComponent({
   name: 'LivingBeingDetails',
   components: { CommonActionsDetails  },
+  emits: ['back'],
   props: {
     item: {
       type: Object as PropType<LivingBeing>,

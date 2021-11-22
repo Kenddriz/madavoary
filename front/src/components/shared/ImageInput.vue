@@ -8,7 +8,6 @@
           size="sm"
           icon="check"
           @click="$emit('upload', images); images.length = 0;"
-          v-if="src"
         />
         <q-btn
           outline

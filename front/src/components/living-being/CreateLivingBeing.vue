@@ -132,7 +132,7 @@
               :model-value="c"
               v-model="input.characteristics[i]"
               autogrow
-              :label="`Caractéristiques en ${($tm('languages')[i]).label.toLowerCase()}`"
+              :label="`${$t('characteristic')}s en ${($tm('languages')[i]).label.toLowerCase()}`"
               label-color="white"
             />
           </q-card>

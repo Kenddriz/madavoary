@@ -4,7 +4,7 @@
       <template v-slot:title>
         {{$t('loading.create').replace('...', '')}}
       </template>
-      <ImageInput @upload="addImage($event[0], collectionId)" />
+      <ImageInput @upload="addImage($event[0], collectionId); onDialogHide();" />
       <template v-slot:footer>
         <div class="full-width flex flex-center text-subtitle1">
           <q-spinner v-if="loading" color="amber" thickness="10px" size="md" />
@@ -27,10 +27,11 @@ export default defineComponent({
   components: { MovableCard, ImageInput },
   props: {collectionId: Number, imageNumber: Number },
   setup() {
-    const { dialogRef } = useDialogPluginComponent()
+    const { dialogRef, onDialogHide } = useDialogPluginComponent()
     return {
       dialogRef,
-      ...useAddCollectionImage()
+      ...useAddCollectionImage(),
+      onDialogHide
     }
   }
 })
