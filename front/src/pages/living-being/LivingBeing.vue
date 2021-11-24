@@ -41,7 +41,7 @@
               </template>
             </q-input>
             <q-space />
-            <CreateLivingBeing />
+            <q-btn unelevated label="Nouveau" icon="add" @click="tab = 'create'" />
           </template>
           <template v-slot:header="props">
             <q-tr :props="props">
@@ -92,6 +92,9 @@
           @back="tab = 'table'"
         />
       </q-tab-panel>
+      <q-tab-panel name="create" class="q-pa-sm">
+        <CreateLivingBeingForm />
+      </q-tab-panel>
     </q-tab-panels>
   </q-page>
 </template>
@@ -101,7 +104,7 @@ import {defineComponent, ref} from 'vue';
 import SpeciesDetails from 'components/living-being/LivingBeingDetails.vue';
 import {usePaginateLivingBeings} from 'src/graphql/living-being/paginate-living-beings';
 import {LivingBeing} from 'src/graphql/types';
-import CreateLivingBeing from 'components/living-being/CreateLivingBeing.vue';
+import CreateLivingBeingForm from 'components/living-being/CreateLivingBeingForm.vue';
 
 const columns = [
   {name: 'localNames', align: 'left', field: (row: LivingBeing) => row.localNames.join('/')},
@@ -110,7 +113,7 @@ const columns = [
 ];
 export default defineComponent({
   name: 'LivingBeing',
-  components: { SpeciesDetails, CreateLivingBeing },
+  components: { SpeciesDetails, CreateLivingBeingForm },
   setup() {
     return {
       columns,

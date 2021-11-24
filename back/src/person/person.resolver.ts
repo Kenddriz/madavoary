@@ -6,15 +6,12 @@ import { GqlAuthGuard } from '../auth/jwt-auth.guard';
 import { GraphQLUpload } from 'graphql-upload';
 import { Upload } from '../shared/shared.input';
 import { removeFile, upload } from '../utils';
-import { DiscoverService } from '../discover/discover.service';
 import { RelationId } from 'typeorm';
-import { Discover } from '../discover/discover.entity';
 
 @Resolver(() => Person)
 export class PersonResolver {
   constructor(
     private personService: PersonService,
-    private discoverService: DiscoverService,
   ) {}
   @UseGuards(GqlAuthGuard)
   @Mutation(() => Person)
@@ -27,10 +24,5 @@ export class PersonResolver {
     const { filename } = await upload(file, 'avatars/persons', person.id);
     person.avatar = filename;
     return this.personService.save(person);
-  }
-
-  @RelationId(() => [Discover])
-  async discovers(@Root() person: Person): Promise<Discover[]> {
-    return this.discoverService.findByPerson(person.id);
   }
 }

@@ -5,12 +5,10 @@ import {
   Entity,
   ManyToOne,
   OneToMany,
-  OneToOne,
   PrimaryColumn,
   RelationId,
   UpdateDateColumn,
 } from 'typeorm';
-import { Discover } from '../discover/discover.entity';
 import { Localization } from '../localization/localization.entity';
 import { User } from '../user/user.entity';
 
@@ -60,36 +58,33 @@ export class LivingBeing {
   })
   localizations: Localization[];
 
-  @Field(() => Discover, { nullable: true })
-  @OneToOne(() => Discover, (discover) => discover.livingBeing, {
-    onDelete: 'CASCADE',
-  })
-  discover?: Discover;
-
   @Field(() => User)
   @ManyToOne(() => User, (user) => user.livingBeing, { onDelete: 'CASCADE' })
   user: User;
   @RelationId((livingBeing: LivingBeing) => livingBeing.user)
   userId: number;
-  /**classification
+  //classification
   @Column({ default: 0 })
   domainId: number;
 
-  @Column({ default: [], type: 'int', array: true })
-  kingdomIds: number[];
+  @Column({ default: [], type: 'varchar', array: true })
+  kingdomIds: string[];
 
-  @Column({ default: [], type: 'int', array: true })
-  phylumIds: number[];
+  @Column({ default: [], type: 'varchar', array: true })
+  phylumIds: string[];
 
-  @Column({ default: [], type: 'int', array: true })
-  classIds: number[];
+  @Column({ default: [], type: 'varchar', array: true })
+  classIds: string[];
 
-  @Column({ default: [], type: 'int', array: true })
-  orderIds: number[];
+  @Column({ default: [], type: 'varchar', array: true })
+  orderIds: string[];
 
-  @Column({ default: [], type: 'int', array: true })
-  familyIds: number[];
+  @Column({ default: [], type: 'varchar', array: true })
+  familyIds: string[];
 
-  @Column({ default: [], type: 'int', array: true })
-  speciesId: number[];**/
+  @Column({ default: [], type: 'varchar', array: true })
+  genusIds: string[];
+
+  @Column({ default: [], type: 'varchar', array: true })
+  speciesId: string[];
 }

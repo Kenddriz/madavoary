@@ -9,8 +9,6 @@ import {
 } from '@nestjs/graphql';
 import { LivingBeingService } from './living-being.service';
 import { LivingBeing } from './living-being.entity';
-import { DiscoverService } from '../discover/discover.service';
-import { Discover } from '../discover/discover.entity';
 import { UserService } from '../user/user.service';
 import { User } from '../user/user.entity';
 import {
@@ -33,7 +31,6 @@ import { LocalizationService } from '../localization/localization.service';
 export class LivingBeingResolver {
   constructor(
     private livingBeingService: LivingBeingService,
-    private discoverService: DiscoverService,
     private userService: UserService,
     private areaService: AreaService,
     private localizationService: LocalizationService,
@@ -82,10 +79,6 @@ export class LivingBeingResolver {
   @Mutation(() => LivingBeing)
   removeLivingBeing(@Args('id', { type: () => Int }) id: number) {
     return this.livingBeingService.remove(id);
-  }
-  @ResolveField(() => Discover, { nullable: true })
-  async discover(@Root() livingBeing: LivingBeing): Promise<Discover> {
-    return this.discoverService.findByLivingBeing(livingBeing.id);
   }
   @ResolveField(() => User)
   async user(@Root() livingBeing: LivingBeing): Promise<User> {

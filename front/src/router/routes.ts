@@ -20,8 +20,8 @@ const routes: RouteRecordRaw[] = [
         component: () => import('pages/user/MyAccount.vue')
       },
       {
-        path: 'collections',
-        component: () => import('pages/collection/Collection.vue')
+        path: 'classifications',
+        component: () => import('pages/classification/Classification.vue')
       },
       {
         path: 'area',

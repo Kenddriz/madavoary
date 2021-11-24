@@ -75,7 +75,7 @@ import {USER_HOME} from 'src/graphql/user/session';
 const urls = [
   { to: 'dashboard', icon: 'dashboard'},
   { to: 'users', icon: 'group'},
-  { to: 'collections', icon: 'person'},
+  { to: 'classifications', icon: 'person'},
   { to: 'area', icon: 'park'},
   { to: 'living-being', icon: 'pets'},
   { to: 'my-account', icon: 'person'}

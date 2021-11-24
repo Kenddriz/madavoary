@@ -3,6 +3,8 @@ import { computed, ref } from 'vue';
 import {date, Loading, Notify} from 'quasar';
 import {useI18n} from 'vue-i18n';
 
+export const classificationKeys = ['kingdom', 'phylum', 'class', 'order', 'family', 'genus', 'species'];
+
 export const cloneDeep = (data: any) => {
   return JSON.parse(JSON.stringify(data))
 }

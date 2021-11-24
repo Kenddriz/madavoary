@@ -3,13 +3,11 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  OneToMany,
   OneToOne,
   PrimaryColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { User } from '../user/user.entity';
-import { Discover } from '../discover/discover.entity';
 
 @ObjectType()
 @Entity({ name: 'persons' })
@@ -55,10 +53,4 @@ export class Person {
     onDelete: 'CASCADE',
   })
   user?: User;
-
-  @Field(() => [Discover])
-  @OneToMany(() => Discover, (discover) => discover.person, {
-    onDelete: 'CASCADE',
-  })
-  discovers: Discover[];
 }

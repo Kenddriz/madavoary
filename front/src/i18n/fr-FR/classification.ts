@@ -5,5 +5,5 @@ export default {
   order: ['Super-ordre', 'Ordre', 'Sous-ordre', 'Infra-ordre', 'Micro-ordre'],
   family: ['Super-famille', 'famille', 'Sous-famille', 'Tribu', 'Sous-tribu'],
   genus: ['Sous-genre', 'Section', 'Sous-section'],
-  species: ['Espèce', 'Sous-espèce', 'variété', 'sous-variété', 'forme', 'sous-forme']
+  species: ['Espèce', 'Sous-espèce', 'variété|race', 'sous-variété|Sous-race', 'forme', 'sous-forme']
 }
