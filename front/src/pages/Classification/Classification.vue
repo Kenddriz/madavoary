@@ -4,7 +4,7 @@
       v-for="(key, index) in classificationKeys"
       :key="index"
       group="keys"
-      :default-opened="index === 0"
+      :default-opened="index == 0"
       :label="key"
     >
       <q-card flat bordered>
