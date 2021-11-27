@@ -180,6 +180,11 @@ export type Meta = {
   totalPages?: Maybe<Scalars['Float']>;
 };
 
+export type MoveClassifierInput = {
+  id: Scalars['Int'];
+  parentId: Scalars['Int'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   addCollectionImage: Collection;
@@ -191,6 +196,7 @@ export type Mutation = {
   createSubscription: Subscription;
   createUser: User;
   createVisit: Visit;
+  moveClassifier: Classifier;
   removeArea: Area;
   removeClassification: Classification;
   removeClassifier: Classifier;
@@ -260,6 +266,11 @@ export type MutationCreateUserArgs = {
 
 export type MutationCreateVisitArgs = {
   createVisitInput: CreateVisitInput;
+};
+
+
+export type MutationMoveClassifierArgs = {
+  input: MoveClassifierInput;
 };
 
 

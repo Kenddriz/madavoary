@@ -11,6 +11,7 @@ import { ClassifierService } from './classifier.service';
 import { Classifier } from './classifier.entity';
 import {
   CreateClassifierInput,
+  MoveClassifierInput,
   UpdateClassifierInput,
 } from './types/classifier.input';
 import { User } from '../user/user.entity';
@@ -56,6 +57,19 @@ export class ClassifierResolver {
   async updateClassifier(@Args('input') input: UpdateClassifierInput) {
     const classifier = await this.classifierService.findOneById(input.id);
     Object.assign(classifier, input);
+    return this.classifierService.save(classifier);
+  }
+
+  @UseGuards(GqlAuthGuard)
+  @Mutation(() => Classifier)
+  async moveClassifier(@Args('input') input: MoveClassifierInput) {
+    const classifier = await this.classifierService.findOneById(input.id);
+    classifier.parent = await this.classifierService.findOneById(
+      input.parentId,
+    );
+    const lTarget = classifier.parent.level;
+    const lSource = classifier.level;
+    classifier.level = lTarget + (lTarget <= lSource ? 1 : -1);
     return this.classifierService.save(classifier);
   }
 

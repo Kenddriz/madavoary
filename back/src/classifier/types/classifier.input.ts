@@ -16,3 +16,10 @@ export class UpdateClassifierInput extends CreateClassifierInput {
   @Field(() => Int)
   id: number;
 }
+@InputType()
+export class MoveClassifierInput {
+  @Field(() => Int)
+  id: number;
+  @Field(() => Int)
+  parentId: number;
+}

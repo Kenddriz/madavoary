@@ -38,6 +38,16 @@
           :no-results-label="$t('noData')"
           accordion
         >
+          <template v-slot:default-header="prop">
+            <div @click="moveClassifier(prop.node.id)" class="row items-center q-gutter-x-md full-width">
+              <span>{{ prop.node.label }}</span>
+              <q-icon
+                v-if="moveInput.id > 0 && moveInput.id !== prop.node.id && prop.node.id !== moveInput.parentId"
+                name="content_paste"
+                size="xs"
+              />
+            </div>
+          </template>
           <template v-slot:default-body="prop">
             <q-btn
               no-caps
@@ -64,6 +74,15 @@
               size="sm"
               icon="delete_forever"
               color="white"
+            />
+            <q-btn
+              no-caps
+              flat
+              rounded
+              size="sm"
+              icon="content_cut"
+              :color="moveInput.id === prop.node.id ? 'positive' : 'white'"
+              @click="setCutId(prop.node.id, prop.node.parentId)"
             />
           </template>
         </q-tree>
@@ -143,7 +162,8 @@ import {defineAsyncComponent, defineComponent, ref} from 'vue';
 import NoData from 'components/shared/NoData.vue';
 import {useClassifiers} from 'src/graphql/classifier/classifiers';
 import {makeTree} from 'src/graphql/utils/utils';
-import {useQuasar} from "quasar";
+import {useQuasar} from 'quasar';
+import {useMoveClassifier} from "src/graphql/classifier/move.classifier";
 
 export default defineComponent({
   name: 'Classification',
@@ -165,7 +185,8 @@ export default defineComponent({
       createClassifier: (item: any = undefined) => dialog({
         component: defineAsyncComponent(() => import('components/classifier/CreateClassifier.vue')),
         componentProps: { item }
-      })
+      }),
+      ...useMoveClassifier()
     }
   }
 })

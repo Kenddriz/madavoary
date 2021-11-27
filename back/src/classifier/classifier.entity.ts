@@ -31,7 +31,7 @@ export class Classifier {
   @Column({ type: 'varchar', array: true })
   translations: string[]; /**First index value is scientific*/
 
-  @OneToOne(() => Classifier, (classification) => classification.children, {
+  @ManyToOne(() => Classifier, (classification) => classification.children, {
     onDelete: 'CASCADE',
   })
   @JoinColumn({ name: 'parentId' })

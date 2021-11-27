@@ -2,7 +2,7 @@ import {Classifier} from 'src/graphql/types';
 import {gql} from '@apollo/client';
 import {useQuery, useResult} from '@vue/apollo-composable';
 import {CLASSIFIER_FIELDS} from 'src/graphql/classifier/classifier';
-import {ref} from "vue";
+import {ref} from 'vue';
 
 type ClassifiersData = {
   classifiers: Classifier[];

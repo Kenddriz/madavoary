@@ -209,6 +209,7 @@ type Mutation {
   removeClassification(id: Int!): Classification!
   createClassifier(input: CreateClassifierInput!): Classifier!
   updateClassifier(input: UpdateClassifierInput!): Classifier!
+  moveClassifier(input: MoveClassifierInput!): Classifier!
   removeClassifier(id: Int!): Classifier!
 }
 
@@ -336,4 +337,9 @@ input UpdateClassifierInput {
   level: Int!
   parentId: Int
   id: Int!
+}
+
+input MoveClassifierInput {
+  id: Int!
+  parentId: Int!
 }
