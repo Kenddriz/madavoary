@@ -4,7 +4,6 @@ import {date, Loading, Notify} from 'quasar';
 import {useI18n} from 'vue-i18n';
 
 export const classificationKeys = ['kingdom', 'phylum', 'class', 'order', 'family', 'genus', 'species'];
-
 export const cloneDeep = (data: any) => {
   return JSON.parse(JSON.stringify(data))
 }
@@ -66,3 +65,11 @@ export const useValidationError = () => {
   }
   return { validationError }
 }
+export const makeTree = (
+  items: any[],
+  parentId: number|null
+): any[] => {
+  return items
+    .filter(item => item.parentId === parentId)
+    .map(item => ({ ...item, children: makeTree(items, item.id)}));
+};

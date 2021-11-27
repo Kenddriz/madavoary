@@ -3,9 +3,8 @@ export const LIVING_BEING_FIELDS = `
   localNames
   names
   images
-  characteristics
+  specificities
   endemic
-  endangered
   createdAt
   updatedAt
 `;

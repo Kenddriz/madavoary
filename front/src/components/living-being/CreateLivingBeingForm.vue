@@ -97,8 +97,8 @@
             <q-input
               dense
               class="col"
-              :model-value="input.characteristics[i]"
-              v-model="input.characteristics[i]"
+              :model-value="input.specificities[i]"
+              v-model="input.specificities[i]"
               autogrow
               label="Spécificités"
               label-color="white"
@@ -111,17 +111,12 @@
     <q-card-section class="text-center">Classication scientifique</q-card-section>
     <q-separator />
     <q-card-section class="flex justify-between items-start q-gutter-sm q-pa-sm">
-      <template
-        v-for="(key,index) in keys"
-        :key="index"
-      >
-        <q-input
-          v-for="(field, i) in $tm(`classification.${key}`)"
-          :key="i"
-          :label="field"
-          label-color="white"
-        />
-      </template>
+      <q-input
+        v-for="(field, i) in $tm(`classification.classifiers`)"
+        :key="i"
+        :label="field"
+        label-color="white"
+      />
     </q-card-section>
     <q-separator />
     <q-card-actions>

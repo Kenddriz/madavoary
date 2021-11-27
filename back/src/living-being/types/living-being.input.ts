@@ -4,7 +4,7 @@ import { PaginationInput } from '../../shared/shared.input';
 @InputType()
 export class CreateLivingBeingInput {
   @Field(() => [String])
-  characteristics: string[];
+  specificities: string[];
   @Field(() => [String])
   names: string[];
   @Field()

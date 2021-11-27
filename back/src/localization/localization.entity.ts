@@ -10,9 +10,9 @@ export class Localization {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Field(() => Area, { nullable: true })
+  @Field(() => Area)
   @ManyToOne(() => Area, { primary: true, onDelete: 'CASCADE' })
-  area?: Area;
+  area: Area;
   @RelationId((localization: Localization) => localization.area)
   areaId: number;
 

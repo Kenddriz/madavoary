@@ -1,7 +1,7 @@
 <template>
   <q-card-section :horizontal="$q.screen.gt.sm">
     <q-avatar square size="150px">
-      <q-img :src="getAvatar(user.person.avatar)">
+      <q-img :src="getAvatar(user.avatar)">
         <div class="absolute-top-left bg-transparent flex flex-center">
           <q-badge
             style="border-radius: 50%;"
@@ -15,24 +15,24 @@
       <q-item>
         <q-item-section>
           <q-item-label>
-            {{user.person.firstName}}
-            {{user.person.lastName}}
+            {{user.firstName}}
+            {{user.lastName}}
           </q-item-label>
           <q-item-label caption>
-            {{$tm('roles')[user.role]}}, {{$tm('genders')[user.person.gender]}}
+            {{$tm('roles')[user.role]}}, {{$tm('genders')[user.gender]}}
           </q-item-label>
         </q-item-section>
       </q-item>
       <q-item>
         <q-item-section>
           <q-item-label>{{$t('phoneNumber')}}</q-item-label>
-          <q-item-label caption>{{user.person.phone}}</q-item-label>
+          <q-item-label caption>{{user.phone}}</q-item-label>
         </q-item-section>
       </q-item>
       <q-item>
         <q-item-section>
           <q-item-label>{{$t('mailAddress')}}</q-item-label>
-          <q-item-label class="break-line" caption>{{user.person.email}}</q-item-label>
+          <q-item-label class="break-line" caption>{{user.email}}</q-item-label>
         </q-item-section>
       </q-item>
     </q-list>
@@ -44,13 +44,13 @@
     <q-item-section>
       <q-item-label>{{$t('createdAt')}}</q-item-label>
       <q-item-label caption>
-        {{formatDate(user.person.createdAt, $t('dateTime'))}}
+        {{formatDate(user.createdAt, $t('dateTime'))}}
       </q-item-label>
     </q-item-section>
     <q-item-section class="text-right">
       <q-item-label>{{$t('updatedAt')}}</q-item-label>
       <q-item-label caption>
-        {{formatDate(user.person.updatedAt, $t('dateTime'))}}
+        {{formatDate(user.updatedAt, $t('dateTime'))}}
       </q-item-label>
     </q-item-section>
   </q-item>

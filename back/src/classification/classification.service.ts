@@ -5,7 +5,7 @@ import { UpdateClassificationInput } from './dto/update-classification.input';
 @Injectable()
 export class ClassificationService {
   create(createClassificationInput: CreateClassificationInput) {
-    return 'This action adds a new classification';
+    return 'This action adds a new classifier';
   }
 
   findAll() {

@@ -1,16 +1,15 @@
 import { ObjectType, Field, Int } from '@nestjs/graphql';
 import {
   Column,
+  CreateDateColumn,
   Entity,
-  JoinColumn,
   OneToMany,
-  OneToOne,
   PrimaryGeneratedColumn,
-  RelationId,
+  UpdateDateColumn,
 } from 'typeorm';
-import { Person } from '../person/person.entity';
 import { Area } from '../area/area.entity';
 import { LivingBeing } from '../living-being/living-being.entity';
+import {Classifier} from "../classifier/classifier.entity";
 
 @ObjectType()
 @Entity({ name: 'users' })
@@ -35,15 +34,37 @@ export class User {
   @Column({ type: 'boolean', default: true })
   active: boolean;
 
-  @Field(() => Person)
-  @OneToOne(() => Person, (person) => person.user, {
-    cascade: true,
-    onDelete: 'CASCADE',
-  })
-  @JoinColumn()
-  person: Person;
-  @RelationId((user: User) => user.person)
-  personId: number;
+  @Field()
+  @Column({ type: 'varchar', length: 60 })
+  lastName: string;
+
+  @Field()
+  @Column({ type: 'varchar', length: 60, default: '' })
+  firstName: string;
+
+  @Field()
+  @Column({ type: 'varchar', length: 60, unique: true })
+  email: string;
+
+  @Field()
+  @Column({ type: 'varchar', length: 20, unique: true })
+  phone: string;
+
+  @Field()
+  @Column({ type: 'varchar', length: 20 })
+  avatar: string;
+
+  @Field()
+  @Column({ type: 'int', width: 1 })
+  gender: 0 | 1;
+
+  @Field()
+  @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
+  createdAt: Date;
+
+  @Field()
+  @UpdateDateColumn({ name: 'updated_at', type: 'timestamp' })
+  updatedAt: Date;
 
   @OneToMany(() => Area, (area) => area.user, { onDelete: 'CASCADE' })
   areas: Area[];
@@ -52,4 +73,7 @@ export class User {
     onDelete: 'CASCADE',
   })
   livingBeing: LivingBeing[];
+
+  @OneToMany(() => Classifier, (classifier) => classifier.user, { onDelete: 'CASCADE' })
+  classifiers: Classifier[];
 }

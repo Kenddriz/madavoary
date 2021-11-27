@@ -11,6 +11,7 @@ import {
 } from 'typeorm';
 import { Localization } from '../localization/localization.entity';
 import { User } from '../user/user.entity';
+import { Classification } from '../classification/classification.entity';
 
 @ObjectType()
 @Entity({ name: 'livingBeings' })
@@ -35,13 +36,9 @@ export class LivingBeing {
   @Column({ type: 'boolean' })
   endemic: boolean;
 
-  @Field()
-  @Column({ type: 'boolean' })
-  endangered: boolean;
-
   @Field(() => [String])
   @Column({ default: [], type: 'varchar', array: true })
-  characteristics: string[];
+  specificities: string[];
 
   @Field()
   @CreateDateColumn({ name: 'createdAt', type: 'timestamp' })
@@ -58,33 +55,19 @@ export class LivingBeing {
   })
   localizations: Localization[];
 
+  @Field(() => [Classification])
+  @OneToMany(
+    () => Classification,
+    (classification) => classification.livingBeing,
+    {
+      onDelete: 'CASCADE',
+    },
+  )
+  classification: Classification[];
+
   @Field(() => User)
   @ManyToOne(() => User, (user) => user.livingBeing, { onDelete: 'CASCADE' })
   user: User;
   @RelationId((livingBeing: LivingBeing) => livingBeing.user)
   userId: number;
-  //classification
-  @Column({ default: 0 })
-  domainId: number;
-
-  @Column({ default: [], type: 'varchar', array: true })
-  kingdomIds: string[];
-
-  @Column({ default: [], type: 'varchar', array: true })
-  phylumIds: string[];
-
-  @Column({ default: [], type: 'varchar', array: true })
-  classIds: string[];
-
-  @Column({ default: [], type: 'varchar', array: true })
-  orderIds: string[];
-
-  @Column({ default: [], type: 'varchar', array: true })
-  familyIds: string[];
-
-  @Column({ default: [], type: 'varchar', array: true })
-  genusIds: string[];
-
-  @Column({ default: [], type: 'varchar', array: true })
-  speciesId: string[];
 }

@@ -21,25 +21,27 @@ export class UserService {
   async findOneById(id: number): Promise<User> {
     return this.repository.findOne({ id });
   }
-  async findOneByPerson(personId: number): Promise<User> {
-    return this.repository
-      .createQueryBuilder('user')
-      .where('user.personId = :personId', { personId })
-      .getOne();
+  async findOneByContact(email: string, phone: string): Promise<User> {
+    return this.repository.findOne({
+      where: [{ email }, { phone }],
+    });
+  }
+  async findOneByPhone(phone: string): Promise<User> {
+    return this.repository.findOne({ phone });
+  }
+  async findOneByEmail(email: string): Promise<User> {
+    return this.repository.findOne({ email });
   }
   async paginate(input: PaginateUserInput): Promise<Pagination<User>> {
     const keyword = `%${input.keyword}%`;
-    const queryBuilder = this.repository
-      .createQueryBuilder('user')
-      .innerJoin('persons', 'person', 'user.personId = person.id')
-      .where(
-        new Brackets((qb) => {
-          qb.where(`person.lastName ILIKE :keyword`, { keyword }).orWhere(
-            `person.firstName ILIKE :keyword`,
-            { keyword },
-          );
-        }),
-      );
+    const queryBuilder = this.repository.createQueryBuilder('user').where(
+      new Brackets((qb) => {
+        qb.where(`user.lastName ILIKE :keyword`, { keyword }).orWhere(
+          `user.firstName ILIKE :keyword`,
+          { keyword },
+        );
+      }),
+    );
     if (input.filter.length) {
       switch (input.filter[0]) {
         case 'role':
@@ -53,7 +55,7 @@ export class UserService {
           break;
       }
     }
-    queryBuilder.orderBy('person.createdAt', 'DESC');
+    queryBuilder.orderBy('user.createdAt', 'DESC');
 
     const options: IPaginationOptions = {
       page: input.page,

@@ -1,11 +1,11 @@
 <template>
-  <ImageInput @upload="updateAvatar( $event[0], id)" :src="avatar" />
+  <ImageInput @upload="updateAvatar($event[0], id)" :src="avatar" />
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
 import ImageInput from 'components/shared/ImageInput.vue';
-import {useUpdatePersonAvatar} from 'src/graphql/person/update.person';
+import {useUpdateUserAvatar} from 'src/graphql/user/update.user.avatar';
 
 export default defineComponent({
   name: 'UpdatePersonAvatar',
@@ -16,7 +16,7 @@ export default defineComponent({
   },
   setup() {
     return {
-      ...useUpdatePersonAvatar()
+      ...useUpdateUserAvatar()
     }
   }
 });

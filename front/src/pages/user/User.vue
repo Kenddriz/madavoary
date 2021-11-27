@@ -126,8 +126,8 @@ import EditUserParams from 'components/user/update/EditUserParams.vue';
 import {useQuasar} from 'quasar';
 
 const columns = [
-  {name: 'firstName', align: 'left', field: (row: User) => row.person.firstName},
-  {name: 'phone', align: 'left', field: (row: User) => row.person.phone },
+  {name: 'firstName', align: 'left', field: (row: User) => row.firstName},
+  {name: 'phone', align: 'left', field: (row: User) => row.phone },
   {name: 'controls', align: 'left'},
 ];
 export default defineComponent({

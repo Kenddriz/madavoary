@@ -3,7 +3,6 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AreaModule } from './area/area.module';
 import { LivingBeingModule } from './living-being/living-being.module';
-import { PersonModule } from './person/person.module';
 import { UserModule } from './user/user.module';
 import { CollectionModule } from './collection/collection.module';
 import { VisitModule } from './visit/visit.module';
@@ -15,6 +14,7 @@ import { join } from 'path';
 import { LocalizationModule } from './localization/localization.module';
 import { AuthModule } from './auth/auth.module';
 import { ClassificationModule } from './classification/classification.module';
+import { ClassifierModule } from './classifier/classifier.module';
 
 @Module({
   imports: [
@@ -30,7 +30,6 @@ import { ClassificationModule } from './classification/classification.module';
     }),
     AreaModule,
     LivingBeingModule,
-    PersonModule,
     UserModule,
     CollectionModule,
     VisitModule,
@@ -38,6 +37,7 @@ import { ClassificationModule } from './classification/classification.module';
     LocalizationModule,
     AuthModule,
     ClassificationModule,
+    ClassifierModule,
   ],
   controllers: [AppController],
   providers: [AppService],

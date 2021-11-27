@@ -1,15 +1,30 @@
-import { InputType, Field, Int } from '@nestjs/graphql';
-import { PersonInput } from '../../person/types/person.input';
+import { InputType, Field, Int, PartialType, OmitType } from '@nestjs/graphql';
 import { PaginationInput } from '../../shared/shared.input';
 
 @InputType()
-export class CreateUserInput extends PersonInput {
+export class CreateUserInput {
   @Field()
   password: string;
+  @Field()
+  lastName: string;
+
+  @Field()
+  firstName: string;
+
+  @Field()
+  email: string;
+
+  @Field()
+  phone: string;
+
+  @Field()
+  gender: 0 | 1;
 }
 
 @InputType()
-export class UpdateUserInput extends PersonInput {
+export class UpdateUserInput extends PartialType(
+  OmitType(CreateUserInput, ['password'] as const),
+) {
   @Field(() => Int)
   id: number;
   @Field(() => Int)

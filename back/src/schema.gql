@@ -7,8 +7,29 @@ type Peripheral {
   distance: Float!
 }
 
-type Person {
+type Classification {
   id: Int!
+  classifier: Classifier!
+  livingBeing: LivingBeing!
+}
+
+type Classifier {
+  id: Int!
+  label: String!
+  level: Int!
+  translations: [String!]!
+  parentId: Int
+  classification: [Classification!]!
+  user: User!
+  children: [Classifier!]!
+}
+
+type User {
+  id: Int!
+  password: String!
+  verifiedAt: DateTime
+  role: Float!
+  active: Boolean!
   lastName: String!
   firstName: String!
   email: String!
@@ -17,7 +38,6 @@ type Person {
   gender: Float!
   createdAt: DateTime!
   updatedAt: DateTime!
-  user: User
 }
 
 """
@@ -25,32 +45,23 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
-type User {
-  id: Int!
-  password: String!
-  verifiedAt: DateTime
-  role: Float!
-  active: Boolean!
-  person: Person!
-}
-
 type LivingBeing {
   id: Float!
   images: [String!]!
   localNames: [String!]!
   names: [String!]!
   endemic: Boolean!
-  endangered: Boolean!
-  characteristics: [String!]!
+  specificities: [String!]!
   createdAt: DateTime!
   updatedAt: DateTime!
   localizations: [Localization!]!
+  classification: [Classification!]!
   user: User!
 }
 
 type Localization {
   id: Int!
-  area: Area
+  area: Area!
   livingBeing: LivingBeing!
 }
 
@@ -124,25 +135,6 @@ type LoginDto {
   user: User!
 }
 
-type Classification {
-  id: Int!
-  labels: [String!]!
-  parent: Classification
-}
-
-type Discover {
-  id: Int!
-  when: String!
-  validatedAt: DateTime
-  person: Person!
-  livingBeing: LivingBeing!
-}
-
-type Cost {
-  ageSlice: Int!
-  value: Float!
-}
-
 type Query {
   areas: [Area!]!
   findLivingBeingByName(name: String!): LivingBeing
@@ -155,6 +147,7 @@ type Query {
   login(input: AuthInput!): LoginDto!
   whoAmI: User!
   classification(id: Int!): Classification!
+  classifiers: [Classifier!]!
 }
 
 input PaginateLivingBeingsInput {
@@ -195,10 +188,10 @@ type Mutation {
   removeArea(id: Int!): Area!
   createLivingBeing(input: CreateLivingBeingInput!, images: [Upload!]!): LivingBeing!
   removeLivingBeing(id: Int!): LivingBeing!
-  updatePersonAvatar(id: Int!, avatar: Upload!): Person!
   createUser(input: CreateUserInput!, avatar: Upload!): User!
   updateUser(input: UpdateUserInput!): User!
   updatePassword(input: UpdatePasswordInput!): User
+  updateUserAvatar(id: Int!, avatar: Upload!): User!
   createCollection(detail: CreateCollectionInput!, images: [Upload!]!): Collection!
   updateCollectionImage(input: UpdateCollectionImageInput!, image: Upload!): Collection!
   addCollectionImage(collectionId: Int!, image: Upload!): Collection!
@@ -214,6 +207,9 @@ type Mutation {
   createClassification(createClassificationInput: CreateClassificationInput!): Classification!
   updateClassification(updateClassificationInput: UpdateClassificationInput!): Classification!
   removeClassification(id: Int!): Classification!
+  createClassifier(input: CreateClassifierInput!): Classifier!
+  updateClassifier(input: UpdateClassifierInput!): Classifier!
+  removeClassifier(id: Int!): Classifier!
 }
 
 input CreateAreaInput {
@@ -242,7 +238,7 @@ input UpdateAreaInput {
 }
 
 input CreateLivingBeingInput {
-  characteristics: [String!]!
+  specificities: [String!]!
   names: [String!]!
   endemic: Boolean!
   endangered: Boolean!
@@ -250,20 +246,20 @@ input CreateLivingBeingInput {
 }
 
 input CreateUserInput {
+  password: String!
   lastName: String!
   firstName: String!
   email: String!
   phone: String!
   gender: Float!
-  password: String!
 }
 
 input UpdateUserInput {
-  lastName: String!
-  firstName: String!
-  email: String!
-  phone: String!
-  gender: Float!
+  lastName: String
+  firstName: String
+  email: String
+  phone: String
+  gender: Float
   id: Int!
   role: Int!
   active: Boolean!
@@ -324,5 +320,20 @@ input CreateClassificationInput {
 input UpdateClassificationInput {
   """Example field (placeholder)"""
   exampleField: Int
+  id: Int!
+}
+
+input CreateClassifierInput {
+  label: String!
+  translations: [String!]!
+  level: Int!
+  parentId: Int
+}
+
+input UpdateClassifierInput {
+  label: String!
+  translations: [String!]!
+  level: Int!
+  parentId: Int
   id: Int!
 }

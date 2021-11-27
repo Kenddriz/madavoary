@@ -4,21 +4,18 @@ import { JwtService } from '@nestjs/jwt';
 import { compareSync } from 'bcrypt';
 import { UserService } from '../user/user.service';
 import { User } from '../user/user.entity';
-import { PersonService } from '../person/person.service';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private personService: PersonService,
     private userService: UserService,
     private jwtService: JwtService,
   ) {}
 
   async validateUser(input: AuthInput): Promise<User> {
-    const person = await this.personService.findOneByEmail(input.email);
+    const user = await this.userService.findOneByEmail(input.email);
 
-    if (!person) throw new UnauthorizedException('UserNotFound');
-    const user = await this.userService.findOneByPerson(person.id);
+    if (!user) throw new UnauthorizedException('UserNotFound');
     const isPasswordMatching = await compareSync(input.password, user.password);
     if (!isPasswordMatching) throw new UnauthorizedException('wrongPassword');
 

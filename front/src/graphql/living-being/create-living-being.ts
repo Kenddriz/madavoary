@@ -21,7 +21,7 @@ const CREATE_LIVING_BEING = gql`
 `;
 export const useCreateLivingBeing = () => {
   const input = reactive<CreateLivingBeingInput>({
-    characteristics: Array(2).fill(''),
+    specificities: Array(2).fill(''),
     endangered: false,
     endemic: false,
     areaId: 0,

@@ -9,7 +9,7 @@
         <q-card-section :horizontal="$q.screen.gt.sm">
           <UpdatePersonAvatar
             height="200px"
-            :id="user.person.id" :src="avatar()"
+            :id="user.id" :src="avatar()"
             class="col-sm-12 col-md-3"
           />
           <q-separator :vertical="$q.screen.gt.sm" />
@@ -21,10 +21,10 @@
                   {{$tm('roles')[user[item]]}}
                 </q-item-label>
                 <q-item-label v-else-if="item === 'gender'" caption>
-                  {{$tm('genders')[user.person[item]]}}
+                  {{$tm('genders')[user[item]]}}
                 </q-item-label>
                 <q-item-label v-else>
-                  {{user.person[item]}}
+                  {{user[item]}}
                 </q-item-label>
               </q-item-section>
             </q-item>
@@ -49,7 +49,7 @@
               <q-item-section>
                 <q-item-label>{{$t('createdAt')}}</q-item-label>
                 <q-item-label caption>
-                  {{formatDate(user.person.createdAt, $t('dateTime'))}}
+                  {{formatDate(user.createdAt, $t('dateTime'))}}
                 </q-item-label>
               </q-item-section>
             </q-item>
@@ -57,7 +57,7 @@
               <q-item-section>
                 <q-item-label>{{$t('updatedAt')}}</q-item-label>
                 <q-item-label caption>
-                  {{formatDate(user.person.updatedAt, $t('dateTime'))}}
+                  {{formatDate(user.updatedAt, $t('dateTime'))}}
                 </q-item-label>
               </q-item-section>
             </q-item>
@@ -84,7 +84,7 @@ import { defineComponent, ref } from 'vue';
 import {useWHoAmI} from 'src/graphql/user/whoAmi';
 import {formatDate} from 'src/graphql/utils/utils';
 import UserUpdateBtn from 'components/user/update/UserUpdateBtn.vue';
-import UpdatePersonAvatar from 'components/person/UpdatePersonAvatar.vue';
+import UpdatePersonAvatar from 'components/user/UpdateUserAvatar.vue';
 import UpdatePassword from 'components/user/UpdatePassword.vue';
 
 const basicInfos = ['id', 'role', 'lastName', 'firstName', 'gender', 'email', 'phone'];
