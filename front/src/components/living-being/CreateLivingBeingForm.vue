@@ -43,7 +43,7 @@
       </q-card-section>
       <q-separator vertical v-if="$q.screen.gt.sm" />
       <q-card-section class="col">
-        <q-card-section :horizontal="$q.screen.gt.sm">
+        <q-card-section class="q-gutter-sm" :horizontal="$q.screen.gt.sm">
           <div class="col">
             <q-input
               dense
@@ -58,21 +58,21 @@
             />
           </div>
           <q-list dense class="col">
-            <q-item>
-              <q-item-section side>
-                <q-icon name="park" />
-              </q-item-section>
-              <q-item-section>
-                Parcs où l'on trouve
-              </q-item-section>
-              <q-item-section side>
-                <q-btn flat icon="add" round />
-              </q-item-section>
+            <q-item class="q-pa-none">
+              <SelectArea v-model="areaModels" />
             </q-item>
             <q-item>
-              p1, p2
+              <q-item-section>
+                <q-item-label lines="1">
+                  {{areaModels.map(x => x.label).join(' - ')}}
+                </q-item-label>
+              </q-item-section>
+              <q-item-section side>
+                <q-icon name="more_vert" />
+              </q-item-section>
             </q-item>
           </q-list>
+
         </q-card-section>
         <q-expansion-item
           :label="`En ${lang.label}`"
@@ -108,14 +108,17 @@
       </q-card-section>
     </q-card-section>
     <q-separator />
-    <q-card-section class="text-center">Classication scientifique</q-card-section>
+    <q-card-section class="text-center">
+      Classication scientifique
+    </q-card-section>
     <q-separator />
     <q-card-section class="flex justify-between items-start q-gutter-sm q-pa-sm">
-      <q-input
+      <ClassifiersInput
+        :items="getOptions(i)"
         v-for="(field, i) in $tm(`classification.classifiers`)"
         :key="i"
         :label="field"
-        label-color="white"
+        v-model="models[i]"
       />
     </q-card-section>
     <q-separator />
@@ -135,17 +138,29 @@
 import {defineComponent, ref} from 'vue';
 import {useImageLoader} from 'src/graphql/utils/preview';
 import {useCreateLivingBeing} from 'src/graphql/living-being/create-living-being';
-import {classificationKeys} from 'src/graphql/utils/utils';
+import ClassifiersInput from 'components/classifier/ClassifiersInput.vue';
+import {useClassifiers} from 'src/graphql/classifier/classifiers';
+import SelectArea from 'components/area/SelectArea.vue';
 
 export default defineComponent({
   name: 'CreateLivingBeingForm',
-  components: {},
+  components: { ClassifiersInput, SelectArea },
   setup() {
+    const {classifiers} = useClassifiers();
+
+    function getOptions(level: number) {
+      return classifiers.value.filter(c => c.level === level);
+    }
+
+    const models = ref(Array(32).fill(''));
+    const areaModels = ref<any[]>([]);
     return {
       ...useImageLoader(),
       slide: ref(0),
       ...useCreateLivingBeing(),
-      keys: classificationKeys
+      getOptions,
+      models,
+      areaModels
     }
   }
 })

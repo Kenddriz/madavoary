@@ -66,6 +66,7 @@
               size="sm"
               icon="edit"
               color="white"
+              @click="updateClassifier(prop.node)"
             />
             <q-btn
               no-caps
@@ -131,6 +132,7 @@
               rounded
               icon="edit"
               color="white"
+              @click="updateClassifier(cl)"
             />
             <q-btn
               no-caps
@@ -163,7 +165,8 @@ import NoData from 'components/shared/NoData.vue';
 import {useClassifiers} from 'src/graphql/classifier/classifiers';
 import {makeTree} from 'src/graphql/utils/utils';
 import {useQuasar} from 'quasar';
-import {useMoveClassifier} from "src/graphql/classifier/move.classifier";
+import {useMoveClassifier} from 'src/graphql/classifier/move.classifier';
+import {Classifier} from 'src/graphql/types';
 
 export default defineComponent({
   name: 'Classification',
@@ -186,7 +189,11 @@ export default defineComponent({
         component: defineAsyncComponent(() => import('components/classifier/CreateClassifier.vue')),
         componentProps: { item }
       }),
-      ...useMoveClassifier()
+      ...useMoveClassifier(),
+      updateClassifier: (item: Classifier) => dialog({
+        component: defineAsyncComponent(() => import('components/classifier/UpdateClassifier.vue')),
+        componentProps: { item }
+      })
     }
   }
 })

@@ -83,6 +83,7 @@
           color="white"
           rounded
           class="full-width"
+          v-close-popup
         />
       </q-form>
     </MovableCard>

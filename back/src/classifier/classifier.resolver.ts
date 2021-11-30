@@ -67,9 +67,7 @@ export class ClassifierResolver {
     classifier.parent = await this.classifierService.findOneById(
       input.parentId,
     );
-    const lTarget = classifier.parent.level;
-    const lSource = classifier.level;
-    classifier.level = lTarget + (lTarget <= lSource ? 1 : -1);
+    classifier.level = classifier.parent.level + 1;
     return this.classifierService.save(classifier);
   }
 

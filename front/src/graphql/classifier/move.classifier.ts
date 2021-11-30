@@ -2,7 +2,7 @@ import {Classifier, MutationMoveClassifierArgs} from 'src/graphql/types';
 import {gql} from '@apollo/client';
 import {CLASSIFIER_FIELDS} from 'src/graphql/classifier/classifier';
 import {useMutation} from '@vue/apollo-composable';
-import {reactive, ref} from 'vue';
+import {reactive} from 'vue';
 import {useLoading} from 'src/graphql/utils/utils';
 
 type MoveClassifierData = {

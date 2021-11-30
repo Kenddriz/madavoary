@@ -332,10 +332,8 @@ input CreateClassifierInput {
 }
 
 input UpdateClassifierInput {
-  label: String!
-  translations: [String!]!
-  level: Int!
-  parentId: Int
+  label: String
+  translations: [String!]
   id: Int!
 }
 

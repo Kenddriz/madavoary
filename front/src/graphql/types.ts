@@ -489,10 +489,8 @@ export type UpdateClassificationInput = {
 
 export type UpdateClassifierInput = {
   id: Scalars['Int'];
-  label: Scalars['String'];
-  level: Scalars['Int'];
-  parentId?: Maybe<Scalars['Int']>;
-  translations: Array<Scalars['String']>;
+  label?: Maybe<Scalars['String']>;
+  translations?: Maybe<Array<Scalars['String']>>;
 };
 
 export type UpdateCollectionImageInput = {

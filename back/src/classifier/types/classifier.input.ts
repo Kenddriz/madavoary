@@ -1,4 +1,4 @@
-import { InputType, Int, Field } from '@nestjs/graphql';
+import { InputType, Int, Field, PartialType, OmitType } from '@nestjs/graphql';
 
 @InputType()
 export class CreateClassifierInput {
@@ -9,10 +9,12 @@ export class CreateClassifierInput {
   @Field(() => Int)
   level: number;
   @Field(() => Int, { nullable: true })
-  parentId?: number;
+  parentId: number;
 }
 @InputType()
-export class UpdateClassifierInput extends CreateClassifierInput {
+export class UpdateClassifierInput extends PartialType(
+  OmitType(CreateClassifierInput, ['level', 'parentId'] as const),
+) {
   @Field(() => Int)
   id: number;
 }
