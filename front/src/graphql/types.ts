@@ -15,6 +15,32 @@ export type Scalars = {
   Upload: any;
 };
 
+export type Adventure = {
+  __typename?: 'Adventure';
+  createdAt: Scalars['DateTime'];
+  description: Scalars['String'];
+  id: Scalars['Int'];
+  images: Array<Scalars['String']>;
+  naming: Scalars['String'];
+  natureId: Scalars['Float'];
+  place: Scalars['String'];
+  updatedAt: Scalars['DateTime'];
+  user: User;
+  userId: Scalars['Float'];
+};
+
+export type AdventurePagination = {
+  __typename?: 'AdventurePagination';
+  items: Array<Adventure>;
+  meta: Meta;
+};
+
+export type AdventuresPagination = {
+  __typename?: 'AdventuresPagination';
+  items: Array<Adventure>;
+  meta: Meta;
+};
+
 export type Area = {
   __typename?: 'Area';
   banner: Scalars['String'];
@@ -26,7 +52,6 @@ export type Area = {
   surface: Scalars['Float'];
   type: Scalars['Int'];
   updatedAt: Scalars['DateTime'];
-  user: User;
 };
 
 export type AuthInput = {
@@ -50,37 +75,23 @@ export type Classifier = {
   level: Scalars['Int'];
   parentId?: Maybe<Scalars['Int']>;
   translations: Array<Scalars['String']>;
-  user: User;
 };
 
-export type Collection = {
-  __typename?: 'Collection';
-  createdAt: Scalars['DateTime'];
-  description: Scalars['String'];
-  id: Scalars['Int'];
-  images: Array<Scalars['String']>;
-  naming: Scalars['String'];
-  natureId: Scalars['Float'];
-  place: Scalars['String'];
-  updatedAt: Scalars['DateTime'];
-  user: User;
-  userId: Scalars['Float'];
-};
-
-export type CollectionPagination = {
-  __typename?: 'CollectionPagination';
-  items: Array<Collection>;
-  meta: Meta;
-};
-
-export type CountCollectionInput = {
+export type CountAdventureInput = {
   id: Scalars['Float'];
 };
 
-export type CountCollectionsOutput = {
-  __typename?: 'CountCollectionsOutput';
+export type CountAdventuresOutput = {
+  __typename?: 'CountAdventuresOutput';
   count: Scalars['Int'];
   natureId: Scalars['Int'];
+};
+
+export type CreateAdventureInput = {
+  description: Scalars['String'];
+  naming: Scalars['String'];
+  natureId: Scalars['Int'];
+  place: Scalars['String'];
 };
 
 export type CreateAreaInput = {
@@ -101,13 +112,6 @@ export type CreateClassifierInput = {
   level: Scalars['Int'];
   parentId?: Maybe<Scalars['Int']>;
   translations: Array<Scalars['String']>;
-};
-
-export type CreateCollectionInput = {
-  description: Scalars['String'];
-  naming: Scalars['String'];
-  natureId: Scalars['Int'];
-  place: Scalars['String'];
 };
 
 export type CreateLivingBeingInput = {
@@ -149,7 +153,6 @@ export type LivingBeing = {
   names: Array<Scalars['String']>;
   specificities: Array<Scalars['String']>;
   updatedAt: Scalars['DateTime'];
-  user: User;
 };
 
 export type LivingBeingPagination = {
@@ -187,30 +190,31 @@ export type MoveClassifierInput = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  addCollectionImage: Collection;
+  adventureAddImage?: Maybe<Adventure>;
+  adventureRemoveImage?: Maybe<Adventure>;
+  createAdventure: Adventure;
   createArea: Area;
   createClassification: Classification;
   createClassifier: Classifier;
-  createCollection: Collection;
   createLivingBeing: LivingBeing;
   createSubscription: Subscription;
   createUser: User;
   createVisit: Visit;
   moveClassifier: Classifier;
+  removeAdventure: Adventure;
   removeArea: Area;
   removeClassification: Classification;
   removeClassifier: Classifier;
-  removeCollection: Collection;
   removeLivingBeing: LivingBeing;
   removeLocalization: Localization;
   removeSubscription: Subscription;
   removeVisit: Visit;
+  updateAdventure: Adventure;
+  updateAdventureImage?: Maybe<Adventure>;
   updateArea: Area;
   updateAreaBanner: Area;
   updateClassification: Classification;
   updateClassifier: Classifier;
-  updateCollection: Collection;
-  updateCollectionImage: Collection;
   updatePassword?: Maybe<User>;
   updateSubscription: Subscription;
   updateUser: User;
@@ -219,9 +223,20 @@ export type Mutation = {
 };
 
 
-export type MutationAddCollectionImageArgs = {
-  collectionId: Scalars['Int'];
+export type MutationAdventureAddImageArgs = {
+  adventureId: Scalars['Int'];
   image: Scalars['Upload'];
+};
+
+
+export type MutationAdventureRemoveImageArgs = {
+  input: UpdateAdventureImageInput;
+};
+
+
+export type MutationCreateAdventureArgs = {
+  detail: CreateAdventureInput;
+  images: Array<Scalars['Upload']>;
 };
 
 
@@ -238,12 +253,6 @@ export type MutationCreateClassificationArgs = {
 
 export type MutationCreateClassifierArgs = {
   input: CreateClassifierInput;
-};
-
-
-export type MutationCreateCollectionArgs = {
-  detail: CreateCollectionInput;
-  images: Array<Scalars['Upload']>;
 };
 
 
@@ -274,6 +283,11 @@ export type MutationMoveClassifierArgs = {
 };
 
 
+export type MutationRemoveAdventureArgs = {
+  id: Scalars['Int'];
+};
+
+
 export type MutationRemoveAreaArgs = {
   id: Scalars['Int'];
 };
@@ -285,11 +299,6 @@ export type MutationRemoveClassificationArgs = {
 
 
 export type MutationRemoveClassifierArgs = {
-  id: Scalars['Int'];
-};
-
-
-export type MutationRemoveCollectionArgs = {
   id: Scalars['Int'];
 };
 
@@ -314,6 +323,17 @@ export type MutationRemoveVisitArgs = {
 };
 
 
+export type MutationUpdateAdventureArgs = {
+  input: UpdateAdventureInput;
+};
+
+
+export type MutationUpdateAdventureImageArgs = {
+  image: Scalars['Upload'];
+  input: UpdateAdventureImageInput;
+};
+
+
 export type MutationUpdateAreaArgs = {
   input: UpdateAreaInput;
 };
@@ -332,17 +352,6 @@ export type MutationUpdateClassificationArgs = {
 
 export type MutationUpdateClassifierArgs = {
   input: UpdateClassifierInput;
-};
-
-
-export type MutationUpdateCollectionArgs = {
-  input: UpdateCollectionInput;
-};
-
-
-export type MutationUpdateCollectionImageArgs = {
-  image: Scalars['Upload'];
-  input: UpdateCollectionImageInput;
 };
 
 
@@ -371,12 +380,21 @@ export type MutationUpdateVisitArgs = {
   updateVisitInput: UpdateVisitInput;
 };
 
-export type PaginateCollectionInput = {
+export type PaginateAdventureInput = {
   keyword?: Maybe<Scalars['String']>;
   limit: Scalars['Float'];
   natureId: Scalars['Float'];
   page: Scalars['Float'];
-  userId: Scalars['Float'];
+  userId?: Maybe<Scalars['Float']>;
+};
+
+export type PaginateAdventuresInput = {
+  keyword?: Maybe<Scalars['String']>;
+  limit: Scalars['Float'];
+  natureIds: Array<Scalars['Float']>;
+  order: Scalars['String'];
+  page: Scalars['Float'];
+  sortBy: Scalars['String'];
 };
 
 export type PaginateLivingBeingsInput = {
@@ -406,13 +424,15 @@ export type PeripheralInput = {
 
 export type Query = {
   __typename?: 'Query';
+  _paginateAdventures: AdventurePagination;
   areas: Array<Area>;
   classification: Classification;
   classifiers: Array<Classifier>;
-  countCollections: Array<CountCollectionsOutput>;
+  countAdventures: Array<CountAdventuresOutput>;
+  findAdventure?: Maybe<Adventure>;
   findLivingBeingByName?: Maybe<LivingBeing>;
   login: LoginDto;
-  paginateCollections: CollectionPagination;
+  paginateAdventures: AdventuresPagination;
   paginateLivingBeings: LivingBeingPagination;
   paginateUsers: UserPagination;
   subscription: Subscription;
@@ -421,13 +441,23 @@ export type Query = {
 };
 
 
+export type Query_PaginateAdventuresArgs = {
+  input: PaginateAdventureInput;
+};
+
+
 export type QueryClassificationArgs = {
   id: Scalars['Int'];
 };
 
 
-export type QueryCountCollectionsArgs = {
-  input: CountCollectionInput;
+export type QueryCountAdventuresArgs = {
+  input: CountAdventureInput;
+};
+
+
+export type QueryFindAdventureArgs = {
+  id: Scalars['Int'];
 };
 
 
@@ -441,8 +471,8 @@ export type QueryLoginArgs = {
 };
 
 
-export type QueryPaginateCollectionsArgs = {
-  input: PaginateCollectionInput;
+export type QueryPaginateAdventuresArgs = {
+  input: PaginateAdventuresInput;
 };
 
 
@@ -472,6 +502,19 @@ export type Subscription = {
   verifiedAt: Scalars['DateTime'];
 };
 
+export type UpdateAdventureImageInput = {
+  adventureId: Scalars['Float'];
+  imageIndex: Scalars['Float'];
+};
+
+export type UpdateAdventureInput = {
+  description: Scalars['String'];
+  id: Scalars['Float'];
+  naming: Scalars['String'];
+  natureId: Scalars['Int'];
+  place: Scalars['String'];
+};
+
 export type UpdateAreaInput = {
   id: Scalars['Float'];
   name: Scalars['String'];
@@ -491,19 +534,6 @@ export type UpdateClassifierInput = {
   id: Scalars['Int'];
   label?: Maybe<Scalars['String']>;
   translations?: Maybe<Array<Scalars['String']>>;
-};
-
-export type UpdateCollectionImageInput = {
-  collectionId: Scalars['Float'];
-  imageIndex: Scalars['Float'];
-};
-
-export type UpdateCollectionInput = {
-  description: Scalars['String'];
-  id: Scalars['Float'];
-  naming: Scalars['String'];
-  natureId: Scalars['Int'];
-  place: Scalars['String'];
 };
 
 export type UpdatePasswordInput = {

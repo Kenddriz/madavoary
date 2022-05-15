@@ -1,5 +1,5 @@
 import { ObjectType, Field, Int } from '@nestjs/graphql';
-import { Entity, ManyToOne, PrimaryColumn, RelationId } from 'typeorm';
+import { Entity, ManyToOne, PrimaryGeneratedColumn, RelationId } from 'typeorm';
 import { LivingBeing } from '../living-being/living-being.entity';
 import { Classifier } from '../classifier/classifier.entity';
 
@@ -7,7 +7,7 @@ import { Classifier } from '../classifier/classifier.entity';
 @Entity({ name: 'classifications' })
 export class Classification {
   @Field(() => Int)
-  @PrimaryColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: number;
 
   @Field(() => Classifier)

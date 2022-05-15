@@ -7,12 +7,6 @@ type Peripheral {
   distance: Float!
 }
 
-type Classification {
-  id: Int!
-  classifier: Classifier!
-  livingBeing: LivingBeing!
-}
-
 type Classifier {
   id: Int!
   label: String!
@@ -20,30 +14,14 @@ type Classifier {
   translations: [String!]!
   parentId: Int
   classification: [Classification!]!
-  user: User!
   children: [Classifier!]!
 }
 
-type User {
+type Classification {
   id: Int!
-  password: String!
-  verifiedAt: DateTime
-  role: Float!
-  active: Boolean!
-  lastName: String!
-  firstName: String!
-  email: String!
-  phone: String!
-  avatar: String!
-  gender: Float!
-  createdAt: DateTime!
-  updatedAt: DateTime!
+  classifier: Classifier!
+  livingBeing: LivingBeing!
 }
-
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
 
 type LivingBeing {
   id: Float!
@@ -56,8 +34,12 @@ type LivingBeing {
   updatedAt: DateTime!
   localizations: [Localization!]!
   classification: [Classification!]!
-  user: User!
 }
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
 
 type Localization {
   id: Int!
@@ -75,7 +57,22 @@ type Area {
   surface: Float!
   createdAt: DateTime!
   updatedAt: DateTime!
-  user: User!
+}
+
+type User {
+  id: Int!
+  password: String!
+  verifiedAt: DateTime
+  role: Float!
+  active: Boolean!
+  lastName: String!
+  firstName: String!
+  email: String!
+  phone: String!
+  avatar: String!
+  gender: Float!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 type Meta {
@@ -96,7 +93,7 @@ type UserPagination {
   meta: Meta!
 }
 
-type Collection {
+type Adventure {
   id: Int!
   natureId: Float!
   naming: String!
@@ -109,12 +106,17 @@ type Collection {
   userId: Float!
 }
 
-type CollectionPagination {
-  items: [Collection!]!
+type AdventurePagination {
+  items: [Adventure!]!
   meta: Meta!
 }
 
-type CountCollectionsOutput {
+type AdventuresPagination {
+  items: [Adventure!]!
+  meta: Meta!
+}
+
+type CountAdventuresOutput {
   natureId: Int!
   count: Int!
 }
@@ -140,8 +142,10 @@ type Query {
   findLivingBeingByName(name: String!): LivingBeing
   paginateLivingBeings(input: PaginateLivingBeingsInput!): LivingBeingPagination!
   paginateUsers(input: PaginateUserInput!): UserPagination!
-  countCollections(input: CountCollectionInput!): [CountCollectionsOutput!]!
-  paginateCollections(input: PaginateCollectionInput!): CollectionPagination!
+  countAdventures(input: CountAdventureInput!): [CountAdventuresOutput!]!
+  findAdventure(id: Int!): Adventure
+  _paginateAdventures(input: PaginateAdventureInput!): AdventurePagination!
+  paginateAdventures(input: PaginateAdventuresInput!): AdventuresPagination!
   visit(id: Int!): Visit!
   subscription(id: Int!): Subscription!
   login(input: AuthInput!): LoginDto!
@@ -164,16 +168,25 @@ input PaginateUserInput {
   filter: [String!]!
 }
 
-input CountCollectionInput {
+input CountAdventureInput {
   id: Float!
 }
 
-input PaginateCollectionInput {
+input PaginateAdventureInput {
   keyword: String
   page: Float!
   limit: Float!
   natureId: Float!
-  userId: Float!
+  userId: Float
+}
+
+input PaginateAdventuresInput {
+  keyword: String
+  page: Float!
+  limit: Float!
+  natureIds: [Float!]!
+  sortBy: String!
+  order: String!
 }
 
 input AuthInput {
@@ -192,11 +205,12 @@ type Mutation {
   updateUser(input: UpdateUserInput!): User!
   updatePassword(input: UpdatePasswordInput!): User
   updateUserAvatar(id: Int!, avatar: Upload!): User!
-  createCollection(detail: CreateCollectionInput!, images: [Upload!]!): Collection!
-  updateCollectionImage(input: UpdateCollectionImageInput!, image: Upload!): Collection!
-  addCollectionImage(collectionId: Int!, image: Upload!): Collection!
-  updateCollection(input: UpdateCollectionInput!): Collection!
-  removeCollection(id: Int!): Collection!
+  createAdventure(detail: CreateAdventureInput!, images: [Upload!]!): Adventure!
+  updateAdventureImage(input: UpdateAdventureImageInput!, image: Upload!): Adventure
+  adventureAddImage(adventureId: Int!, image: Upload!): Adventure
+  adventureRemoveImage(input: UpdateAdventureImageInput!): Adventure
+  updateAdventure(input: UpdateAdventureInput!): Adventure!
+  removeAdventure(id: Int!): Adventure!
   createVisit(createVisitInput: CreateVisitInput!): Visit!
   updateVisit(updateVisitInput: UpdateVisitInput!): Visit!
   removeVisit(id: Int!): Visit!
@@ -271,19 +285,19 @@ input UpdatePasswordInput {
   newPassword: String!
 }
 
-input CreateCollectionInput {
+input CreateAdventureInput {
   naming: String!
   place: String!
   description: String!
   natureId: Int!
 }
 
-input UpdateCollectionImageInput {
-  collectionId: Float!
+input UpdateAdventureImageInput {
+  adventureId: Float!
   imageIndex: Float!
 }
 
-input UpdateCollectionInput {
+input UpdateAdventureInput {
   naming: String!
   place: String!
   description: String!

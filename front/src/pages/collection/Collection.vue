@@ -99,13 +99,13 @@
 
 <script lang="ts">
 import {defineComponent} from 'vue';
-import CollectionDetails from 'components/collection/CollectionDetails.vue';
-import CreateCollection from 'components/collection/CreateCollection.vue';
-import CollectionSubjects from 'components/collection/CollectionSubjects.vue';
-import {usePaginateCollections} from 'src/graphql/collection/paginate-collections';
-import UpdateCollection from 'components/collection/UpdateCollection.vue';
+import CollectionDetails from 'components/adventure/CollectionDetails.vue';
+import CreateCollection from 'components/adventure/CreateCollection.vue';
+import CollectionSubjects from 'components/adventure/adventure-subjects.vue';
+import {usePaginateAdventures} from 'src/graphql/adventure/paginate-collections';
+import UpdateCollection from 'components/adventure/UpdateCollection.vue';
 import {useQuasar} from 'quasar';
-import {Collection} from 'src/graphql/types';
+import { Adventure } from 'src/graphql/types';
 const columns = [
   {name: 'naming', align: 'left', field: 'naming'},
   {name: 'place', align: 'left', field: 'place'},
@@ -117,12 +117,12 @@ export default defineComponent({
   setup() {
     const { dialog } = useQuasar();
     return {
-      ...usePaginateCollections(Number(localStorage.getItem('id'))),
+      ...usePaginateAdventures(Number(localStorage.getItem('id'))),
       columns,
-      update: (collection: Collection) => {
+      update: (adventure: Adventure) => {
         dialog({
           component: UpdateCollection,
-          componentProps: { collection }
+          componentProps: { adventure }
         })
       }
     }

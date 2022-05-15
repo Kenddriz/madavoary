@@ -53,7 +53,7 @@ export class UserResolver {
     @CurrentUser() strategy: StrategyType,
     @Args('input') input: UpdatePasswordInput,
   ): Promise<User> {
-    const user = await this.userService.findOneById(strategy.payload);
+    const user = await this.userService.findOneById(strategy.id);
     const matched = await compareSync(input.currentPassword, user.password);
     if (!matched) return null;
     user.password = hashSync(input.newPassword, 10);

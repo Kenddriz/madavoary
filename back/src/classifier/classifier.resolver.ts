@@ -14,8 +14,6 @@ import {
   MoveClassifierInput,
   UpdateClassifierInput,
 } from './types/classifier.input';
-import { User } from '../user/user.entity';
-import { UserService } from '../user/user.service';
 import { UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from '../auth/jwt-auth.guard';
 import { CurrentUser } from '../auth/current-user-decorator';
@@ -24,10 +22,7 @@ import { uniqId } from '../utils';
 
 @Resolver(() => Classifier)
 export class ClassifierResolver {
-  constructor(
-    private readonly classifierService: ClassifierService,
-    private readonly userService: UserService,
-  ) {}
+  constructor(private readonly classifierService: ClassifierService) {}
 
   @UseGuards(GqlAuthGuard)
   @Mutation(() => Classifier)
@@ -38,7 +33,6 @@ export class ClassifierResolver {
     const classifier = new Classifier();
     classifier.id = await uniqId('Classifier');
     Object.assign(classifier, input);
-    classifier.user = await this.userService.findOneById(strategy.payload);
     if (input.parentId) {
       classifier.parent = await this.classifierService.findOneById(
         input.parentId,
@@ -72,11 +66,7 @@ export class ClassifierResolver {
   }
 
   @Mutation(() => Classifier)
-  removeClassifier(@Args('id', { type: () => Int }) id: number) {
+  async removeClassifier(@Args('id', { type: () => Int }) id: number) {
     return this.classifierService.remove(id);
-  }
-  @ResolveField(() => User)
-  async user(@Root() classifier: Classifier): Promise<User> {
-    return this.userService.findOneById(classifier.userId);
   }
 }

@@ -10,7 +10,7 @@ import {
 import { LivingBeingService } from './living-being.service';
 import { LivingBeing } from './living-being.entity';
 import { UserService } from '../user/user.service';
-import { User } from '../user/user.entity';
+
 import {
   CreateLivingBeingInput,
   PaginateLivingBeingsInput,
@@ -56,7 +56,6 @@ export class LivingBeingResolver {
       const { filename } = await upload(img, 'livingBeings/', livingBeing.id);
       livingBeing.images.push(filename);
     }
-    livingBeing.user = await this.userService.findOneById(strategy.payload);
     livingBeing.localizations.push(localization); /*set localization**/
     Object.assign(livingBeing, livingBeingInput);
 
@@ -77,13 +76,10 @@ export class LivingBeingResolver {
   }
 
   @Mutation(() => LivingBeing)
-  removeLivingBeing(@Args('id', { type: () => Int }) id: number) {
+  async removeLivingBeing(@Args('id', { type: () => Int }) id: number) {
     return this.livingBeingService.remove(id);
   }
-  @ResolveField(() => User)
-  async user(@Root() livingBeing: LivingBeing): Promise<User> {
-    return this.userService.findOneById(livingBeing.userId);
-  }
+
   @ResolveField(() => [Localization])
   async localizations(
     @Root() livingBeing: LivingBeing,

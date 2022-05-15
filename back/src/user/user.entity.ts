@@ -3,13 +3,9 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Area } from '../area/area.entity';
-import { LivingBeing } from '../living-being/living-being.entity';
-import {Classifier} from "../classifier/classifier.entity";
 
 @ObjectType()
 @Entity({ name: 'users' })
@@ -65,15 +61,4 @@ export class User {
   @Field()
   @UpdateDateColumn({ name: 'updated_at', type: 'timestamp' })
   updatedAt: Date;
-
-  @OneToMany(() => Area, (area) => area.user, { onDelete: 'CASCADE' })
-  areas: Area[];
-
-  @OneToMany(() => LivingBeing, (livingBeing) => livingBeing.user, {
-    onDelete: 'CASCADE',
-  })
-  livingBeing: LivingBeing[];
-
-  @OneToMany(() => Classifier, (classifier) => classifier.user, { onDelete: 'CASCADE' })
-  classifiers: Classifier[];
 }

@@ -3,15 +3,12 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  ManyToOne,
   OneToMany,
   PrimaryColumn,
-  RelationId,
   UpdateDateColumn,
 } from 'typeorm';
 import { Peripheral } from './types/area.output';
 import { Localization } from '../localization/localization.entity';
-import { User } from '../user/user.entity';
 
 @ObjectType()
 @Entity({ name: 'areas' })
@@ -56,10 +53,4 @@ export class Area {
     onDelete: 'CASCADE',
   })
   localizations: Localization[];
-
-  @Field(() => User)
-  @ManyToOne(() => User, (user) => user.areas, { onDelete: 'CASCADE' })
-  user: User;
-  @RelationId((area: Area) => area.user)
-  userId: number;
 }

@@ -11,6 +11,8 @@ import {
 } from 'fs';
 import { UnauthorizedException } from '@nestjs/common';
 import { join } from 'path';
+import { Stream } from 'stream';
+
 type FileParams = {
   filename: string;
   mimetype: string;
@@ -61,6 +63,23 @@ export const upload = async (
 
   return { filename: m_filename, mimetype };
 };
+export const uploadV2 = async (
+  createReadStream: () => Stream,
+  dossier: string,
+  filename: string,
+): Promise<void> => {
+  const path = `${publicDir()}${dossier}/`;
+  if (!existsSync(path)) mkdirSync(path, { recursive: true });
+
+  const uploaded = await new Promise((resolve, reject) =>
+    createReadStream()
+      .pipe(createWriteStream(`${path}${filename}`))
+      .on('finish', () => resolve(true))
+      .on('error', () => reject(false)),
+  );
+  if (!uploaded) throw new UnauthorizedException(`failed`);
+};
+
 export const removeFile = (filename: string): boolean => {
   const path = publicDir() + filename;
   let removed = false;

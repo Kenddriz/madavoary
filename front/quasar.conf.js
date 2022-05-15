@@ -80,6 +80,8 @@ module.exports = configure(function (ctx) {
       },
     env: {
       uri: 'http://localhost:3000/',
+      maxImagesAdventure: 10,
+      maxFileSize: 2048000
     }
     },
 
@@ -105,7 +107,7 @@ module.exports = configure(function (ctx) {
       // directives: [],
 
       // Quasar plugins
-      plugins: ['Notify', 'Loading', 'Dialog']
+      plugins: ['Notify', 'Loading', 'Dialog', 'BottomSheet']
     },
 
     // animations: 'all', // --- includes all animations

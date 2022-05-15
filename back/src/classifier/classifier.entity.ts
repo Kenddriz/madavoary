@@ -5,12 +5,10 @@ import {
   JoinColumn,
   ManyToOne,
   OneToMany,
-  OneToOne,
   PrimaryColumn,
   RelationId,
 } from 'typeorm';
 import { Classification } from '../classification/classification.entity';
-import { User } from '../user/user.entity';
 
 @ObjectType()
 @Entity({ name: 'classifiers' })
@@ -49,12 +47,6 @@ export class Classifier {
     },
   )
   classification: Classification[];
-
-  @Field(() => User)
-  @ManyToOne(() => User, (user) => user.classifiers, { onDelete: 'CASCADE' })
-  user: User;
-  @RelationId((classifier: Classifier) => classifier.user)
-  userId: number;
 
   @Field(() => [Classifier], { defaultValue: [] })
   children: Classifier[];

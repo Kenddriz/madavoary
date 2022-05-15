@@ -7,7 +7,7 @@
           color="positive"
           size="sm"
           icon="check"
-          @click="$emit('upload', images); images.length = 0;"
+          @click="onUpload()"
         />
         <q-btn
           outline
@@ -15,7 +15,7 @@
           color="amber"
           size="sm"
           icon="close"
-          @click="urlList.length = 0; images.length = 0"
+          @click="close()"
         />
       </q-btn-group>
       <q-btn
@@ -33,7 +33,7 @@
           accept=".jpg, image/*"
           multiple
           :max-files="1"
-          max-file-size="2048000"
+         :max-file-size="maxFileSize"
           @update:model-value="preview($event)"
           v-show="false"
           ref="file"
@@ -62,10 +62,19 @@ export default defineComponent({
           emit('update:modelValue', e);
         }
       }
+      const images = ref<any[]>([]);
       return {
-        images: ref<any[]>([]),
+        images,
         preview,
-        urlList
+        urlList,
+        close: function () {
+          urlList.value.length = 0; images.value.length = 0;
+        },
+        onUpload: function () {
+          emit('upload', images.value);
+          images.value.length = 0;
+        },
+        maxFileSize: Number(process.env.maxFileSize)
       }
     }
   })

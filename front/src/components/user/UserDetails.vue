@@ -38,7 +38,7 @@ import UserPersonalDetails from 'components/user/UserPersonalDetails.vue';
 import {User} from 'src/graphql/types';
 import EditUserParams from 'components/user/update/EditUserParams.vue';
 import {useQuasar} from 'quasar';
-import CountUserCollections from 'components/collection/CountCollections.vue';
+import CountUserCollections from 'components/adventure/CountCollections.vue';
 
 export default defineComponent({
   name: 'UserDetails',

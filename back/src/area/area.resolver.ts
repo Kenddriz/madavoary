@@ -1,12 +1,4 @@
-import {
-  Resolver,
-  Query,
-  Mutation,
-  Args,
-  Int,
-  ResolveField,
-  Root,
-} from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
 import { AreaService } from './area.service';
 import { Area } from './area.entity';
 import { CreateAreaInput, UpdateAreaInput } from './types/area.input';
@@ -14,18 +6,13 @@ import { UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from '../auth/jwt-auth.guard';
 import { CurrentUser } from '../auth/current-user-decorator';
 import { StrategyType } from '../auth/types/strategy.type';
-import { UserService } from '../user/user.service';
-import { User } from '../user/user.entity';
 import { GraphQLUpload } from 'graphql-upload';
 import { Upload } from '../shared/shared.input';
 import { removeFile, uniqId, upload } from '../utils';
 
 @Resolver(() => Area)
 export class AreaResolver {
-  constructor(
-    private areaService: AreaService,
-    private userService: UserService,
-  ) {}
+  constructor(private areaService: AreaService) {}
 
   @UseGuards(GqlAuthGuard)
   @Mutation(() => Area)
@@ -38,7 +25,6 @@ export class AreaResolver {
     area.id = await uniqId('Area');
     const { filename } = await upload(banner, 'areas/', area.id);
     area.banner = filename;
-    area.user = await this.userService.findOneById(strategy.payload);
     Object.assign(area, input);
     return this.areaService.save(area);
   }
@@ -69,9 +55,5 @@ export class AreaResolver {
   @Mutation(() => Area)
   async removeArea(@Args('id', { type: () => Int }) id: number) {
     return this.areaService.remove(id);
-  }
-  @ResolveField(() => User)
-  async user(@Root() area: Area): Promise<User> {
-    return this.userService.findOneById(area.userId);
   }
 }

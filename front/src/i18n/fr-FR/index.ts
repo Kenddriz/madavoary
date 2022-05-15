@@ -32,6 +32,7 @@ export default {
   naming: 'Titre ou nom',
   description: 'Description',
   region: 'Région',
+  nature: 'Nature',
   peripherals: 'Villes périphériques',
   distance: 'Distance',
   office: 'Bureau',
@@ -47,6 +48,8 @@ export default {
   reset: 'Réinitialiser',
   logout: 'Se déconnecter',
   save: 'Enregistrer',
+  cancel: 'Annuler',
+  confirm: 'Confirmer',
   localNames: 'Noms Locaux',
   dateTime: 'DD-MM-YYYY T HH:mm:ss',
   shortDate: 'DD/MM/YYYY',
@@ -81,7 +84,8 @@ export default {
   noData: 'Aucune donnée',
   scientificName: 'Nom scientifique',
   characteristic: 'Caractéristique',
-  'collection-subjects': [
+  newImage: 'Nouveau image',
+  'adventure-subjects': [
     {
       id: '0',
       title: 'Animaux',
@@ -123,5 +127,16 @@ export default {
   dashboard,
   user,
   area,
-  classification
+  classification,
+  menu: [
+    'TABLEAU DE BOARD',
+    'UTILISATEURS',
+    'PARCS',
+    'CLASSIFICATIONS',
+    'VISITES',
+    'ETRES VIVANTS',
+    'MON COMPTE',
+    'ABONNEMENTS',
+    'AVENTURES'
+  ],
 };

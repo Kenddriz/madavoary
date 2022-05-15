@@ -14,7 +14,7 @@ export class ClassifierService {
   }
 
   async findAll(): Promise<Classifier[]> {
-    return this.repository.find();
+    return this.repository.find({ order: { level: 'ASC' } });
   }
 
   async findOneById(id: number): Promise<Classifier> {

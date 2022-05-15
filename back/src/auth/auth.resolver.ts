@@ -20,7 +20,11 @@ export class AuthResolver {
   async login(@Args('input') input: AuthInput): Promise<LoginDto> {
     const user = await this.authService.validateUser(input);
     return {
-      token: await this.authService.login(user.id),
+      token: await this.authService.login({
+        id: user.id,
+        email: user.email,
+        phone: user.phone,
+      }),
       user,
     };
   }
@@ -28,6 +32,6 @@ export class AuthResolver {
   @Query(() => User)
   @UseGuards(GqlAuthGuard)
   async whoAmI(@CurrentUser() strategy: StrategyType) {
-    return await this.userService.findOneById(strategy.payload);
+    return await this.userService.findOneById(strategy.id);
   }
 }

@@ -4,7 +4,7 @@ import { AppService } from './app.service';
 import { AreaModule } from './area/area.module';
 import { LivingBeingModule } from './living-being/living-being.module';
 import { UserModule } from './user/user.module';
-import { CollectionModule } from './collection/collection.module';
+import { AdventureModule } from './adventure/adventure.module';
 import { VisitModule } from './visit/visit.module';
 import { SubscriptionModule } from './subscription/subscription.module';
 import { GraphQLModule } from '@nestjs/graphql';
@@ -31,7 +31,7 @@ import { ClassifierModule } from './classifier/classifier.module';
     AreaModule,
     LivingBeingModule,
     UserModule,
-    CollectionModule,
+    AdventureModule,
     VisitModule,
     SubscriptionModule,
     LocalizationModule,

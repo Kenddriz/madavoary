@@ -3,14 +3,11 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  ManyToOne,
   OneToMany,
   PrimaryColumn,
-  RelationId,
   UpdateDateColumn,
 } from 'typeorm';
 import { Localization } from '../localization/localization.entity';
-import { User } from '../user/user.entity';
 import { Classification } from '../classification/classification.entity';
 
 @ObjectType()
@@ -64,10 +61,4 @@ export class LivingBeing {
     },
   )
   classification: Classification[];
-
-  @Field(() => User)
-  @ManyToOne(() => User, (user) => user.livingBeing, { onDelete: 'CASCADE' })
-  user: User;
-  @RelationId((livingBeing: LivingBeing) => livingBeing.user)
-  userId: number;
 }

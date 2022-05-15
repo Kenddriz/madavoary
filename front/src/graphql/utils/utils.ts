@@ -73,3 +73,7 @@ export const makeTree = (
     .filter(item => item.parentId === parentId)
     .map(item => ({ ...item, children: makeTree(items, item.id)}));
 };
+export const getImage = (img: string, folder = 'areas') =>
+  img
+    ? `${process.env.uri}/${folder}/${img}`
+    : '/sign-in.svg';

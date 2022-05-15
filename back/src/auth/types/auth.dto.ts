@@ -4,7 +4,13 @@ import { User } from '../../user/user.entity';
 @ObjectType()
 export class AuthDto {
   @Field()
-  payload: number;
+  id: number;
+
+  @Field()
+  email: string;
+
+  @Field()
+  phone: string;
 }
 
 @ObjectType()

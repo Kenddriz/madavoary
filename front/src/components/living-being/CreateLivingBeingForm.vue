@@ -138,7 +138,7 @@
 import {defineComponent, ref} from 'vue';
 import {useImageLoader} from 'src/graphql/utils/preview';
 import {useCreateLivingBeing} from 'src/graphql/living-being/create-living-being';
-import ClassifiersInput from 'components/classifier/ClassifiersInput.vue';
+import ClassifiersInput from 'components/classifier/classifiers-input.vue';
 import {useClassifiers} from 'src/graphql/classifier/classifiers';
 import SelectArea from 'components/area/SelectArea.vue';
 
