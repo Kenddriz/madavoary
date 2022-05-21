@@ -7,67 +7,79 @@ import {
 } from 'src/graphql/types';
 import {gql} from '@apollo/client';
 import {InitialPagination, PAGINATION_META} from 'src/graphql/utils/pagination';
-import {USER_FIELDS} from 'src/graphql/user/user';
 import {ref} from 'vue';
 import {LIVING_BEING_FIELDS} from 'src/graphql/living-being/living-being';
-import {LOCALIZATION_FIELDS} from 'src/graphql/localization/localization';
-import {AREA_FIELDS} from 'src/graphql/area/area';
+import {useI18n} from 'vue-i18n';
 
 export type PaginateLivingBeingsData = {
   paginateLivingBeings: LivingBeingPagination
 }
 
-export const PAGINATE_LIVING_BEINGS = (withUser: boolean) => gql`
+export const PAGINATE_LIVING_BEINGS = gql`
   query PaginateLivingBeings($input: PaginateLivingBeingsInput!) {
     paginateLivingBeings(input: $input) {
       items {
         ${LIVING_BEING_FIELDS}
-        localizations{${LOCALIZATION_FIELDS} area{${AREA_FIELDS}}}
-        ${withUser ? `user{${USER_FIELDS}}` : ''}
       }
       ${PAGINATION_META}
     }
   }
 `;
-export const usePaginateLivingBeings = (id = 0, withUser = true) => {
+export const usePaginateLivingBeings = () => {
   const pagination = ref({
-    sortBy: 'asc',
+    sortBy: 'id',
     descending: false,
     page: 1,
-    rowsPerPage: 10,
+    rowsPerPage: 20,
     rowsNumber: 0,
     keyword: '',
-    areaId: id,
   });
+  const { t } = useI18n();
+  const columns = [
+    {
+      name: 'names',
+      label: t('livingBeing.names'),
+      field: (row: LivingBeing) => row.names[0],
+      align: 'left',
+      sortable: true
+    },
+    {
+      name: 'createdAt',
+      label: t('createdAt'),
+      field: 'createdAt',
+      sortable: true
+    }
+  ];
   function getInput(): PaginateLivingBeingsInput {
-    const { keyword, areaId, rowsPerPage: limit, page } = pagination.value;
-    return { keyword, areaId, limit, page }
+    const { keyword, rowsPerPage: limit, page, sortBy, descending } = pagination.value;
+    return {
+      keyword,
+      limit,
+      page,
+      sortBy,
+      order: descending ? 'DESC' : 'ASC',
+    }
   }
-  const selected = ref<LivingBeing[]>([]);
-  const { loading, refetch, result } = useQuery<
+  const { loading, result, refetch } = useQuery<
     PaginateLivingBeingsData,
     QueryPaginateLivingBeingsArgs
-    >(PAGINATE_LIVING_BEINGS(withUser), { input: getInput() });
+    >(PAGINATE_LIVING_BEINGS, { input: getInput() });
   const livingBeing = useResult<
     PaginateLivingBeingsData|undefined,
     LivingBeingPagination,
     LivingBeingPagination
     >(result, InitialPagination, res => {
     if(res?.paginateLivingBeings) {
-      const id = selected.value[0]?.id;
-      const find = res.paginateLivingBeings.items.find(item => item.id === id)||res.paginateLivingBeings.items[0];
-      if(find){
-        if(id)selected.value[0] = find;
-        else selected.value = [find];
-      }
       pagination.value.rowsNumber = res.paginateLivingBeings.meta.totalItems;
       return res.paginateLivingBeings;
     }
-    selected.value.length = 0;
     return InitialPagination
   });
-  function submitSearch() {
+
+  function onRequest(props: any) {
+    Object.assign(pagination.value, props.pagination);
     void refetch({ input: getInput() })
   }
-  return { loading, livingBeing, submitSearch, selected, pagination }
+
+  return { loading, livingBeing, pagination, columns, onRequest }
 }

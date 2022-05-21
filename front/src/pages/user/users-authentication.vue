@@ -46,7 +46,7 @@
   import SignIn from 'components/user/SingIn.vue';
 
   export default defineComponent({
-    name: 'Account',
+    name: 'users-authentication',
     components: {
       CreateUserForm,
       SignIn

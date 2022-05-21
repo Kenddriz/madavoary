@@ -27,8 +27,8 @@
       >
         <q-btn
           round
-          icon="list"
-          color="deep-orange"
+          icon="home"
+          color="amber"
           @click="show()"
         />
       </q-page-sticky>
@@ -50,7 +50,7 @@
         show() {
           BottomSheet.create({
             dark: false,
-            class: 'bg-primary text-orange q-pa-md',
+            class: 'bg-primary text-white q-pa-md',
             message: 'Navigation rapide',
             grid: true,
             actions: menu.map(m => ({ label: m.to, to: m.to, icon: m.icon }))

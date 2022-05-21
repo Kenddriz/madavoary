@@ -1,29 +1,32 @@
 <template>
   <q-select
+    :model-value="modelValue"
+    emit-value
+    map-options
+    option-label="label"
+    option-value="id"
     color="orange"
     use-input
     hide-selected
     fill-input
     :options="options"
     @filter="filterFn"
-    :model-value="modelValue"
-    @input-value="$emit('update:modelValue', $event)"
+    clearable
+    @update:model-value="$emit('update:modelValue', $event)"
     popup-content-class="bg-primary q-card--bordered"
     options-dense
     :hide-dropdown-icon="true"
     hide-bottom-space
     outlined
     dense
+    style="min-width: 230px"
   />
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, PropType, ref} from 'vue';
-import {Classifier} from 'src/graphql/types';
-export type Option = {
-  label: string,
-  value: number
-}
+import { defineComponent, PropType, ref } from 'vue';
+import { Classifier } from 'src/graphql/types';
+
 export default defineComponent({
   name: 'ClassifiersInput',
   props: {
@@ -31,19 +34,17 @@ export default defineComponent({
       type: Array as PropType<Classifier[]>,
       required: true
     },
-    modelValue: String
+    modelValue: Number
   },
   emits: ['update:modelValue'],
   setup(props){
-    const defaultOptions = computed<Option[]>(() => props.items.map(c => ({ label: c.label, value: c.id })));
-    const options = ref<Option[]>([...defaultOptions.value]);
+    const options = ref<Classifier[]>([...props.items]);
     return{
-      defaultOptions,
       options,
       filterFn (val: string, update: any) {
         update(() => {
           const needle = val.toLocaleLowerCase()
-          options.value = defaultOptions.value.filter(v => v.label.toLocaleLowerCase().indexOf(needle) > -1)
+          options.value = props.items.filter(v => v.label.toLocaleLowerCase().indexOf(needle) > -1)
         })
       },
     }

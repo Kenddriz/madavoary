@@ -7,46 +7,6 @@ type Peripheral {
   distance: Float!
 }
 
-type Classifier {
-  id: Int!
-  label: String!
-  level: Int!
-  translations: [String!]!
-  parentId: Int
-  classification: [Classification!]!
-  children: [Classifier!]!
-}
-
-type Classification {
-  id: Int!
-  classifier: Classifier!
-  livingBeing: LivingBeing!
-}
-
-type LivingBeing {
-  id: Float!
-  images: [String!]!
-  localNames: [String!]!
-  names: [String!]!
-  endemic: Boolean!
-  specificities: [String!]!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  localizations: [Localization!]!
-  classification: [Classification!]!
-}
-
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
-
-type Localization {
-  id: Int!
-  area: Area!
-  livingBeing: LivingBeing!
-}
-
 type Area {
   id: Int!
   name: String!
@@ -57,6 +17,32 @@ type Area {
   surface: Float!
   createdAt: DateTime!
   updatedAt: DateTime!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Classifier {
+  id: Int!
+  label: String!
+  level: Int!
+  translations: [String!]!
+  parentId: Int
+  children: [Classifier!]!
+}
+
+type LivingBeing {
+  id: Float!
+  images: [String!]!
+  names: [String!]!
+  endemic: Boolean!
+  descriptions: [String!]!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  areas: [Area!]!
+  classifiers: [Classifier!]!
 }
 
 type User {
@@ -132,14 +118,26 @@ type Subscription {
   createdAt: DateTime!
 }
 
+type Localization {
+  areaId: Float!
+  livingBeingId: Float!
+}
+
 type LoginDto {
   token: String!
   user: User!
 }
 
+type Classification {
+  classifierId: Float!
+  livingBeingId: Float!
+}
+
 type Query {
   areas: [Area!]!
+  findArea(id: Int!): Area
   findLivingBeingByName(name: String!): LivingBeing
+  findLivingBeing(id: Int!): LivingBeing
   paginateLivingBeings(input: PaginateLivingBeingsInput!): LivingBeingPagination!
   paginateUsers(input: PaginateUserInput!): UserPagination!
   countAdventures(input: CountAdventureInput!): [CountAdventuresOutput!]!
@@ -158,7 +156,8 @@ input PaginateLivingBeingsInput {
   keyword: String
   page: Float!
   limit: Float!
-  areaId: Int!
+  sortBy: String!
+  order: String!
 }
 
 input PaginateUserInput {
@@ -196,10 +195,14 @@ input AuthInput {
 
 type Mutation {
   createArea(input: CreateAreaInput!, banner: Upload!): Area!
-  updateArea(input: UpdateAreaInput!): Area!
+  updateArea(banner: Upload, input: UpdateAreaInput!): Area!
   updateAreaBanner(areaId: Int!, banner: Upload!): Area!
   removeArea(id: Int!): Area!
   createLivingBeing(input: CreateLivingBeingInput!, images: [Upload!]!): LivingBeing!
+  updateLivingBeing(input: UpdateLivingBeingInput!): LivingBeing!
+  updateLivingBeingImage(input: UpdateImageInput!, image: Upload!): LivingBeing
+  livingBeingAddImage(id: Int!, image: Upload!): LivingBeing
+  livingBeingRemoveImage(input: UpdateImageInput!): LivingBeing
   removeLivingBeing(id: Int!): LivingBeing!
   createUser(input: CreateUserInput!, avatar: Upload!): User!
   updateUser(input: UpdateUserInput!): User!
@@ -253,11 +256,25 @@ input UpdateAreaInput {
 }
 
 input CreateLivingBeingInput {
-  specificities: [String!]!
+  descriptions: [String!]!
   names: [String!]!
   endemic: Boolean!
-  endangered: Boolean!
-  areaId: Int!
+  classifierIds: [Int!]!
+  areaIds: [Int!]!
+}
+
+input UpdateLivingBeingInput {
+  descriptions: [String!]!
+  names: [String!]!
+  endemic: Boolean!
+  classifierIds: [Int!]!
+  areaIds: [Int!]!
+  id: Int!
+}
+
+input UpdateImageInput {
+  id: Float!
+  index: Float!
 }
 
 input CreateUserInput {

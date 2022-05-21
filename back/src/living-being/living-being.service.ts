@@ -33,30 +33,17 @@ export class LivingBeingService {
       .orWhere(':name ILIKE ANY(lb.names)', { name })
       .getOne();
   }
-  async paginateLb(
+  async paginate(
     input: PaginateLivingBeingsInput,
   ): Promise<Pagination<LivingBeing>> {
-    const query = this.repository.createQueryBuilder('lb');
-    const name = input.keyword;
-    if (input.areaId > 0)
-      query.innerJoin('localizations', 'loc', 'loc."livingBeingsId" = lb.id');
-    if (input.keyword) {
-      query.where(
-        new Brackets((qb) => {
-          qb.where(':name ILIKE ANY(lb."localNames")', { name }).orWhere(
-            ':name ILIKE ANY(lb.names)',
-            { name },
-          );
-        }),
-      );
-    }
-    if (input.areaId > 0)
-      query.andWhere('loc."areaId" = :areaId', { areaId: input.areaId });
+    const query = this.repository
+      .createQueryBuilder('lb')
+      .where(':name ILIKE ANY(lb.names)', { name: input.keyword })
+      .orderBy(`lb.${input.sortBy}`, input.order);
     const options: IPaginationOptions = {
       page: input.page,
       limit: input.limit,
     };
-    query.orderBy('lb."createdAt"', 'DESC');
     return paginate<LivingBeing>(query, options);
   }
 

@@ -8,7 +8,7 @@ import { CurrentUser } from '../auth/current-user-decorator';
 import { StrategyType } from '../auth/types/strategy.type';
 import { GraphQLUpload } from 'graphql-upload';
 import { Upload } from '../shared/shared.input';
-import { removeFile, uniqId, upload } from '../utils';
+import { removeFile, uniqId, upload, uploadV2 } from '../utils';
 
 @Resolver(() => Area)
 export class AreaResolver {
@@ -23,16 +23,35 @@ export class AreaResolver {
   ): Promise<Area> {
     const area = new Area();
     area.id = await uniqId('Area');
-    const { filename } = await upload(banner, 'areas/', area.id);
-    area.banner = filename;
+    const { filename, createReadStream } = await banner;
     Object.assign(area, input);
-    return this.areaService.save(area);
+    area.banner = area.id + '-' + filename.substr(-5);
+    return new Promise((resolve) => {
+      this.areaService
+        .save(area)
+        .then((adventure) => {
+          uploadV2(createReadStream, 'areas/', area.banner);
+          resolve(adventure);
+        })
+        .catch(() => resolve(null));
+    });
   }
+
   @UseGuards(GqlAuthGuard)
   @Mutation(() => Area)
-  async updateArea(@Args('input') input: UpdateAreaInput): Promise<Area> {
+  async updateArea(
+    @Args('input') input: UpdateAreaInput,
+    @Args({ name: 'banner', type: () => GraphQLUpload, nullable: true })
+    banner: Upload,
+  ): Promise<Area> {
     const area = await this.areaService.findOneById(input.id);
     Object.assign(area, input);
+    if (banner) {
+      const { filename, createReadStream } = await banner;
+      removeFile('areas/' + area.banner);
+      area.banner = area.id + '-' + filename.substr(-5);
+      await uploadV2(createReadStream, 'areas/', area.banner);
+    }
     return this.areaService.save(area);
   }
   @UseGuards(GqlAuthGuard)
@@ -50,6 +69,11 @@ export class AreaResolver {
   @Query(() => [Area])
   async areas() {
     return this.areaService.findAll();
+  }
+
+  @Query(() => Area, { nullable: true })
+  async findArea(@Args({ name: 'id', type: () => Int }) id: number) {
+    return this.areaService.findOneById(id);
   }
 
   @Mutation(() => Area)

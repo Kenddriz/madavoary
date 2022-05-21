@@ -14,30 +14,35 @@ const routes: RouteRecordRaw[] = [
         path: 'users/authentication',
         name: 'users-authentication',
         alias: 'authentication',
-        component: () => import('pages/users-authentication.vue'),
+        component: () => import('pages/user/users-authentication.vue'),
       },
       {
         path: 'users/list',
         name: 'users-list',
         alias: 'users',
-        component: () => import('pages/users-list.vue'),
+        component: () => import('pages/user/users-list.vue'),
       },
       {
         path: 'users/account',
         name: 'users-account',
         alias: 'account',
-        component: () => import('pages/users-account.vue'),
+        component: () => import('pages/user/users-account.vue'),
       },
       {
         path: 'areas/list',
         name: 'areas-list',
         alias: 'areas',
-        component: () => import('pages/areas-list.vue')
+        component: () => import('pages/area/areas-list.vue')
       },
       {
         path: 'areas/create',
         name: 'areas-creation',
-        component: () => import('pages/areas-creation.vue')
+        component: () => import('pages/area/areas-creation.vue')
+      },
+      {
+        path: 'areas/update/:id',
+        name: 'areas-update',
+        component: () => import('pages/area/areas-update.vue')
       },
       {
         path: 'classifiers/list',
@@ -49,28 +54,33 @@ const routes: RouteRecordRaw[] = [
         path: 'living-beings/list',
         name: 'living-beings-list',
         alias: 'living-beings',
-        component: () => import('pages/living-being-list.vue')
+        component: () => import('pages/living-being/living-being-list.vue')
       },
       {
-        path: 'living-being/creation',
-        name: 'living-being-creation',
-        component: () => import('components/living-being/living-being-form.vue')
+        path: 'living-beings/creation',
+        name: 'living-beings-creation',
+        component: () => import('pages/living-being/living-beings-creation.vue')
+      },
+      {
+        path: 'living-beings/update/:id',
+        name: 'living-beings-update',
+        component: () => import('pages/living-being/living-beings-update.vue')
       },
       {
         path: 'adventures/list',
         name: 'adventures-list',
         alias: 'adventures',
-        component: () => import('pages/adventures-list.vue')
+        component: () => import('pages/classification/adventures-list.vue')
       },
       {
         path: 'adventures/creation',
         name: 'adventures-creation',
-        component: () => import('pages/adventures-creation.vue')
+        component: () => import('pages/classification/adventures-creation.vue')
       },
       {
         path: 'adventures/update/:id',
         name: 'adventures-update',
-        component: () => import('pages/adventures-update.vue')
+        component: () => import('pages/classification/adventures-update.vue')
       },
     ]
   },

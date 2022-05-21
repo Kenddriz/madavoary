@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-center q-gutter-sm">
     <Alert
-      v-for="(subject, index) in $tm('collection-subjects')"
+      v-for="(subject, index) in $tm('adventure-subjects')"
       :key="index"
       :title="subject.title"
       :icon="subject.icon"

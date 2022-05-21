@@ -39,7 +39,6 @@
       :created-at="area.createdAt"
       :updated-at="area.updatedAt"
       :user="area.user"
-      @edit="openForm"
       @back="$emit('back')"
     />
   </q-card>
@@ -47,8 +46,6 @@
 
 <script lang="ts">
 import {defineComponent} from 'vue';
-import AreaForm from 'components/area/AreaForm.vue';
-import {useQuasar} from 'quasar';
 import {formatDate} from 'src/graphql/utils/utils';
 import CommonActionsDetails from 'components/shared/CommonActionsDetails.vue';
 
@@ -57,16 +54,9 @@ export default defineComponent({
   components: { CommonActionsDetails },
   props: ['area'],
   emits: ['back'],
-  setup(props) {
-    const { dialog } = useQuasar();
+  setup() {
     return {
       uri: process.env.uri + 'areas/',
-      openForm: () => {
-        dialog({
-          component: AreaForm,
-          componentProps: { area: props.area }
-        })
-      },
       formatDate
     }
   }

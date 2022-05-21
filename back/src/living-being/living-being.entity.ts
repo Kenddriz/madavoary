@@ -3,27 +3,24 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  OneToMany,
-  PrimaryColumn,
+  JoinTable,
+  ManyToMany,
+  PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Localization } from '../localization/localization.entity';
-import { Classification } from '../classification/classification.entity';
+import { Classifier } from '../classifier/classifier.entity';
+import { Area } from '../area/area.entity';
 
 @ObjectType()
 @Entity({ name: 'livingBeings' })
 export class LivingBeing {
   @Field()
-  @PrimaryColumn()
+  @PrimaryGeneratedColumn()
   id: number;
 
   @Field(() => [String])
   @Column({ default: [], type: 'varchar', array: true })
   images: string[];
-
-  @Field(() => [String])
-  @Column({ type: 'varchar', array: true })
-  localNames: string[];
 
   @Field(() => [String])
   @Column({ type: 'varchar', array: true })
@@ -35,7 +32,7 @@ export class LivingBeing {
 
   @Field(() => [String])
   @Column({ default: [], type: 'varchar', array: true })
-  specificities: string[];
+  descriptions: string[];
 
   @Field()
   @CreateDateColumn({ name: 'createdAt', type: 'timestamp' })
@@ -45,20 +42,24 @@ export class LivingBeing {
   @UpdateDateColumn({ name: 'updatedAt', type: 'timestamp' })
   updatedAt: Date;
 
-  @Field(() => [Localization])
-  @OneToMany(() => Localization, (localization) => localization.livingBeing, {
-    onDelete: 'CASCADE',
-    cascade: true,
+  @Field(() => [Area])
+  @ManyToMany(() => Area, { onDelete: 'CASCADE', primary: true })
+  @JoinTable({
+    name: 'localizations',
+    joinColumn: { name: 'livingBeingId' },
+    inverseJoinColumn: { name: 'areaId' },
   })
-  localizations: Localization[];
+  areas: Area[];
 
-  @Field(() => [Classification])
-  @OneToMany(
-    () => Classification,
-    (classification) => classification.livingBeing,
-    {
-      onDelete: 'CASCADE',
-    },
-  )
-  classification: Classification[];
+  @Field(() => [Classifier])
+  @ManyToMany(() => Classifier, {
+    onDelete: 'CASCADE',
+    primary: true,
+  })
+  @JoinTable({
+    name: 'classifications',
+    joinColumn: { name: 'livingBeingId' },
+    inverseJoinColumn: { name: 'classifierId' },
+  })
+  classifiers: Classifier[];
 }

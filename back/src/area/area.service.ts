@@ -21,6 +21,19 @@ export class AreaService {
     return this.repository.findOne(id);
   }
 
+  async findOneByIds(ids: number[]): Promise<Area[]> {
+    return this.repository.findByIds(ids);
+  }
+
+  async findByLivingBeing(LivingBeingId: number): Promise<Area[]> {
+    return this.repository
+      .createQueryBuilder('area')
+      .innerJoin('localizations', 'loc', 'loc."areaId" = area.id')
+      .where('loc."livingBeingId" = :LivingBeingId', { LivingBeingId })
+      .orderBy('name', 'ASC')
+      .getMany();
+  }
+
   remove(id: number) {
     return `This action removes a #${id} area`;
   }

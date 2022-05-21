@@ -4,15 +4,15 @@ import { PaginationInput } from '../../shared/shared.input';
 @InputType()
 export class CreateLivingBeingInput {
   @Field(() => [String])
-  specificities: string[];
+  descriptions: string[];
   @Field(() => [String])
   names: string[];
   @Field()
   endemic: boolean;
-  @Field()
-  endangered: boolean;
-  @Field(() => Int)
-  areaId: number;
+  @Field(() => [Int])
+  classifierIds: number[];
+  @Field(() => [Int])
+  areaIds: number[];
 }
 
 @InputType()
@@ -23,6 +23,8 @@ export class UpdateLivingBeingInput extends CreateLivingBeingInput {
 
 @InputType()
 export class PaginateLivingBeingsInput extends PaginationInput {
-  @Field(() => Int)
-  areaId: number;
+  @Field()
+  sortBy: string;
+  @Field()
+  order: 'ASC' | 'DESC';
 }

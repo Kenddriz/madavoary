@@ -4,6 +4,7 @@ import dashboard from './dashboard';
 import user from './user';
 import area from './area';
 import classification from './classification';
+import livingBeing from './living-being';
 
 export default {
   lastName: 'Nom',
@@ -50,6 +51,7 @@ export default {
   save: 'Enregistrer',
   cancel: 'Annuler',
   confirm: 'Confirmer',
+  add: 'Ajouter',
   localNames: 'Noms Locaux',
   dateTime: 'DD-MM-YYYY T HH:mm:ss',
   shortDate: 'DD/MM/YYYY',
@@ -128,6 +130,7 @@ export default {
   user,
   area,
   classification,
+  livingBeing,
   menu: [
     'TABLEAU DE BOARD',
     'UTILISATEURS',

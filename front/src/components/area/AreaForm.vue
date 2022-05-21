@@ -146,11 +146,8 @@ import {defineComponent, reactive, ref} from 'vue';
 import {CreateAreaInput, Peripheral} from 'src/graphql/types';
 import MovableCard from 'components/shared/MovableCard.vue';
 import {notify, useValidationError} from 'src/graphql/utils/utils';
-import {useDialogPluginComponent} from 'quasar';
 import ImageInput from 'components/shared/ImageInput.vue';
 import {useI18n} from 'vue-i18n';
-import {useCreateArea} from 'src/graphql/area/ceate-area';
-import {useUpdateArea} from 'src/graphql/area/update.area';
 import {useUpdateAreaBanner} from 'src/graphql/area/updateAreaBanner';
 
 export default defineComponent({
@@ -158,8 +155,6 @@ export default defineComponent({
   components: { MovableCard, ImageInput },
   props: ['area'],
   setup(props) {
-    const { submitCreate } = useCreateArea();
-    const { updateArea } = useUpdateArea();
     const input = reactive<CreateAreaInput>({
       name: '',
       type: 0,
@@ -176,7 +171,6 @@ export default defineComponent({
         Object.assign(input, { [key]: data });
       });
     }
-    const { dialogRef } = useDialogPluginComponent();
     const formRef = ref<any>(null);
     function addCity() {
       input.peripherals.push({ city: '', distance: 25 })
@@ -188,12 +182,6 @@ export default defineComponent({
       formRef.value.validate().then((success: boolean) => {
         if (success) {
           if(!banner.value.length && !props.area) notify(t('area.bannerMissing'), 'red');
-          else {
-            if(props.area) {
-              updateArea({ ...input, id: props.area.id })
-            }
-            else submitCreate(input, banner.value[0]);
-          }
         }
       })
     }
@@ -202,7 +190,6 @@ export default defineComponent({
       addCity,
       removeCity,
       ...useValidationError(),
-      dialogRef,
       formRef,
       validate,
       banner,

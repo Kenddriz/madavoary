@@ -3,12 +3,10 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  OneToMany,
   PrimaryColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Peripheral } from './types/area.output';
-import { Localization } from '../localization/localization.entity';
 
 @ObjectType()
 @Entity({ name: 'areas' })
@@ -18,7 +16,7 @@ export class Area {
   id: number;
 
   @Field()
-  @Column({ type: 'varchar', length: 30 })
+  @Column({ type: 'varchar', unique: true, length: 30 })
   name: string;
 
   @Field(() => Int)
@@ -48,9 +46,4 @@ export class Area {
   @Field()
   @UpdateDateColumn({ type: 'timestamp' })
   updatedAt: Date;
-
-  @OneToMany(() => Localization, (localization) => localization.area, {
-    onDelete: 'CASCADE',
-  })
-  localizations: Localization[];
 }

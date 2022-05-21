@@ -12,6 +12,7 @@
   >
     <template v-slot:top-left>
       <q-input
+        :model-value="filter"
         dense
         v-model="filter"
         placeholder="Chercher"
@@ -36,6 +37,7 @@
 
     <template v-slot:item="props">
       <q-img
+        @click="$router.push(`/areas/update/${props.row.id}`)"
         style="height: 140px; max-width: 150px"
         :src="getImage(props.row.banner)"
         class="q-ma-xs q-card--bordered cursor-pointer"

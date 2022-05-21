@@ -37,7 +37,7 @@
         bordered
         class="bg-primary cursor-pointer"
         v-ripple
-        @click="detail(props.row.id)"
+        @click="$router.push(`/adventures/update/${props.row.id}`)"
       >
         <q-img
           :src="getImage(props.row.images[0], `adventures/${props.row.natureId}`)"
@@ -77,19 +77,15 @@
   import { defineComponent } from 'vue';
   import {useAdventuresList} from 'src/graphql/adventure/adventures-list';
   import {getImage} from 'src/graphql/utils/utils';
-  import { useRouter } from 'vue-router';
+  import {paginationLabel} from 'src/graphql/utils/pagination';
 
   export default defineComponent({
     name: 'adventures-creation',
     setup() {
-      const router = useRouter();
       return {
         ...useAdventuresList(),
-        paginationLabel: (firstRowIndex: number, endRowIndex: number, totalRowsNumber: number) => `${firstRowIndex} - ${endRowIndex} de ${totalRowsNumber}`,
+        paginationLabel,
         getImage,
-        detail: (id: number) => {
-          void router.push(`/adventures/update/${id}`);
-        }
       }
     }
   })

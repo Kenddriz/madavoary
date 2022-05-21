@@ -68,14 +68,14 @@ export const useAdventuresList= () => {
   const filter = ref('');
 
   function getInput(): PaginateAdventuresInput {
-    const { keyword, natureIds, rowsPerPage: limit, page } = pagination.value;
+    const { keyword, natureIds, descending, rowsPerPage: limit, page, sortBy } = pagination.value;
     return {
       keyword,
       natureIds,
       limit,
       page,
-      sortBy: 'naming',
-      order: pagination.value.descending ? 'DESC' : 'ASC',
+      sortBy,
+      order: descending ? 'DESC' : 'ASC',
     }
   }
 

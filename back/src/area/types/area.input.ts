@@ -1,13 +1,6 @@
 import { InputType, Field, Int } from '@nestjs/graphql';
 
 @InputType()
-export class ContactInput {
-  @Field(() => Int)
-  type: number;
-  @Field(() => [String])
-  list: string[];
-}
-@InputType()
 export class PeripheralInput {
   @Field()
   city: string;

@@ -3,12 +3,12 @@ import {
   Column,
   Entity,
   JoinColumn,
+  ManyToMany,
   ManyToOne,
-  OneToMany,
   PrimaryColumn,
   RelationId,
 } from 'typeorm';
-import { Classification } from '../classification/classification.entity';
+import { LivingBeing } from '../living-being/living-being.entity';
 
 @ObjectType()
 @Entity({ name: 'classifiers' })
@@ -37,16 +37,6 @@ export class Classifier {
   @Field(() => Int, { nullable: true })
   @RelationId((classification: Classifier) => classification.parent)
   parentId?: number;
-
-  @Field(() => [Classification])
-  @OneToMany(
-    () => Classification,
-    (classification) => classification.livingBeing,
-    {
-      onDelete: 'CASCADE',
-    },
-  )
-  classification: Classification[];
 
   @Field(() => [Classifier], { defaultValue: [] })
   children: Classifier[];

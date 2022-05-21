@@ -35,3 +35,4 @@ export const addPaginationCache = (data: any, existingRef: any, toReference: any
   }
 }
 
+export const paginationLabel = (firstRowIndex: number, endRowIndex: number, totalRowsNumber: number) => `${firstRowIndex} - ${endRowIndex} de ${totalRowsNumber}`;

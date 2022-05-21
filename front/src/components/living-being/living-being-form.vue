@@ -1,59 +1,42 @@
 <template>
-    <q-form class="row q-pb-lg">
-      <q-card flat class="col-12 col-md-4 bg-primary">
-        <q-card-section>
-          Images de présentation
-        </q-card-section>
-        <q-card-section>
-          <q-carousel
-            v-model="slide"
-            animated
-            control-color="amber"
-            navigation
-            infinite
-            height="200px"
-            class="bg-primary q-card--bordered"
-          >
-            <q-carousel-slide
-              v-for="(url, index) in urlList"
-              :key="index"
-              :name="index"
-              :img-src="url"
-            />
-          </q-carousel>
-          <q-file
-            :model-value="images"
-            v-model="images"
-            accept=".jpg, image/*"
-            multiple
-            max-files="5"
-            max-file-size="2048000"
-            @update:model-value="previewImages($event)"
-            v-show="false"
-            ref="file" />
-        </q-card-section>
-        <q-card-actions class="q-px-md" align="center">
-          <q-btn
-            outline
-            icon-right="insert_photo"
-            label="Charger les images de présentation"
-            @click="$refs.file.$el.click()"
-            no-caps
-            color="blue-grey-3"
-            class="q-mt-sm col-12"
-          />
-        </q-card-actions>
-      </q-card>
+    <q-form
+      class="row q-pb-lg"
+      autocorrect="off"
+      autocapitalize="off"
+      autocomplete="off"
+      spellcheck="false"
+      ref="inputForm"
+      @submit.prevent="onSubmit"
+      autofocus
+    >
 
+      <slot></slot>
       <q-card flat class="col-12 col-md-4 bg-primary">
         <q-card-section>
           Nominalisations
         </q-card-section>
         <q-card-section class="q-gutter-y-md">
-          <q-input color="warning" outlined v-model="slide" label="Scientifique" />
-          <q-input color="warning" outlined v-model="slide" label="Locaux" />
-          <q-input color="warning" outlined v-model="slide" label="Anglais" />
-          <q-input color="warning" outlined v-model="slide" label="Français" />
+          <q-input
+            v-for="(lab, index) in nameLabels"
+            :key="index"
+            color="orange"
+            outlined
+            :model-value="names[index]"
+            @update:model-value="updateArray(index, $event)"
+            :label="$t(`livingBeing.${lab}`)"
+            hide-bottom-space
+            hide-hint
+            :lazy-rules="index === 0"
+            :rules="[ val => index > 0 || index === 0 && !!val ]"
+            dense
+          />
+          <q-checkbox
+            color="orange"
+            keep-color
+            @update:model-value="$emit('update:endemic',$event)"
+            :model-value="endemic"
+            :label="$t('livingBeing.endemic')"
+          />
         </q-card-section>
       </q-card>
 
@@ -63,30 +46,42 @@
         </q-card-section>
         <q-card-section class="q-gutter-y-md">
           <q-input
-            color="warning"
+            v-for="(desc, index) in $tm('livingBeing.descriptions')"
+            :key="index"
+            color="orange"
             outlined
             autogrow
-            v-model="slide"
-            label="Traduction en anglais"
-          />
-          <q-input
-            color="warning"
-            outlined
-            autogrow
-            v-model="slide"
-            label="Traduction en français"
+            :model-value="descriptions[index]"
+            @update:model-value="updateArray(index, $event, 'descriptions')"
+            :label="desc"
           />
         </q-card-section>
         <q-card-section>
           Parcs
         </q-card-section>
         <q-card-section>
-          <q-input
-            color="warning"
+          <q-select
+            label="Parcs où l'on trouve"
+            :model-value="areaIds"
+            @update:model-value="$emit('update:areaIds', $event)"
+            multiple
+            option-label="name"
+            option-value="id"
+            color="orange"
+            use-input
+            fill-input
+            :options="areas"
+            popup-content-class="bg-primary q-card--bordered"
+            options-dense
+            hide-bottom-space
             outlined
-            autogrow
-            v-model="slide"
-            label="Entrer les parcs où l'on trouve"
+            map-options
+            emit-value
+            use-chips
+            :lazy-rules="true"
+            :rules="[ val => val.length > 0 ]"
+            hide-dropdown-icon
+            hide-hint
           />
         </q-card-section>
       </q-card>
@@ -95,25 +90,28 @@
         <q-card-section>
           Classifications scientifiques
         </q-card-section>
-        <q-card-section class="flex justify-between items-start q-gutter-sm q-pa-sm">
+        <q-card-section v-if="!loading" class="flex justify-between items-start q-pa-sm">
           <ClassifiersInput
-            :items="getOptions(i)"
-            v-for="(field, i) in $tm(`classification.classifiers`)"
-            :key="i"
+            :items="getOptions(index)"
+            v-for="(field, index) in $tm(`classification.classifiers`)"
+            :key="index"
             :label="field"
-            v-model="models[i]"
+            :model-value="classifierIds[index]"
+            @update:model-value="updateArray(index, $event, 'classifierIds')"
+            :class="`q-ma-sm ${$q.screen.xs ? 'full-width q-mx-md' : ''}`"
           />
         </q-card-section>
         <q-card-actions align="center">
           <q-btn
-            icon="add"
-            label="Ajouter"
+            type="submit"
             no-caps
             outline
             size="lg"
             color="orange"
             style="min-width: 50%"
-          />
+          >
+            <slot name="button"></slot>
+          </q-btn>
         </q-card-actions>
       </q-card>
 
@@ -121,30 +119,50 @@
 </template>
 
 <script lang="ts">
-    import {useImageLoader} from 'src/graphql/utils/preview';
-    import {defineComponent, ref} from 'vue';
+    import { defineComponent, ref } from 'vue';
     import {useClassifiers} from 'src/graphql/classifier/classifiers';
     import ClassifiersInput from 'components/classifier/classifiers-input.vue';
+    import {useAreas} from 'src/graphql/area/areas';
 
     export default defineComponent({
       name: 'living-being-form',
       components: { ClassifiersInput },
-      setup() {
-        const {classifiers} = useClassifiers();
-
+      props: [
+        'descriptions',
+        'endemic',
+        'areaIds',
+        'classifierIds',
+        'names',
+      ],
+      setup(props, { emit }) {
+        const {classifiers,loading} = useClassifiers();
+        const inputForm = ref<any>(null);
         function getOptions(level: number) {
           return classifiers.value.filter(c => c.level === level);
         }
-
-        const models = ref(Array(32).fill(''));
-        const areaModels = ref<any[]>([]);
-          return {
-            ...useImageLoader(),
-            slide: ref(0),
-            getOptions,
-            models,
-            areaModels
-          }
+        function updateArray (index: number, value: string, key = 'names') {
+          const data = props as Record<string, any>;
+          const names = [...data[key]];
+          names[index] = value;
+          emit(`update:${key}`, names);
+        }
+        function onSubmit() {
+          inputForm.value.validate().then((success: boolean) => {
+            if(success) {
+              inputForm.value.resetValidation();
+              emit('validate');
+            }
+          })
+        }
+        return {
+          getOptions,
+          ...useAreas(),
+          updateArray,
+          nameLabels: [ 'scientific', 'locals', 'french', 'english'],
+          inputForm,
+          onSubmit,
+          loading,
+        }
       }
     })
 </script>

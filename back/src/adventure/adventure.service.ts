@@ -65,6 +65,7 @@ export class AdventureService {
     };
     return paginate<Adventure>(queryBuilder, options);
   }
+
   async paginate(
     input: PaginateAdventuresInput,
   ): Promise<Pagination<Adventure>> {

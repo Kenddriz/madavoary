@@ -28,3 +28,12 @@ export class Upload {
   @Field(() => Stream)
   createReadStream: () => Stream;
 }
+
+@InputType()
+export class UpdateImageInput {
+  @Field()
+  id: number;
+
+  @Field()
+  index: number;
+}

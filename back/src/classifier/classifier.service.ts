@@ -21,6 +21,18 @@ export class ClassifierService {
     return this.repository.findOne(id);
   }
 
+  async findByIds(ids: number[]): Promise<Classifier[]> {
+    return this.repository.findByIds(ids);
+  }
+
+  async findByLivingBeing(LivingBeingId: number): Promise<Classifier[]> {
+    return this.repository
+      .createQueryBuilder('classifier')
+      .innerJoin('classifications', 'cl', 'cl."classifierId" = classifier.id')
+      .where('cl."livingBeingId" = :LivingBeingId', { LivingBeingId })
+      .orderBy('classifier.label', 'ASC')
+      .getMany();
+  }
   remove(id: number) {
     return `This action removes a #${id} classifier`;
   }
