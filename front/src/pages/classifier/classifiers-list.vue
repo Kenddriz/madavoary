@@ -62,7 +62,7 @@
           @click="setSelected(classifier)"
         >
           <div>{{ classifier.label }}</div>
-          <small> {{ $tm("classification.classifiers")[classifier.level]}} </small>
+          <small> {{ $tm("adventure.classifiers")[classifier.level]}} </small>
         </q-card>
       </div>
 
@@ -104,7 +104,7 @@
 
 <script lang="ts">
   import { defineComponent, computed, reactive, ref } from 'vue';
-  import { useClassifiers } from '../graphql/classifier/classifiers';
+  import { useClassifiers } from '../../graphql/classifier/classifiers';
   import {Classifier} from 'src/graphql/types';
   const defaultSelected = {
     id: null,
@@ -134,7 +134,7 @@
         } else tabs.value.push(parent);
         Object.assign(selected, parent || defaultSelected);
       }
-      const children = computed(() => classifiers.value.filter((c) => c.parentId === selected.id));
+      const children = computed(() => classifiers.value.filter((c: any) => c.parentId === selected.id));
       return {
           loading,
           children,

@@ -98,7 +98,7 @@ import {Adventure, QueryFindAdventureArgs, UpdateAdventureInput} from 'src/graph
 import {useUpdateAdventure} from 'src/graphql/adventure/adventure-update';
 import {useQuery, useResult} from '@vue/apollo-composable';
 import {gql} from '@apollo/client';
-import {COLLECTION_FIELDS} from 'src/graphql/adventure/collection';
+import { ADVENTURE_FIELDS } from 'src/graphql/adventure/adventure';
 import {useAdventureRemoveImage} from 'src/graphql/adventure/adventure-remove-image';
 import ImageStatistic from 'components/shared/ImageStatistic.vue';
 
@@ -109,7 +109,7 @@ type FindAdventureData = {
 const FIND_ADVENTURE = gql`
    query FindAdventure($id: Int!){
       findAdventure(id: $id){
-          ${COLLECTION_FIELDS}
+          ${ADVENTURE_FIELDS}
       }
    }
 `;

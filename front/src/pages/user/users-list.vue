@@ -77,7 +77,7 @@
         :max="10"
         :max-pages="6"
         boundary-numbers
-        color="warning"
+        color="orange"
       />
     </q-page-sticky>
   </q-page>

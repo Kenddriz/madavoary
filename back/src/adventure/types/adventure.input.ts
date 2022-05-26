@@ -39,6 +39,8 @@ export class PaginateAdventuresInput extends PaginationInput {
   sortBy: string;
   @Field()
   order: 'ASC' | 'DESC';
+  @Field({ nullable: true })
+  userId: number;
 }
 
 @InputType()

@@ -1,6 +1,6 @@
 import {Adventure, MutationUpdateAdventureArgs, UpdateAdventureInput} from 'src/graphql/types';
 import {useMutation} from '@vue/apollo-composable';
-import {COLLECTION_FIELDS} from 'src/graphql/adventure/collection';
+import { ADVENTURE_FIELDS } from 'src/graphql/adventure/adventure';
 import {gql} from '@apollo/client';
 import {useLoading} from 'src/graphql/utils/utils';
 
@@ -11,7 +11,7 @@ export type UpdateAdventureData = {
 export const UPDATE_COLLECTION = gql`
   mutation UpdateAdventure($input: UpdateAdventureInput!) {
     updateAdventure(input: $input) {
-      ${COLLECTION_FIELDS}
+      ${ADVENTURE_FIELDS}
     }
   }
 `;

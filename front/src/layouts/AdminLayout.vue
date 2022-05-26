@@ -3,7 +3,7 @@
     <q-header class="bordered-bottom">
       <q-toolbar>
         <q-avatar
-          @click="$router.push('/')"
+          @click="$router.push('/private/')"
           class="cursor-pointer"
           size="80px" icon="home"
         />
@@ -55,7 +55,7 @@
             grid: true,
             actions: menu.map(m => ({ label: m.to, to: m.to, icon: m.icon }))
           }).onOk((action: any) => {
-            void router.push(`/${action.to}`);
+            void router.push(`/private/${action.to}`);
           })
         }
       }

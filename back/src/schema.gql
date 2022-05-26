@@ -92,11 +92,6 @@ type Adventure {
   userId: Float!
 }
 
-type AdventurePagination {
-  items: [Adventure!]!
-  meta: Meta!
-}
-
 type AdventuresPagination {
   items: [Adventure!]!
   meta: Meta!
@@ -142,7 +137,6 @@ type Query {
   paginateUsers(input: PaginateUserInput!): UserPagination!
   countAdventures(input: CountAdventureInput!): [CountAdventuresOutput!]!
   findAdventure(id: Int!): Adventure
-  _paginateAdventures(input: PaginateAdventureInput!): AdventurePagination!
   paginateAdventures(input: PaginateAdventuresInput!): AdventuresPagination!
   visit(id: Int!): Visit!
   subscription(id: Int!): Subscription!
@@ -171,14 +165,6 @@ input CountAdventureInput {
   id: Float!
 }
 
-input PaginateAdventureInput {
-  keyword: String
-  page: Float!
-  limit: Float!
-  natureId: Float!
-  userId: Float
-}
-
 input PaginateAdventuresInput {
   keyword: String
   page: Float!
@@ -186,6 +172,7 @@ input PaginateAdventuresInput {
   natureIds: [Float!]!
   sortBy: String!
   order: String!
+  userId: Float
 }
 
 input AuthInput {

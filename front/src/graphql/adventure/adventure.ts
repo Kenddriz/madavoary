@@ -1,5 +1,5 @@
 
-export const COLLECTION_FIELDS = `
+export const ADVENTURE_FIELDS = `
   id
   naming
   place

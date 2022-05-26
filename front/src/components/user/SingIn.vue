@@ -9,7 +9,7 @@
     <q-input
       :model-value="input.email"
       v-model="input.email"
-      label-color="white"
+      color="orange"
       square
       dense
       :label="$t('email')"
@@ -19,7 +19,7 @@
       no-error-icon
     >
       <template v-slot:prepend>
-        <q-icon name="mail" />
+        <q-icon  color="orange" name="mail" />
       </template>
     </q-input>
     <PasswordInput

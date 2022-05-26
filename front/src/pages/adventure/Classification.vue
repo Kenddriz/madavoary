@@ -108,7 +108,7 @@
           <q-separator />
           <q-card-section>
             <p>
-              {{$tm('classification.classifiers')[cl.level]}} : {{cl.label}}
+              {{$tm('adventure.classifiers')[cl.level]}} : {{cl.label}}
             </p>
             <p class="text-blue-grey-13">Traductions</p>
             <p v-for="(lang, index) in $tm('languages')" :key="index">

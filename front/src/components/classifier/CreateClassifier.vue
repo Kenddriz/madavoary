@@ -3,7 +3,7 @@
     <MovableCard>
       <template v-slot:title>
         <q-item-label lines="1">
-          {{ item ? 'Nouvel élément inférieur' : 'Nouveau ' + ($tm('classification.classifiers')[level + 1]).toLowerCase()}}
+          {{ item ? 'Nouvel élément inférieur' : 'Nouveau ' + ($tm('adventure.classifiers')[level + 1]).toLowerCase()}}
         </q-item-label>
       </template>
       <q-form
@@ -17,7 +17,7 @@
         <template v-if="item">
           <q-item-section>
             <q-item-label>
-              {{$tm('classification.classifiers')[level]}}
+              {{$tm('adventure.classifiers')[level]}}
             </q-item-label>
             <q-item-label class="text-white" caption>
               {{item.label}}
@@ -108,7 +108,7 @@ export default defineComponent({
     const { dialogRef } = useDialogPluginComponent();
     const { tm } = useI18n();
     const level = props?.item !== undefined ? props.item.level : -1;
-    const stringOptions = (tm('classification.classifiers') as string[])
+    const stringOptions = (tm('adventure.classifiers') as string[])
       .slice(level + 1)
       .map((label, value) => ({ label, value}));
     const options = ref(stringOptions);

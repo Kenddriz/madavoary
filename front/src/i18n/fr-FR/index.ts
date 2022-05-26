@@ -5,6 +5,7 @@ import user from './user';
 import area from './area';
 import classification from './classification';
 import livingBeing from './living-being';
+import home from './home';
 
 export default {
   lastName: 'Nom',
@@ -92,37 +93,31 @@ export default {
       id: '0',
       title: 'Animaux',
       icon: 'fas fa-dove',
-      description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum'
     },
     {
       id: '5',
       title: 'Eaux',
       icon: 'fas fa-water',
-      description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum'
     },
     {
       id: '1',
       title: 'Forêts',
       icon: 'fas fa-tree',
-      description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum'
     },
     {
       id: '2',
       title: 'Humains',
       icon: 'nature_people',
-      description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum'
     },
     {
       id: '3',
       title: 'Végétaux',
       icon: 'fas fa-seedling',
-      description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum'
     },
     {
       id: '4',
       title: 'Roches',
       icon: 'fas fa-mountain',
-      description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum'
     }
   ],
   languages: [{ value: 'en', label: 'Anglais'},{ value: 'fr', label: 'Français'}],
@@ -131,6 +126,7 @@ export default {
   area,
   classification,
   livingBeing,
+  home,
   menu: [
     'TABLEAU DE BOARD',
     'UTILISATEURS',

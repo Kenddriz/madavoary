@@ -3,12 +3,13 @@
     <div
       v-for="(m, index) in menu"
       :key="index"
-      class="col-4 flex flex-center"
+      class="col-12 col-sm-4 flex flex-center q-pa-sm"
     >
       <q-btn
         class="no-box-shadow bg-primary"
         unelevated
-        :to="m.to"
+        :to="`/private/${m.to}`"
+        v-bind:class="{'full-width': $q.screen.lt.sm }"
       >
         <div>
           <q-icon :name="m.icon" /><br>

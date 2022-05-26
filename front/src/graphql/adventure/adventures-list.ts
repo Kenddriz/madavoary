@@ -6,7 +6,7 @@ import {
 } from 'src/graphql/types';
 import {gql} from '@apollo/client';
 import {InitialPagination, PAGINATION_META} from 'src/graphql/utils/pagination';
-import {COLLECTION_FIELDS} from 'src/graphql/adventure/collection';
+import {ADVENTURE_FIELDS} from 'src/graphql/adventure/adventure';
 import { ref } from 'vue';
 import {useI18n} from 'vue-i18n';
 
@@ -18,7 +18,7 @@ export const PAGINATE_ADVENTURES = gql`
   query PaginateAdventures($input: PaginateAdventuresInput!) {
     paginateAdventures(input: $input) {
       items {
-        ${COLLECTION_FIELDS}
+        ${ADVENTURE_FIELDS}
       }
       ${PAGINATION_META}
     }

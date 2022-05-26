@@ -37,41 +37,13 @@ export class AdventureService {
     if (userId > 0) query.where('"userId" = :userId', { userId });
     return query.groupBy('"natureId"').getRawMany();
   }
-  async paginateAdventures(
-    input: PaginateAdventureInput,
-  ): Promise<Pagination<Adventure>> {
-    const keyword = `%${input.keyword}%`;
-
-    const queryBuilder = this.repository.createQueryBuilder('col').where(
-      new Brackets((qb) => {
-        qb.where('col.naming ILike :keyword', { keyword })
-          .orWhere('col.place ILike :keyword', { keyword })
-          .orWhere('col.description ILike :keyword', { keyword });
-      }),
-    );
-    if (input.natureId >= 0) {
-      queryBuilder.andWhere(`col."natureId" = :natureId`, {
-        natureId: input.natureId,
-      });
-    }
-    if (input.userId > 0) {
-      queryBuilder.andWhere(`col."userId" = :userId`, { userId: input.userId });
-    }
-    queryBuilder.orderBy('col.createdAt', 'DESC');
-
-    const options: IPaginationOptions = {
-      page: input.page,
-      limit: input.limit,
-    };
-    return paginate<Adventure>(queryBuilder, options);
-  }
 
   async paginate(
     input: PaginateAdventuresInput,
   ): Promise<Pagination<Adventure>> {
     const keyword = `%${input.keyword}%`;
 
-    const queryBuilder = this.repository
+    const query = this.repository
       .createQueryBuilder('col')
       .where(
         new Brackets((qb) => {
@@ -82,14 +54,16 @@ export class AdventureService {
       )
       .andWhere(`col."natureId" IN (:...natureIds)`, {
         natureIds: input.natureIds,
-      })
-      .orderBy(`col.${input.sortBy}`, input.order);
+      });
+    if (input.userId)
+      query.andWhere(`col."userId" = :userId`, { userId: input.userId });
+    query.orderBy(`col.${input.sortBy}`, input.order);
 
     const options: IPaginationOptions = {
       page: input.page,
       limit: input.limit,
     };
-    return paginate<Adventure>(queryBuilder, options);
+    return paginate<Adventure>(query, options);
   }
 
   async userBook(userId: number, year: number): Promise<Adventure[]> {

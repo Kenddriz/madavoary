@@ -2,7 +2,7 @@ import {reactive, ref} from 'vue';
 import { useMutation } from '@vue/apollo-composable';
 import {Adventure, MutationCreateAdventureArgs} from 'src/graphql/types';
 import {gql} from '@apollo/client';
-import {COLLECTION_FIELDS} from 'src/graphql/adventure/collection';
+import { ADVENTURE_FIELDS } from 'src/graphql/adventure/adventure';
 import {useLoading} from 'src/graphql/utils/utils';
 import {addPaginationCache} from 'src/graphql/utils/pagination';
 import {useImageLoader} from 'src/graphql/utils/preview';
@@ -13,7 +13,7 @@ export type CreateAdventureData = {
 export const CREATE_COLLECTION = gql`
   mutation CreateAdventure ($images: [Upload!]!, $detail: CreateAdventureInput!) {
     createAdventure(images: $images, detail: $detail) {
-      ${COLLECTION_FIELDS}
+      ${ADVENTURE_FIELDS}
     }
   }
 `

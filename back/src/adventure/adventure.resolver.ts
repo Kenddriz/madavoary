@@ -11,7 +11,6 @@ import { AdventureService } from './adventure.service';
 import { Adventure } from './adventure.entity';
 import {
   AdventuresPagination,
-  AdventurePagination,
   CountAdventuresOutput,
 } from './types/adventure.output';
 import { UseGuards } from '@nestjs/common';
@@ -26,7 +25,6 @@ import {
   CountAdventureInput,
   CreateAdventureInput,
   PaginateAdventuresInput,
-  PaginateAdventureInput,
   UpdateAdventureImageInput,
   UpdateAdventureInput,
 } from './types/adventure.input';
@@ -183,17 +181,12 @@ export class AdventureResolver {
     return adventure;
   }
 
-  @Query(() => AdventurePagination)
-  async _paginateAdventures(
-    @Args('input') input: PaginateAdventureInput,
-  ): Promise<AdventurePagination> {
-    return this.adventureService.paginateAdventures(input);
-  }
-
   @Query(() => AdventuresPagination)
   async paginateAdventures(
     @Args('input') input: PaginateAdventuresInput,
+    @CurrentUser() strategy: StrategyType,
   ): Promise<AdventuresPagination> {
+    console.log(strategy);
     return this.adventureService.paginate(input);
   }
 
