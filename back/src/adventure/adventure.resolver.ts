@@ -186,7 +186,6 @@ export class AdventureResolver {
     @Args('input') input: PaginateAdventuresInput,
     @CurrentUser() strategy: StrategyType,
   ): Promise<AdventuresPagination> {
-    console.log(strategy);
     return this.adventureService.paginate(input);
   }
 

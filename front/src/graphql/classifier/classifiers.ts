@@ -14,6 +14,13 @@ const CLASSIFIERS = gql`
     }
   }
 `;
+export const defaultSelected: any = {
+  id: null,
+  label: '',
+  level: -1,
+  translations: [],
+  parentId: null,
+}
 export const useClassifiers = () => {
   const { loading, result } = useQuery<ClassifiersData>(CLASSIFIERS);
   const classifiers = useResult<

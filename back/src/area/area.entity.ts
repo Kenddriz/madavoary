@@ -6,7 +6,7 @@ import {
   PrimaryColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Peripheral } from './types/area.output';
+import { Peripheral, Geo } from './types/area.output';
 
 @ObjectType()
 @Entity({ name: 'areas' })
@@ -34,6 +34,18 @@ export class Area {
   @Field(() => [Peripheral])
   @Column({ default: [], type: 'jsonb' })
   peripherals: Peripheral[]; /**peripheral cities*/
+
+  @Field(() => [String])
+  @Column({ type: 'varchar', array: true, default: [] })
+  descriptions: string[];
+
+  @Field(() => [String])
+  @Column({ type: 'varchar', array: true, default: [] })
+  slogans: string[];
+
+  @Field(() => Geo)
+  @Column({ type: 'point', default: () => 'Point(0,0)' })
+  geo: Geo;
 
   @Field()
   @Column({ type: 'float', width: 5, default: 0 })

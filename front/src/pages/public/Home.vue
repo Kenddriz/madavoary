@@ -20,21 +20,47 @@
             Découvrez l'environnement de Madagascar
           </div>
           <div class="flex q-gutter-md q-mt-md">
-            <q-btn color="orange" label="Se connecter" />
-            <q-btn color="deep-orange" label="S'inscrire" />
+            <q-btn to="/private/authentication" color="orange" label="Se connecter" />
+            <q-btn to="/private/authentication" color="deep-orange" label="S'inscrire" />
           </div>
         </div>
       </template>
     </q-parallax>
+
+    <div class="q-gutter-lg row justify-center q-px-lg q-py-xl">
+      <q-card
+        v-for="(menu, index) in menuBar.slice(1,4)"
+        :key="index"
+        class="col-12 col-md-4 bg-primary cursor-pointer"
+        flat
+        style="width: 350px"
+        v-ripple
+      >
+        <div class="text-center">
+          <q-chip :label="$t(menu.label)" class="q-px-lg" />
+        </div>
+        <q-card-actions align="center">
+          <q-avatar v-if="index === 1" size="200px">
+            <img src="images/header-image.jpg">
+          </q-avatar>
+          <q-img height="200px" v-else basic src="images/header-image.jpg" />
+        </q-card-actions>
+        <q-card-section class="text-center">
+          {{ lorem }}
+        </q-card-section>
+      </q-card>
+    </div>
   </q-page>
 </template>
 <script lang='ts'>
   import {defineComponent} from 'vue';
-
+  import {menuBar} from 'layouts/public/data/data';
   export default defineComponent({
     name: 'Home',
     setup() {
       return {
+        menuBar,
+        lorem: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
       }
     },
   })

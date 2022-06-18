@@ -26,6 +26,10 @@ export class AdventureService {
     return this.repository.findOne(id);
   }
 
+  async count(): Promise<number> {
+    return this.repository.count();
+  }
+
   async remove(id: number): Promise<boolean> {
     const query = await this.repository.delete(id);
     return query.affected > 0;

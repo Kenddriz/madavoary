@@ -7,6 +7,11 @@ type Peripheral {
   distance: Float!
 }
 
+type Geo {
+  x: Float!
+  y: Float!
+}
+
 type Area {
   id: Int!
   name: String!
@@ -14,6 +19,9 @@ type Area {
   banner: String!
   region: String!
   peripherals: [Peripheral!]!
+  descriptions: [String!]!
+  slogans: [String!]!
+  geo: Geo!
   surface: Float!
   createdAt: DateTime!
   updatedAt: DateTime!
@@ -39,10 +47,10 @@ type LivingBeing {
   names: [String!]!
   endemic: Boolean!
   descriptions: [String!]!
-  createdAt: DateTime!
-  updatedAt: DateTime!
   areas: [Area!]!
   classifiers: [Classifier!]!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 type User {
@@ -67,6 +75,11 @@ type Meta {
   itemsPerPage: Float!
   totalPages: Float
   currentPage: Float!
+}
+
+type NumeralOption {
+  label: Float!
+  value: Float!
 }
 
 type LivingBeingPagination {
@@ -104,13 +117,36 @@ type CountAdventuresOutput {
 
 type Visit {
   id: Int!
+  city: String!
+  country: String!
+  countryCode: String!
+  region: String!
+  ip: String!
+  geo: Geo!
+  enteredAt: DateTime!
+  livedAt: DateTime
+}
+
+type VisitPagination {
+  items: [Visit!]!
+  meta: Meta!
+}
+
+type Transaction {
+  id: Int!
+  type: Int!
+  amount: Float!
+  photos: [String!]!
+  method: Int!
+  user: User!
+  verifiedAt: DateTime
   createdAt: DateTime!
 }
 
-type Subscription {
-  id: Int!
-  verifiedAt: DateTime!
-  createdAt: DateTime!
+type Revenue5LastYears {
+  type: Int!
+  amount: Int!
+  year: Int!
 }
 
 type Localization {
@@ -129,17 +165,20 @@ type Classification {
 }
 
 type Query {
+  dashboardCounter: [Float!]!
   areas: [Area!]!
   findArea(id: Int!): Area
   findLivingBeingByName(name: String!): LivingBeing
   findLivingBeing(id: Int!): LivingBeing
   paginateLivingBeings(input: PaginateLivingBeingsInput!): LivingBeingPagination!
+  findLivingBeingByArea(areaId: Int!): [LivingBeing!]!
   paginateUsers(input: PaginateUserInput!): UserPagination!
   countAdventures(input: CountAdventureInput!): [CountAdventuresOutput!]!
   findAdventure(id: Int!): Adventure
   paginateAdventures(input: PaginateAdventuresInput!): AdventuresPagination!
-  visit(id: Int!): Visit!
-  subscription(id: Int!): Subscription!
+  paginateVisits(input: PaginateLivingBeingsInput!): VisitPagination!
+  visitsMonthly: [NumeralOption!]!
+  revenue5LastYears: [Revenue5LastYears!]!
   login(input: AuthInput!): LoginDto!
   whoAmI: User!
   classification(id: Int!): Classification!
@@ -201,12 +240,8 @@ type Mutation {
   adventureRemoveImage(input: UpdateAdventureImageInput!): Adventure
   updateAdventure(input: UpdateAdventureInput!): Adventure!
   removeAdventure(id: Int!): Adventure!
-  createVisit(createVisitInput: CreateVisitInput!): Visit!
-  updateVisit(updateVisitInput: UpdateVisitInput!): Visit!
-  removeVisit(id: Int!): Visit!
-  createSubscription(createSubscriptionInput: CreateSubscriptionInput!): Subscription!
-  updateSubscription(updateSubscriptionInput: UpdateSubscriptionInput!): Subscription!
-  removeSubscription(id: Int!): Subscription!
+  createVisit(input: CreateVisitInput!): Visit!
+  createTransaction(input: TransactionInput!): Transaction!
   removeLocalization(id: Int!): Localization!
   createClassification(createClassificationInput: CreateClassificationInput!): Classification!
   updateClassification(updateClassificationInput: UpdateClassificationInput!): Classification!
@@ -223,11 +258,19 @@ input CreateAreaInput {
   region: String!
   type: Int!
   peripherals: [PeripheralInput!]!
+  slogans: [String!]!
+  descriptions: [String!]!
+  geo: GeoInput!
 }
 
 input PeripheralInput {
   city: String!
   distance: Float!
+}
+
+input GeoInput {
+  x: Float!
+  y: Float!
 }
 
 """The `Upload` scalar type represents a file upload."""
@@ -239,6 +282,9 @@ input UpdateAreaInput {
   region: String!
   type: Int!
   peripherals: [PeripheralInput!]!
+  slogans: [String!]!
+  descriptions: [String!]!
+  geo: GeoInput!
   id: Float!
 }
 
@@ -310,25 +356,19 @@ input UpdateAdventureInput {
 }
 
 input CreateVisitInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
+  city: String!
+  country: String!
+  countryCode: String!
+  region: String!
+  ip: String!
+  geo: GeoInput!
 }
 
-input UpdateVisitInput {
-  """Example field (placeholder)"""
-  exampleField: Int
-  id: Int!
-}
-
-input CreateSubscriptionInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
-}
-
-input UpdateSubscriptionInput {
-  """Example field (placeholder)"""
-  exampleField: Int
-  id: Int!
+input TransactionInput {
+  type: Int!
+  method: Int!
+  amount: Int!
+  photos: [String!]!
 }
 
 input CreateClassificationInput {

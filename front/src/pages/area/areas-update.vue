@@ -2,13 +2,17 @@
     <q-page class="q-pa-md">
       <template v-if="area">
         <AreaForm
-          class="q-my-lg"
+          cssClass="q-my-lg"
           v-model:name="input.name"
           v-model:type="input.type"
           v-model:region="input.region"
           v-model:surface="input.surface"
           v-model:peripherals="input.peripherals"
           v-model:banner="banner"
+          v-model:geo-x="input.geo.x"
+          v-model:geo-y="input.geo.y"
+          v-model:descriptions="input.descriptions"
+          v-model:slogans="input.slogans"
           @validate="updateArea"
           :src="src"
         >
@@ -40,7 +44,7 @@
 
 <script  lang="ts">
   import { computed, defineComponent } from 'vue';
-  import AreaForm from 'components/area-form.vue';
+  import AreaForm from 'components/area/area-form.vue';
   import { Area } from 'src/graphql/types';
   import {useUpdateArea} from 'src/graphql/area/update-area';
   import {gql} from '@apollo/client';
@@ -48,6 +52,7 @@
   import {useRouter} from 'vue-router';
   import {useQuery, useResult} from '@vue/apollo-composable';
   import { QueryFindAreaArgs } from 'src/graphql/types';
+  import {getImage} from 'src/graphql/utils/utils';
 
   type FindAreaData = {
     findArea: Area;
@@ -71,8 +76,10 @@
         const { input, updateArea, banner } = useUpdateArea();
 
         function reset(val: any = null) {
-          const { id, name, type, peripherals, region, surface } = val || area.value;
-          Object.assign(input, { id, name, type, region, surface });
+          const { id, name, type, peripherals, region, surface, descriptions, slogans, geo } = val || area.value;
+          Object.assign(input, { id, name, type, region, surface, descriptions, slogans });
+          input.geo.x = geo.x;
+          input.geo.y = geo.y;
           input.peripherals = peripherals.map((p :any) => ({ city: p.city, distance: p.distance }));
         }
         const { loading: loadingFind, result } = useQuery<
@@ -95,7 +102,7 @@
           banner,
           loadingFind,
           updateArea,
-          src: computed(() => area.value ? `${process.env.uri}areas/${area.value?.banner}` : ''),
+          src: computed(() => area.value ? getImage(area.value?.banner) : ''),
         }
       }
     })

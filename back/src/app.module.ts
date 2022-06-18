@@ -6,7 +6,7 @@ import { LivingBeingModule } from './living-being/living-being.module';
 import { UserModule } from './user/user.module';
 import { AdventureModule } from './adventure/adventure.module';
 import { VisitModule } from './visit/visit.module';
-import { SubscriptionModule } from './subscription/subscription.module';
+import { TransactionModule } from './transaction/transaction.module';
 import { GraphQLModule } from '@nestjs/graphql';
 import { connexionOptions } from './configuration/connexionLoader';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -15,6 +15,7 @@ import { LocalizationModule } from './localization/localization.module';
 import { AuthModule } from './auth/auth.module';
 import { ClassificationModule } from './classification/classification.module';
 import { ClassifierModule } from './classifier/classifier.module';
+import { AppResolver } from './app.resolver';
 
 @Module({
   imports: [
@@ -33,13 +34,13 @@ import { ClassifierModule } from './classifier/classifier.module';
     UserModule,
     AdventureModule,
     VisitModule,
-    SubscriptionModule,
+    TransactionModule,
     LocalizationModule,
     AuthModule,
     ClassificationModule,
     ClassifierModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, AppResolver],
 })
 export class AppModule {}

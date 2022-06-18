@@ -28,3 +28,9 @@ export class PaginateLivingBeingsInput extends PaginationInput {
   @Field()
   order: 'ASC' | 'DESC';
 }
+
+@InputType()
+export class FindLivingBeingsByAreaInput {
+  @Field(() => Int)
+  id: number;
+}

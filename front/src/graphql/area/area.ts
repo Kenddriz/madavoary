@@ -7,6 +7,9 @@ export const AREA_FIELDS = `
   region
   peripherals{city distance}
   surface
+  descriptions
+  slogans
+  geo{x y}
   createdAt
   updatedAt
 `

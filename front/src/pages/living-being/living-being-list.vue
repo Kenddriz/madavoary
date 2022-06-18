@@ -36,12 +36,12 @@
       <q-card
         flat bordered
         class="bg-primary cursor-pointer"
-        @click="$router.push(`/living-beings/update/${props.row.id}`)"
+        @click="$router.push(`/private/living-beings/update/${props.row.id}`)"
         v-ripple
       >
         <q-card-section>
           <q-img
-            :src="getImage(props.row.images[1], `livingBeings/`)"
+            :src="getImage(props.row.images[0], `livingBeings/`)"
             basic
             height="150px"
           >

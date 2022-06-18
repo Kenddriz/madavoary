@@ -4,13 +4,15 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import {useQuasar} from 'quasar';
+import {useCreateVisit} from 'src/graphql/visit/create-visit';
 
 export default defineComponent({
   name: 'App',
   setup() {
     const { dark } = useQuasar();
+    const { loading } = useCreateVisit();
     dark.set(true);
-    return {}
+    return { loading }
   }
 })
 </script>

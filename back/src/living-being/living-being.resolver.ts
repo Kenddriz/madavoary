@@ -26,10 +26,8 @@ import { LivingBeingPagination } from './types/living-being.output';
 import { Area } from '../area/area.entity';
 import { ClassifierService } from '../classifier/classifier.service';
 import { Classifier } from '../classifier/classifier.entity';
-import { Adventure } from '../adventure/adventure.entity';
 import { CurrentUser } from '../auth/current-user-decorator';
 import { StrategyType } from '../auth/types/strategy.type';
-import { UpdateAdventureImageInput } from '../adventure/types/adventure.input';
 
 @Resolver(() => LivingBeing)
 export class LivingBeingResolver {
@@ -170,6 +168,13 @@ export class LivingBeingResolver {
     @Args('input') input: PaginateLivingBeingsInput,
   ): Promise<LivingBeingPagination> {
     return this.livingBeingService.paginate(input);
+  }
+
+  @Query(() => [LivingBeing])
+  async findLivingBeingByArea(
+    @Args({ name: 'areaId', type: () => Int }) areaId: number,
+  ): Promise<LivingBeing[]> {
+    return this.livingBeingService.findByArea(areaId);
   }
 
   @Mutation(() => LivingBeing)

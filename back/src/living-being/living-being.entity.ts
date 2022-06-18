@@ -34,14 +34,6 @@ export class LivingBeing {
   @Column({ default: [], type: 'varchar', array: true })
   descriptions: string[];
 
-  @Field()
-  @CreateDateColumn({ name: 'createdAt', type: 'timestamp' })
-  createdAt: Date;
-
-  @Field()
-  @UpdateDateColumn({ name: 'updatedAt', type: 'timestamp' })
-  updatedAt: Date;
-
   @Field(() => [Area])
   @ManyToMany(() => Area, { onDelete: 'CASCADE', primary: true })
   @JoinTable({
@@ -62,4 +54,12 @@ export class LivingBeing {
     inverseJoinColumn: { name: 'classifierId' },
   })
   classifiers: Classifier[];
+
+  @Field()
+  @CreateDateColumn({ name: 'createdAt', type: 'timestamp' })
+  createdAt: Date;
+
+  @Field()
+  @UpdateDateColumn({ name: 'updatedAt', type: 'timestamp' })
+  updatedAt: Date;
 }

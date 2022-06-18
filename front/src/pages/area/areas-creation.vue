@@ -1,13 +1,17 @@
 <template>
     <q-page class="q-pa-md">
       <AreaForm
-        class="q-my-lg"
+        cssClass="q-my-lg"
         v-model:name="input.name"
         v-model:type="input.type"
         v-model:region="input.region"
         v-model:surface="input.surface"
         v-model:peripherals="input.peripherals"
         v-model:banner="banner"
+        v-model:geo-x="input.geo.x"
+        v-model:geo-y="input.geo.y"
+        v-model:descriptions="input.descriptions"
+        v-model:slogans="input.slogans"
         @validate="submitCreate"
       >
         <template v-slot:button>
@@ -20,7 +24,7 @@
 
 <script  lang="ts">
     import {defineComponent} from 'vue';
-    import AreaForm from 'components/area-form.vue';
+    import AreaForm from 'components/area/area-form.vue';
     import {useCreateArea} from 'src/graphql/area/ceate-area';
 
     export default defineComponent({

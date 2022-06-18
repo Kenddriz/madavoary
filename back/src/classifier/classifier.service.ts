@@ -30,7 +30,7 @@ export class ClassifierService {
       .createQueryBuilder('classifier')
       .innerJoin('classifications', 'cl', 'cl."classifierId" = classifier.id')
       .where('cl."livingBeingId" = :LivingBeingId', { LivingBeingId })
-      .orderBy('classifier.label', 'ASC')
+      .orderBy('classifier.level', 'ASC')
       .getMany();
   }
   remove(id: number) {

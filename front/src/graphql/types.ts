@@ -29,12 +29,6 @@ export type Adventure = {
   userId: Scalars['Float'];
 };
 
-export type AdventurePagination = {
-  __typename?: 'AdventurePagination';
-  items: Array<Adventure>;
-  meta: Meta;
-};
-
 export type AdventuresPagination = {
   __typename?: 'AdventuresPagination';
   items: Array<Adventure>;
@@ -45,10 +39,13 @@ export type Area = {
   __typename?: 'Area';
   banner: Scalars['String'];
   createdAt: Scalars['DateTime'];
+  descriptions: Array<Scalars['String']>;
+  geo: Geo;
   id: Scalars['Int'];
   name: Scalars['String'];
   peripherals: Array<Peripheral>;
   region: Scalars['String'];
+  slogans: Array<Scalars['String']>;
   surface: Scalars['Float'];
   type: Scalars['Int'];
   updatedAt: Scalars['DateTime'];
@@ -93,9 +90,12 @@ export type CreateAdventureInput = {
 };
 
 export type CreateAreaInput = {
+  descriptions: Array<Scalars['String']>;
+  geo: GeoInput;
   name: Scalars['String'];
   peripherals: Array<PeripheralInput>;
   region: Scalars['String'];
+  slogans: Array<Scalars['String']>;
   surface: Scalars['Float'];
   type: Scalars['Int'];
 };
@@ -120,11 +120,6 @@ export type CreateLivingBeingInput = {
   names: Array<Scalars['String']>;
 };
 
-export type CreateSubscriptionInput = {
-  /** Example field (placeholder) */
-  exampleField: Scalars['Int'];
-};
-
 export type CreateUserInput = {
   email: Scalars['String'];
   firstName: Scalars['String'];
@@ -135,8 +130,23 @@ export type CreateUserInput = {
 };
 
 export type CreateVisitInput = {
-  /** Example field (placeholder) */
-  exampleField: Scalars['Int'];
+  city: Scalars['String'];
+  country: Scalars['String'];
+  countryCode: Scalars['String'];
+  geo: GeoInput;
+  ip: Scalars['String'];
+  region: Scalars['String'];
+};
+
+export type Geo = {
+  __typename?: 'Geo';
+  x: Scalars['Float'];
+  y: Scalars['Float'];
+};
+
+export type GeoInput = {
+  x: Scalars['Float'];
+  y: Scalars['Float'];
 };
 
 export type LivingBeing = {
@@ -193,7 +203,7 @@ export type Mutation = {
   createClassification: Classification;
   createClassifier: Classifier;
   createLivingBeing: LivingBeing;
-  createSubscription: Subscription;
+  createTransaction: Transaction;
   createUser: User;
   createVisit: Visit;
   livingBeingAddImage?: Maybe<LivingBeing>;
@@ -205,8 +215,6 @@ export type Mutation = {
   removeClassifier: Classifier;
   removeLivingBeing: LivingBeing;
   removeLocalization: Localization;
-  removeSubscription: Subscription;
-  removeVisit: Visit;
   updateAdventure: Adventure;
   updateAdventureImage?: Maybe<Adventure>;
   updateArea: Area;
@@ -214,12 +222,10 @@ export type Mutation = {
   updateClassification: Classification;
   updateClassifier: Classifier;
   updateLivingBeing: LivingBeing;
-  updateLivingImage?: Maybe<LivingBeing>;
+  updateLivingBeingImage?: Maybe<LivingBeing>;
   updatePassword?: Maybe<User>;
-  updateSubscription: Subscription;
   updateUser: User;
   updateUserAvatar: User;
-  updateVisit: Visit;
 };
 
 
@@ -262,8 +268,8 @@ export type MutationCreateLivingBeingArgs = {
 };
 
 
-export type MutationCreateSubscriptionArgs = {
-  createSubscriptionInput: CreateSubscriptionInput;
+export type MutationCreateTransactionArgs = {
+  input: TransactionInput;
 };
 
 
@@ -274,7 +280,7 @@ export type MutationCreateUserArgs = {
 
 
 export type MutationCreateVisitArgs = {
-  createVisitInput: CreateVisitInput;
+  input: CreateVisitInput;
 };
 
 
@@ -324,16 +330,6 @@ export type MutationRemoveLocalizationArgs = {
 };
 
 
-export type MutationRemoveSubscriptionArgs = {
-  id: Scalars['Int'];
-};
-
-
-export type MutationRemoveVisitArgs = {
-  id: Scalars['Int'];
-};
-
-
 export type MutationUpdateAdventureArgs = {
   input: UpdateAdventureInput;
 };
@@ -372,7 +368,7 @@ export type MutationUpdateLivingBeingArgs = {
 };
 
 
-export type MutationUpdateLivingImageArgs = {
+export type MutationUpdateLivingBeingImageArgs = {
   image: Scalars['Upload'];
   input: UpdateImageInput;
 };
@@ -380,11 +376,6 @@ export type MutationUpdateLivingImageArgs = {
 
 export type MutationUpdatePasswordArgs = {
   input: UpdatePasswordInput;
-};
-
-
-export type MutationUpdateSubscriptionArgs = {
-  updateSubscriptionInput: UpdateSubscriptionInput;
 };
 
 
@@ -398,17 +389,10 @@ export type MutationUpdateUserAvatarArgs = {
   id: Scalars['Int'];
 };
 
-
-export type MutationUpdateVisitArgs = {
-  updateVisitInput: UpdateVisitInput;
-};
-
-export type PaginateAdventureInput = {
-  keyword?: Maybe<Scalars['String']>;
-  limit: Scalars['Float'];
-  natureId: Scalars['Float'];
-  page: Scalars['Float'];
-  userId?: Maybe<Scalars['Float']>;
+export type NumeralOption = {
+  __typename?: 'NumeralOption';
+  label: Scalars['Float'];
+  value: Scalars['Float'];
 };
 
 export type PaginateAdventuresInput = {
@@ -418,6 +402,7 @@ export type PaginateAdventuresInput = {
   order: Scalars['String'];
   page: Scalars['Float'];
   sortBy: Scalars['String'];
+  userId?: Maybe<Scalars['Float']>;
 };
 
 export type PaginateLivingBeingsInput = {
@@ -448,27 +433,24 @@ export type PeripheralInput = {
 
 export type Query = {
   __typename?: 'Query';
-  _paginateAdventures: AdventurePagination;
   areas: Array<Area>;
   classification: Classification;
   classifiers: Array<Classifier>;
   countAdventures: Array<CountAdventuresOutput>;
+  dashboardCounter: Array<Scalars['Float']>;
   findAdventure?: Maybe<Adventure>;
   findArea?: Maybe<Area>;
   findLivingBeing?: Maybe<LivingBeing>;
+  findLivingBeingByArea: Array<LivingBeing>;
   findLivingBeingByName?: Maybe<LivingBeing>;
   login: LoginDto;
   paginateAdventures: AdventuresPagination;
   paginateLivingBeings: LivingBeingPagination;
   paginateUsers: UserPagination;
-  subscription: Subscription;
-  visit: Visit;
+  paginateVisits: VisitPagination;
+  revenue5LastYears: Array<Revenue5LastYears>;
+  visitsMonthly: Array<NumeralOption>;
   whoAmI: User;
-};
-
-
-export type Query_PaginateAdventuresArgs = {
-  input: PaginateAdventureInput;
 };
 
 
@@ -497,6 +479,11 @@ export type QueryFindLivingBeingArgs = {
 };
 
 
+export type QueryFindLivingBeingByAreaArgs = {
+  areaId: Scalars['Int'];
+};
+
+
 export type QueryFindLivingBeingByNameArgs = {
   name: Scalars['String'];
 };
@@ -522,20 +509,34 @@ export type QueryPaginateUsersArgs = {
 };
 
 
-export type QuerySubscriptionArgs = {
-  id: Scalars['Int'];
+export type QueryPaginateVisitsArgs = {
+  input: PaginateLivingBeingsInput;
 };
 
-
-export type QueryVisitArgs = {
-  id: Scalars['Int'];
+export type Revenue5LastYears = {
+  __typename?: 'Revenue5LastYears';
+  amount: Scalars['Int'];
+  type: Scalars['Int'];
+  year: Scalars['Int'];
 };
 
-export type Subscription = {
-  __typename?: 'Subscription';
+export type Transaction = {
+  __typename?: 'Transaction';
+  amount: Scalars['Float'];
   createdAt: Scalars['DateTime'];
   id: Scalars['Int'];
-  verifiedAt: Scalars['DateTime'];
+  method: Scalars['Int'];
+  photos: Array<Scalars['String']>;
+  type: Scalars['Int'];
+  user: User;
+  verifiedAt?: Maybe<Scalars['DateTime']>;
+};
+
+export type TransactionInput = {
+  amount: Scalars['Int'];
+  method: Scalars['Int'];
+  photos: Array<Scalars['String']>;
+  type: Scalars['Int'];
 };
 
 export type UpdateAdventureImageInput = {
@@ -552,10 +553,13 @@ export type UpdateAdventureInput = {
 };
 
 export type UpdateAreaInput = {
+  descriptions: Array<Scalars['String']>;
+  geo: GeoInput;
   id: Scalars['Float'];
   name: Scalars['String'];
   peripherals: Array<PeripheralInput>;
   region: Scalars['String'];
+  slogans: Array<Scalars['String']>;
   surface: Scalars['Float'];
   type: Scalars['Int'];
 };
@@ -591,12 +595,6 @@ export type UpdatePasswordInput = {
   newPassword: Scalars['String'];
 };
 
-export type UpdateSubscriptionInput = {
-  /** Example field (placeholder) */
-  exampleField?: Maybe<Scalars['Int']>;
-  id: Scalars['Int'];
-};
-
 export type UpdateUserInput = {
   active: Scalars['Boolean'];
   email?: Maybe<Scalars['String']>;
@@ -606,12 +604,6 @@ export type UpdateUserInput = {
   lastName?: Maybe<Scalars['String']>;
   phone?: Maybe<Scalars['String']>;
   role: Scalars['Int'];
-};
-
-export type UpdateVisitInput = {
-  /** Example field (placeholder) */
-  exampleField?: Maybe<Scalars['Int']>;
-  id: Scalars['Int'];
 };
 
 export type User = {
@@ -639,6 +631,19 @@ export type UserPagination = {
 
 export type Visit = {
   __typename?: 'Visit';
-  createdAt: Scalars['DateTime'];
+  city: Scalars['String'];
+  country: Scalars['String'];
+  countryCode: Scalars['String'];
+  enteredAt: Scalars['DateTime'];
+  geo: Geo;
   id: Scalars['Int'];
+  ip: Scalars['String'];
+  livedAt?: Maybe<Scalars['DateTime']>;
+  region: Scalars['String'];
+};
+
+export type VisitPagination = {
+  __typename?: 'VisitPagination';
+  items: Array<Visit>;
+  meta: Meta;
 };

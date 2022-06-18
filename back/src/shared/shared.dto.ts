@@ -14,3 +14,10 @@ export class Meta implements IPaginationMeta {
   @Field()
   currentPage: number;
 }
+@ObjectType()
+export class NumeralOption {
+  @Field()
+  label: number;
+  @Field()
+  value: number;
+}

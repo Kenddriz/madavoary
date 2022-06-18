@@ -80,6 +80,7 @@ module.exports = configure(function (ctx) {
       },
     env: {
       uri: 'http://localhost:3000/',
+      ipApi: 'http://ip-api.com/',
       maxImagesAdventure: 10,
       maxFileSize: 2048000
     }

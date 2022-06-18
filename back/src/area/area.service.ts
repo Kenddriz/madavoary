@@ -12,9 +12,11 @@ export class AreaService {
   async save(area: Area): Promise<Area> {
     return this.repository.save(area);
   }
-
+  async count(): Promise<number> {
+    return this.repository.count();
+  }
   async findAll(): Promise<Area[]> {
-    return this.repository.find({ order: { name: 'ASC' } });
+    return this.repository.find({ order: { id: 'ASC' } });
   }
 
   async findOneById(id: number): Promise<Area> {

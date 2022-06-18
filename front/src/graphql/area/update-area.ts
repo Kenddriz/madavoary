@@ -25,7 +25,10 @@ export const useUpdateArea = () => {
     type: 0,
     peripherals: [],
     region: '',
-    surface: 0
+    surface: 0,
+    descriptions: new Array(2).fill(''),
+    geo: { x: 0, y: 0 },
+    slogans: new Array(2).fill(''),
   });
   const banner = ref([]);
   const { mutate,onDone } = useMutation<

@@ -1,4 +1,12 @@
-import { InputType, Field, Int } from '@nestjs/graphql';
+import { InputType, Field, Int, Float } from '@nestjs/graphql';
+
+@InputType()
+export class GeoInput {
+  @Field(() => Float)
+  x: number;
+  @Field(() => Float)
+  y: number;
+}
 
 @InputType()
 export class PeripheralInput {
@@ -19,6 +27,12 @@ export class CreateAreaInput {
   type: number;
   @Field(() => [PeripheralInput])
   peripherals: PeripheralInput[];
+  @Field(() => [String])
+  slogans: string[];
+  @Field(() => [String])
+  descriptions: string[];
+  @Field(() => GeoInput)
+  geo: GeoInput;
 }
 
 @InputType()

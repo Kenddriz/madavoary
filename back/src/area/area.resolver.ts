@@ -24,13 +24,17 @@ export class AreaResolver {
     const area = new Area();
     area.id = await uniqId('Area');
     const { filename, createReadStream } = await banner;
-    Object.assign(area, input);
+    Object.assign(area, {
+      ...input,
+      geo: `(${input.geo.x}, ${input.geo.y})`,
+    });
     area.banner = area.id + '-' + filename.substr(-5);
     return new Promise((resolve) => {
       this.areaService
         .save(area)
         .then((adventure) => {
           uploadV2(createReadStream, 'areas/', area.banner);
+          adventure.geo = input.geo;
           resolve(adventure);
         })
         .catch(() => resolve(null));
@@ -44,15 +48,20 @@ export class AreaResolver {
     @Args({ name: 'banner', type: () => GraphQLUpload, nullable: true })
     banner: Upload,
   ): Promise<Area> {
-    const area = await this.areaService.findOneById(input.id);
-    Object.assign(area, input);
+    let area = await this.areaService.findOneById(input.id);
+    Object.assign(area, {
+      ...input,
+      geo: `(${input.geo.x}, ${input.geo.y})`,
+    });
     if (banner) {
       const { filename, createReadStream } = await banner;
       removeFile('areas/' + area.banner);
       area.banner = area.id + '-' + filename.substr(-5);
       await uploadV2(createReadStream, 'areas/', area.banner);
     }
-    return this.areaService.save(area);
+    area = await this.areaService.save(area);
+    area.geo = input.geo;
+    return area;
   }
   @UseGuards(GqlAuthGuard)
   @Mutation(() => Area)
@@ -60,11 +69,15 @@ export class AreaResolver {
     @Args({ name: 'banner', type: () => GraphQLUpload }) banner: Upload,
     @Args({ name: 'areaId', type: () => Int }) id: number,
   ): Promise<Area> {
-    const area = await this.areaService.findOneById(id);
+    let area = await this.areaService.findOneById(id);
+    const geo = area.geo;
+    Object.assign(area, { geo: `(${geo.x}, ${geo.y})` });
     const { filename } = await upload(banner, 'areas/', id);
     removeFile('areas/' + area.banner);
     area.banner = filename;
-    return this.areaService.save(area);
+    area = await this.areaService.save(area);
+    area.geo = geo;
+    return area;
   }
   @Query(() => [Area])
   async areas() {

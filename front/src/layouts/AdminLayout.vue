@@ -8,8 +8,8 @@
           size="80px" icon="home"
         />
 
-        <q-toolbar-title>
-          MENU PRINCIPAL
+        <q-toolbar-title class="text-uppercase">
+          {{ $t($route.name) }}
         </q-toolbar-title>
 
         <q-space />
@@ -30,6 +30,7 @@
           icon="home"
           color="amber"
           @click="show()"
+          outline
         />
       </q-page-sticky>
     </q-page-container>
@@ -40,12 +41,14 @@
   import {defineComponent} from 'vue';
   import {useRouter} from 'vue-router';
   import {BottomSheet} from 'quasar';
-  import {menu} from './data';
+  import {menu} from 'pages/admin/data';
+  import {useI18n} from 'vue-i18n';
 
   export default defineComponent({
-    name: 'admin-menu-bottom',
+    name: 'dashboard-menu-bottom',
     setup() {
       const router = useRouter();
+      const { t } = useI18n();
       return {
         show() {
           BottomSheet.create({
@@ -53,7 +56,7 @@
             class: 'bg-primary text-white q-pa-md',
             message: 'Navigation rapide',
             grid: true,
-            actions: menu.map(m => ({ label: m.to, to: m.to, icon: m.icon }))
+            actions: menu.map(m => ({ label: t(m.label), to: m.to, icon: m.icon }))
           }).onOk((action: any) => {
             void router.push(`/private/${action.to}`);
           })

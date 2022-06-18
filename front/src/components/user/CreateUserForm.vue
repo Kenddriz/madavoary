@@ -32,7 +32,6 @@
             <ImageInput v-model="avatar" />
           </q-avatar>
           <q-input
-            rounded
             outlined
             label-color="white"
             dense
@@ -51,7 +50,6 @@
             </template>
           </q-input>
           <q-input
-            rounded
             outlined
             label-color="white"
             dense
@@ -96,7 +94,6 @@
           <q-input
             :model-value="input.email"
             v-model="input.email"
-            rounded
             outlined
             label-color="white"
             dense
@@ -138,7 +135,6 @@
           <q-input
             :model-value="input.password"
             v-model="input.password"
-            rounded
             outlined
             label-color="white"
             dense
@@ -160,7 +156,6 @@
           <q-input
             :model-value="params.confirm"
             v-model="params.confirm"
-            rounded
             outlined
             label-color="white"
             dense

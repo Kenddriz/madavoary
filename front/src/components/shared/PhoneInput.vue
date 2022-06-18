@@ -35,7 +35,6 @@ export default defineComponent({
   &::-ms-input-placeholder      {color: white;}
 }
 .vue-tel-input{
-  border-radius: 20px;
   &:focus-within{
     -webkit-box-shadow: unset;
     box-shadow: unset;

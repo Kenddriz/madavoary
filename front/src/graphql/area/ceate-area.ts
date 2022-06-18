@@ -16,12 +16,18 @@ const CREATE_AREA = gql`
   }
 `;
 export const useCreateArea = () => {
+  const defaultVal = {
+    descriptions: new Array(2).fill(''),
+    geo: { x: 0, y: 0 },
+    slogans: new Array(2).fill(''),
+  }
   const input = reactive<CreateAreaInput>({
     name: '',
     type: 0,
     peripherals: [],
     region: '',
-    surface: 0
+    surface: 0,
+    ...defaultVal,
   });
   const banner = ref([]);
   const { loading } = useLoading();
@@ -52,6 +58,7 @@ export const useCreateArea = () => {
       input.region = '';
       input.surface = 0;
       banner.value = [];
+      Object.assign(input, defaultVal);
     } else loading('create.failed', true);
   });
   function submitCreate() {

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { LivingBeing } from './living-being.entity';
-import { Brackets, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { PaginateLivingBeingsInput } from './types/living-being.input';
 import {
   IPaginationOptions,
@@ -18,10 +18,6 @@ export class LivingBeingService {
   async save(livingBeing: LivingBeing): Promise<LivingBeing> {
     return this.repository.save(livingBeing);
   }
-
-  findAll() {
-    return `This action returns all livingBeing`;
-  }
   async findOneById(id: number): Promise<LivingBeing> {
     return this.repository.findOne({ id });
   }
@@ -32,6 +28,13 @@ export class LivingBeingService {
       .where(':name ILIKE ANY(lb."localNames")', { name })
       .orWhere(':name ILIKE ANY(lb.names)', { name })
       .getOne();
+  }
+  async findByArea(areaId: number): Promise<LivingBeing[]> {
+    return this.repository
+      .createQueryBuilder('lb')
+      .innerJoin('localizations', 'loc', 'loc."livingBeingId" = lb."id"')
+      .where('loc."areaId" = :areaId', { areaId })
+      .getMany();
   }
   async paginate(
     input: PaginateLivingBeingsInput,

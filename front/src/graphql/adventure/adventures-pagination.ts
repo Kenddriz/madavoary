@@ -10,7 +10,7 @@ import {ADVENTURE_FIELDS} from 'src/graphql/adventure/adventure';
 import { ref } from 'vue';
 import {useI18n} from 'vue-i18n';
 
-export type PaginateAdventuresData = {
+type PaginateAdventuresData = {
   paginateAdventures: AdventuresPagination
 }
 
@@ -25,7 +25,7 @@ export const PAGINATE_ADVENTURES = gql`
   }
 `;
 
-export const useAdventuresList= () => {
+export const useAdventuresPagination= () => {
   const { tm, t } = useI18n();
   const natures = tm('adventure-subjects') as any[];
   const columns = [

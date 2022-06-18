@@ -37,7 +37,7 @@
         bordered
         class="bg-primary cursor-pointer"
         v-ripple
-        @click="$router.push(`/adventures/update/${props.row.id}`)"
+        @click="$router.push(`/private/adventures/update/${props.row.id}`)"
       >
         <q-img
           :src="getImage(props.row.images[0], `adventures/${props.row.natureId}`)"
@@ -65,7 +65,7 @@
   <q-page-sticky position="bottom-left" :offset="[18, 18]">
     <q-btn
       no-caps
-      to="/adventures/creation"
+      to="/private/adventures/creation"
       label="Nouvel aventure"
       color="secondary"
       icon="add"
@@ -75,7 +75,7 @@
 
 <script lang="ts">
   import { defineComponent } from 'vue';
-  import {useAdventuresList} from 'src/graphql/adventure/adventures-list';
+  import { useAdventuresPagination } from 'src/graphql/adventure/adventures-pagination';
   import {getImage} from 'src/graphql/utils/utils';
   import {paginationLabel} from 'src/graphql/utils/pagination';
 
@@ -83,7 +83,7 @@
     name: 'adventures-creation',
     setup() {
       return {
-        ...useAdventuresList(),
+        ...useAdventuresPagination(),
         paginationLabel,
         getImage,
       }

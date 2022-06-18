@@ -28,43 +28,14 @@
           />
         </template>
       </q-tabs>
-      <div class="flex items-start q-gutter-md">
-        <q-card
-          flat
-          bordered
-          style="height: 80px; width: 80px"
-          class="bg-primary cursor-pointer"
-          v-ripple
-          @click="resetSelected()"
-        >
-          <q-icon class="absolute-center" size="20px" name="account_tree" />
-        </q-card>
 
-        <q-card
-          flat
-          bordered
-          style="height: 80px; width: 80px"
-          class="bg-primary cursor-pointer"
-          v-ripple
-          @click="setSelected()"
-        >
-          <q-icon class="absolute-center" size="30px" name="arrow_drop_up" />
-        </q-card>
-
-        <q-card
-          flat
-          bordered
-          v-for="classifier in children"
-          :key="classifier.id"
-          style="height: 80px;"
-          class="bg-primary flex column items-center q-pa-md cursor-pointer"
-          v-ripple
-          @click="setSelected(classifier)"
-        >
-          <div>{{ classifier.label }}</div>
-          <small> {{ $tm("adventure.classifiers")[classifier.level]}} </small>
-        </q-card>
-      </div>
+      <classifiers
+        class="items-start wrap"
+        v-model="selected"
+        @tabs-pop="tabs.pop()"
+        @tabs-push="tabs.push($event)"
+        @reset="tabs.length = 0"
+      />
 
       <q-page-sticky position="bottom-right" :offset="[18, 18]">
         <q-fab
@@ -103,43 +74,22 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, computed, reactive, ref } from 'vue';
-  import { useClassifiers } from '../../graphql/classifier/classifiers';
+  import { defineComponent, ref } from 'vue';
   import {Classifier} from 'src/graphql/types';
-  const defaultSelected = {
-    id: null,
-    label: '',
-    level: -1,
-    translations: [],
-    parentId: null,
-  }
+  import classifiers from 'components/classifier/classifiers.vue';
+  import {defaultSelected} from 'src/graphql/classifier/classifiers';
+
   export default defineComponent({
     name: 'classifiers-list',
+    components: { classifiers },
     setup() {
-      const { loading, classifiers } = useClassifiers();
-      const selected = reactive({ ...defaultSelected });
+      const selected = ref({ ...defaultSelected });
       const tabs = ref<Classifier[]>([]);
       function onSelectTab(index: number) {
         tabs.value.splice(index + 1);
-        Object.assign(selected, tabs.value[index]);
+        selected.value = tabs.value[index];
       }
-      function resetSelected() {
-        tabs.value.length = 0;
-        Object.assign(selected, defaultSelected);
-      }
-      function setSelected(parent: any = null) {
-        if(!parent) {
-          parent = classifiers.value.find(c => c.id == selected.parentId);
-          tabs.value.pop();
-        } else tabs.value.push(parent);
-        Object.assign(selected, parent || defaultSelected);
-      }
-      const children = computed(() => classifiers.value.filter((c: any) => c.parentId === selected.id));
       return {
-          loading,
-          children,
-          setSelected,
-          resetSelected,
           tabs,
           selected,
           onSelectTab,

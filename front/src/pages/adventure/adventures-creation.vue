@@ -48,16 +48,6 @@
         <div>{{ $t('create.btn') }}</div>
       </template>
     </AdventureForm>
-
-    <q-page-sticky position="bottom-right" :offset="[18, 18]">
-      <q-btn
-        no-caps
-        @click="$router.back()"
-        label="Précedent"
-        icon="arrow_back"
-        color="secondary"
-      />
-    </q-page-sticky>
   </q-page>
 </template>
 

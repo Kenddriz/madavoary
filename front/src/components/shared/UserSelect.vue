@@ -3,7 +3,6 @@
     :model-value="modelValue"
     @update:model-value="$emit('update:modelValue', $event)"
     :options="options"
-    rounded
     label-color="white"
     dense
     outlined

@@ -1,26 +1,52 @@
 import { Injectable } from '@nestjs/common';
-import { CreateVisitInput } from './dto/create-visit.input';
-import { UpdateVisitInput } from './dto/update-visit.input';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Visit } from './visit.entity';
+import { Repository } from 'typeorm';
+import { PaginateLivingBeingsInput } from '../living-being/types/living-being.input';
+import {
+  IPaginationOptions,
+  Pagination,
+  paginate,
+} from 'nestjs-typeorm-paginate';
 
 @Injectable()
 export class VisitService {
-  create(createVisitInput: CreateVisitInput) {
-    return 'This action adds a new visit';
+  constructor(
+    @InjectRepository(Visit)
+    private repository: Repository<Visit>,
+  ) {}
+  async save(visit: Visit): Promise<Visit> {
+    return this.repository.save(visit);
   }
 
-  findAll() {
-    return `This action returns all visit`;
+  async findOne(id: number): Promise<Visit> {
+    return this.repository.findOne(id);
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} visit`;
+  async paginate(input: PaginateLivingBeingsInput): Promise<Pagination<Visit>> {
+    const keyword = `%${input.keyword}%`;
+    const query = this.repository
+      .createQueryBuilder()
+      .where('country ILIKE :keyword', { keyword })
+      .orWhere('"countryCode" ILIKE :keyword', { keyword })
+      .orWhere('city ILIKE :keyword', { keyword })
+      .orWhere('region ILIKE :keyword', { keyword })
+      .orderBy(`"${input.sortBy}"`, input.order);
+    const options: IPaginationOptions = {
+      page: input.page,
+      limit: input.limit,
+    };
+    return paginate<Visit>(query, options);
   }
-
-  update(id: number, updateVisitInput: UpdateVisitInput) {
-    return `This action updates a #${id} visit`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} visit`;
+  /**Monthly visits diagram data*/
+  async monthly() {
+    const year = new Date().getFullYear();
+    return this.repository
+      .createQueryBuilder('visit')
+      .select('COUNT(visit.id)', 'value')
+      .addSelect('EXTRACT("MONTH" FROM visit.entered_at)', 'label')
+      .where('EXTRACT("YEAR" FROM visit.entered_at)= :year', { year })
+      .groupBy('label')
+      .getRawMany();
   }
 }

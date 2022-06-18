@@ -4,6 +4,7 @@ const VueTelInput = require('vue3-tel-input').default;
 import 'vue3-tel-input/dist/vue3-tel-input.css';
 
 import messages from 'src/i18n';
+import VueApexCharts from 'vue3-apexcharts';
 
 const i18n = createI18n({
   locale: 'fr-FR',
@@ -14,6 +15,7 @@ export default boot(({ app }) => {
   // Set i18n instance on app
   app.use(i18n);
   app.use(VueTelInput);
+  app.component('apexchart', VueApexCharts)
 });
 
 export { i18n };

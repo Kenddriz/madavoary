@@ -1,36 +1,4 @@
 <template>
-  <!--<q-table
-    dense
-    :rows="areas"
-    :columns="columns"
-    row-key="id"
-    :filter="filter"
-    :loading="loading"
-    :no-data-label="$t('no-data')"
-    selection="single"
-    v-model:selected="selected"
-    v-model:pagination="pagination"
-    @update:selected="$emit('update:modelValue', $event)"
-    hide-header
-    hide-selected-banner
-  >
-
-    <template v-slot:top>
-      <q-input
-        :model-value="filter"
-        dense
-        color="white"
-        v-model="filter"
-        outlined
-        class="col-12"
-      >
-        <template v-slot:append>
-          <q-icon name="search" />
-        </template>
-      </q-input>
-    </template>
-
-  </q-table>-->
   <q-select
     :model-value="modelValue"
     @update:model-value="$emit('update:modelValue', $event)"

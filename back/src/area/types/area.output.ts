@@ -1,4 +1,4 @@
-import { Field, ObjectType } from '@nestjs/graphql';
+import { Field, Float, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
 export class Peripheral {
@@ -6,4 +6,11 @@ export class Peripheral {
   city: string;
   @Field()
   distance: number;
+}
+@ObjectType()
+export class Geo {
+  @Field(() => Float)
+  x: number;
+  @Field(() => Float)
+  y: number;
 }

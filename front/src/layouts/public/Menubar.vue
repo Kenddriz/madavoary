@@ -9,7 +9,7 @@
         toggle-text-color="positive"
         dense
         :options="$tm('languages')"
-        @input="value => onLanguageChange(value)"
+        @types="value => onLanguageChange(value)"
       /> -->
 </q-toolbar>
 </template>

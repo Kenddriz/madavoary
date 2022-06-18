@@ -1,35 +1,35 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import { Resolver, Mutation, Args, Query } from '@nestjs/graphql';
 import { VisitService } from './visit.service';
 import { Visit } from './visit.entity';
-import { CreateVisitInput } from './dto/create-visit.input';
-import { UpdateVisitInput } from './dto/update-visit.input';
+import { CreateVisitInput } from './types/visit.input';
+import { PaginateLivingBeingsInput } from '../living-being/types/living-being.input';
+import { VisitPagination } from './types/visit-output';
+import { NumeralOption } from '../shared/shared.dto';
 
 @Resolver(() => Visit)
 export class VisitResolver {
   constructor(private readonly visitService: VisitService) {}
 
   @Mutation(() => Visit)
-  createVisit(@Args('createVisitInput') createVisitInput: CreateVisitInput) {
-    return this.visitService.create(createVisitInput);
+  async createVisit(@Args('input') input: CreateVisitInput) {
+    let visit = new Visit();
+    Object.assign(visit, {
+      ...input,
+      geo: `(${input.geo.x}, ${input.geo.y})`,
+    });
+    visit = await this.visitService.save(visit);
+    visit.geo = input.geo;
+    return visit;
   }
 
-  @Query(() => [Visit], { name: 'visit' })
-  findAll() {
-    return this.visitService.findAll();
+  @Query(() => VisitPagination)
+  async paginateVisits(
+    @Args('input') input: PaginateLivingBeingsInput,
+  ): Promise<VisitPagination> {
+    return this.visitService.paginate(input);
   }
-
-  @Query(() => Visit, { name: 'visit' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
-    return this.visitService.findOne(id);
-  }
-
-  @Mutation(() => Visit)
-  updateVisit(@Args('updateVisitInput') updateVisitInput: UpdateVisitInput) {
-    return this.visitService.update(updateVisitInput.id, updateVisitInput);
-  }
-
-  @Mutation(() => Visit)
-  removeVisit(@Args('id', { type: () => Int }) id: number) {
-    return this.visitService.remove(id);
+  @Query(() => [NumeralOption])
+  async visitsMonthly(): Promise<NumeralOption[]> {
+    return this.visitService.monthly();
   }
 }

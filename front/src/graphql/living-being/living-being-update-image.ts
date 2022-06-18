@@ -1,4 +1,4 @@
-import {LivingBeing, MutationUpdateLivingImageArgs} from 'src/graphql/types';
+import {LivingBeing, MutationUpdateLivingBeingImageArgs} from 'src/graphql/types';
 import {gql} from '@apollo/client';
 import {useMutation} from '@vue/apollo-composable';
 import { ref } from 'vue';
@@ -20,7 +20,7 @@ export const useUpdateLivingBeingImage = () => {
   const dialog = ref<boolean>(false);
   const { mutate, loading, onDone } = useMutation<
     UpdateLivingBeingImageData,
-    MutationUpdateLivingImageArgs
+    MutationUpdateLivingBeingImageArgs
     >(UPDATE_LIVING_BEING_IMAGE, { context: {hasUpload: true}});
   onDone(({ data }) => {
     dialog.value = !data?.updateLivingBeingImage;

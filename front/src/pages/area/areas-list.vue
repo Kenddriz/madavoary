@@ -9,6 +9,7 @@
     :filter="filter"
     hide-header
     style="height: calc(100vh - 90px)"
+    :rows-per-page-options="[0, 20, 30, 50]"
   >
     <template v-slot:top-left>
       <q-input
@@ -31,13 +32,13 @@
         flat
         icon="add"
         label="Nouvelle"
-        to="/areas/create"
+        to="/private/areas/create"
       />
     </template>
 
     <template v-slot:item="props">
       <q-img
-        @click="$router.push(`/areas/update/${props.row.id}`)"
+        @click="$router.push(`/private/areas/update/${props.row.id}`)"
         style="height: 140px; max-width: 150px"
         :src="getImage(props.row.banner)"
         class="q-ma-xs q-card--bordered cursor-pointer"

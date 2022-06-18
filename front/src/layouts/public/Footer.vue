@@ -1,31 +1,33 @@
 <template>
-  <div class="bg-primary text-blue-grey-11 q-pa-md">
+  <q-footer class="bg-primary text-blue-grey-11 q-pa-md">
     <div class="q-gutter-lg row justify-around items-start">
-      <!--links -->
+
       <div class="col-12 col-md-3">
         <q-card-section class="text-h6">
           Navigation
         </q-card-section>
 
-        <q-separator inset />
+        <q-separator :inset="true" />
 
         <q-card-section>
-          <a
-            v-for="(menu, index) in $tm('home.menuBar')"
+          <router-link
+            v-for="(menu, index) in menuBar"
             :key="index"
-            :href="`${menu.to.charAt(0) === '/' ? '' : '#'}${menu.to}`"
+            :to="`/${menu.to}`"
             class="text-white row items-center q-pb-sm no-text-decoration"
+            exact
+            exact-active-class="text-amber"
           >
-            {{ menu.label }}
-          </a>
+            {{ $t(menu.label) }}
+          </router-link>
         </q-card-section>
       </div>
-      <!--Contact -->
+
       <div class="col-12 col-md-3">
         <q-card-section class="text-h6">
-          {{$tm('home.footer.contact.title')}}
+          {{$tm('contactUs')}}
         </q-card-section>
-        <q-separator dark inset />
+        <q-separator dark :inset="true" />
         <q-list flat>
           <q-item v-for="(contact, index) in contacts" :key="index">
             <q-item-section avatar>
@@ -36,16 +38,17 @@
           </q-item>
         </q-list>
       </div>
-      <!--About-->
+
       <div class="col-12 col-md-3">
         <q-card-section class="text-h6">
-            Abonnement
+            Don
         </q-card-section>
 
-        <q-separator inset />
+        <q-separator :inset="true" />
 
         <q-card-section>
-          Abonnez-vous pour ne rater aucune actualité sur Madavoary .
+          Veuillez nous faire un don, tout montant est accepté.
+          Supportez-nous, supportez Madavoary! Merci de votre aide!
         </q-card-section>
         <q-card-section>
           <CreateSuscription />
@@ -55,35 +58,34 @@
     <div class="row justify-center">
       <img src="images/madagascar-madavoary.ico" alt="madavory madagascar image" height="150">
       <h3 class="text-h3 text-weight-thin text-center">
-        {{$tm('home.footer.welcome')}}
+        {{$tm('welcome')}}
       </h3>
     </div>
     <div class="row justify-center">
       <div class="text-h6">Register for free</div>
       <q-btn
         label="sign up"
-        to="/private/users/authentication"
+        to="/authentication"
         rounded
         class="bg-warning
         q-ml-lg"
         text-color="primary"
       />
     </div>
-  </div>
+  </q-footer>
 </template>
 
 <script lang="ts">
   import { defineComponent } from 'vue';
   import CreateSuscription from 'components/subscription/CreateSuscription.vue';
-  import {contacts} from 'layouts/public/data/contact-items';
+  import {contacts, menuBar} from 'layouts/public/data/data';
 
   export default  defineComponent({
     name: 'Footer',
     components: { CreateSuscription },
-    data:() => ({ contacts })
+    data:() => ({ contacts, menuBar })
   });
 </script>
 
-<style scoped>
-
+<style lang="scss" scoped>
 </style>

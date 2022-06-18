@@ -13,7 +13,7 @@
       >
         <div>
           <q-icon :name="m.icon" /><br>
-          {{ $tm('menu')[index] }}
+          {{ $t(m.label) }}
         </div>
       </q-btn>
     </div>
@@ -22,10 +22,10 @@
 
 <script lang="ts">
   import { defineComponent } from 'vue';
-  import {menu} from 'layouts/data';
+  import {menu} from './data';
 
   export default defineComponent({
-      name: 'home-admin',
+      name: 'home-dashboard',
       setup() {
         return {
           menu
